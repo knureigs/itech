@@ -1,0 +1,302 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+  <title>3.2.2 Навигация в DOM</title>
+  <meta charset="utf-8">
+  <link href="css/styles.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+  <p class="subsection">3.2.2 Навигация в DOM</p>
+  <ol>
+    <li><a href="#корень-documentelement-и-body">Корень: <code>documentElement</code> и <code>body</code></a></li>
+    <li><a href="#дочерние-элементы">Дочерние элементы</a><ol>
+      <li><a href="#childnodes"><code>childNodes</code></a></li>
+      <li><a href="#children"><code>children</code></a></li>
+      </ol></li>
+    <li><a href="#ссылки-вверх-и-вниз">Ссылки вверх и вниз</a></li>
+    <li><a href="#таблицы">Таблицы</a></li>
+    <li><a href="#методы-поиска-элементов">Методы поиска элементов</a><ol>
+      <li><a href="#document-getelementbyid-id"><code>document.getElementById(id)</code></a></li>
+      <li><a href="#elem-getelementsbytagname-tag"><code>elem.getElementsByTagName(tag)</code></a></li>
+      <li><a href="#document-getelementsbyname-name"><code>document.getElementsByName(name)</code></a></li>
+      <li><a href="#elem-getelementsbyclassname-classname"><code>elem.getElementsByClassName(className)</code></a></li>
+      <li><a href="#elem-queryselectorall-css"><code>elem.querySelectorAll(css)</code></a></li>
+      <li><a href="#elem-queryselector-css"><code>elem.querySelector(css)</code></a></li></ol>
+    </li>
+  </ol>
+    <div>
+    <p>DOM (от англ. Document Object Model — «объектная модель документа») — это не зависящий от платформы и языка программный интерфейс, позволяющий программам и скриптам получить доступ к содержимому HTML, XHTML и XML-документов, а также изменять содержимое, структуру и оформление таких документов. Любой документ известной структуры с помощью DOM может быть представлен в виде дерева узлов, каждый узел которого представляет собой элемент, атрибут, текстовый, графический или любой другой объект. Узлы связаны между собой отношениями «родительский-дочерний». </p>
+    <p>Для того, чтобы изменить узел DOM, например, изменить его свойства, добавить содержимое, нужно сначала его получить. Доступ к элементам DOM начинается с объекта <code>document</code>. Оттуда можно добраться до любых других узлов.</p>
+    <h2><a name="корень-documentelement-и-body" id="корень-documentelement-и-body">Корень: <code>documentElement</code> и <code>body</code></a></h2>
+    <p>Войти в &laquo;корень&raquo; дерева можно двумя путями.</p>
+    <p>Cвойство <code>document.documentElement</code> ссылается на DOM-объект для тега <code>HTML</code>. <code>document.body</code> соответствует тегу <code>BODY</code>. <code>document.body</code> может быть равен <code>null</code>, например, при доступе к <code>document.body</code> в момент обработки тега <code>HEAD</code> -  потому что <code>BODY</code> еще не существует.</p>
+    <p>В примере первый <code>alert</code> выведет <code>null</code>:</p>
+    <pre>
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;script&gt;
+      alert("Из HEAD: " + document.body); // null
+    &lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+  &lt;/body&gt;
+  &lt;script&gt;
+      alert("After body document.body: " + document.body); // After body document.body: [object HTMLBodyElement]
+      alert("After body document.documentElement: " + document.documentElement ); // After body document.documentElement: [object HTMLHtmlElement]
+  &lt;/script&gt;
+&lt;/html&gt;
+</pre>
+    <p>Нельзя получить доступ к элементу, которого еще не существует в момент выполнения скрипта. В DOM для свойств-ссылок на узлы в качестве значения &laquo;нет такого элемента&raquo; или &laquo;узел не найден&raquo; используется не <code>undefined</code>, а <code>null</code>.</p>
+    <h2><a name="дочерние-элементы" id="дочерние-элементы">Дочерние элементы</a></h2>
+    <p>Из узла-родителя можно получить все дочерние элементы, для этого есть несколько способов.</p>
+    <h3><a name="childnodes" id="childnodes"><code>childNodes</code></a></h3>
+    <p>Псевдо-массив <code>childNodes</code> хранит все дочерние элементы, включая текстовые. Пример ниже последовательно выведет дочерние элементы <code>document.body</code>:</p>
+<pre>
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+  &lt;head&gt;&lt;meta charset="utf-8"&gt;&lt;/head&gt;
+  &lt;body&gt;
+    &lt;div&gt;Пользователи:&lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Маша&lt;/li&gt;
+      &lt;li&gt;Вовочка&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;script&gt;
+      var childNodes = document.body.childNodes;
+
+      for(var i=0; i&lt;childNodes.length; i++) {
+        alert(childNodes[i]);
+      }
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+    <h3><a name="children" id="children"><code>children</code></a></h3>
+    <p><code>children</code> перечисляет только дочерние узлы, соответствующие тегам.</p>
+    <p>Пример идентичен предыдущему, за исключением того, что в нем используется <code>children</code> вместо <code>childNodes</code>. В результате он выведет только элементы.</p>
+<pre>
+&lt;!DOCTYPE HTML&gt;
+&lt;html&gt;
+  &lt;head&gt;&lt;meta charset="utf-8"&gt;&lt;/head&gt;
+  &lt;body&gt;
+    &lt;div&gt;Пользователи:&lt;/div&gt;
+    &lt;ul&gt;
+      &lt;li&gt;Маша&lt;/li&gt;
+      &lt;li&gt;Вовочка&lt;/li&gt;
+    &lt;/ul&gt;
+
+    &lt;script&gt;
+      var children = document.body.children;
+
+      for(var i=0; i&lt;children.length; i++) {
+        alert(children[i]);
+      }
+    &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+</pre>
+    <h2><a name="ссылки-вверх-и-вниз" id="ссылки-вверх-и-вниз">Ссылки вверх и вниз</a></h2>
+    <p>Для комфортного перемещения по узлам существуют дополнительные свойства, указывающие вверх, вниз, на соседей и т.п.</p>
+    <h3><code>firstChild, lastChild, parentNode, previousSibling и nextSibling</code></h3>
+    <p>Свойства <code>firstChild</code> и <code>lastChild</code> обеспечивают быстрый доступ к первому и последнему потомку. Они соответствуют индексам <code>childNodes</code>:</p>
+<pre>
+  body.firstChild === body.childNodes[0]
+  body.lastChild === body.childNodes[body.childNodes.length-1]
+</pre>
+    <p>Свойство <code>parentNode</code> ссылается на родительский узел. Оно равно <code>null</code> для корневого элемента <code>document.documentElement</code>. Свойства <code>previousSibling</code> и <code>nextSibling</code> дают доступ к левому и правому соседу.</p>
+    <h2><a name="таблицы" id="таблицы">Таблицы</a></h2>
+    <p>У таблиц есть дополнительные свойства для более удобной навигации по ним:</p>
+    <ul>
+      <li><code>table.rows</code> &#8212; список строк <code>TR</code> таблицы.</li>
+      <li><code>table.caption/tHead/tFoot</code> &#8212; ссылки на элементы таблицы <code>CAPTION</code>, <code>THEAD</code>, <code>TFOOT</code>.</li>
+      <li><code>table.tBodies</code> &#8212; список элементов таблицы <code>TBODY</code>.</li>      
+      <li><code>tbody.rows</code> &#8212; список строк <code>TR</code> секции.</li>      
+      <li><code>tr.cells</code> &#8212; список ячеек <code>TD/TH</code></li>
+      <li><code>tr.sectionRowIndex</code> &#8212; номер строки в текущей секции <code>THEAD/TBODY</code></li>
+      <li><code>tr.rowIndex</code> &#8212; номер строки в таблице</li>      
+      <li><code>td.cellIndex</code> &#8212; номер ячейки в строке</li>
+    </ul>      
+    <p>Пример использования:</p>
+<pre>
+&lt;table&gt;
+  &lt;tr&gt; &lt;td&gt;один&lt;/td&gt; &lt;td&gt;два&lt;/td&gt;    &lt;/tr&gt;
+  &lt;tr&gt; &lt;td&gt;три&lt;/td&gt;  &lt;td&gt;четыре&lt;/td&gt; &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;script&gt;
+  var table = document.body.children[0];
+  alert( table.rows[0].cells[0].innerHTML ) // "один"
+&lt;/script&gt;
+</pre>
+    <h2><a name="методы-поиска-элементов" id="методы-поиска-элементов">Методы поиска элементов</a></h2>
+    <p>Прямая навигация от родителя к потомку удобна, если элементы рядом. А если нет? Для этого в DOM есть дополнительные методы поиска.</p>
+    <h3><a name="document-getelementbyid-id" id="document-getelementbyid-id"><code>document.getElementById(id)</code></a></h3>
+    <p>У каждого DOM-элемента может быть атрибут <code>id</code>. Его значение должно быть уникальным для документа.</p>
+    <p>Браузер поддерживает у себя внутреннее соответствие <code>id &lt;-&gt; элемент</code>, которое позволяет очень быстро получать элемент вызовом <code>document.getElementById(id)</code>.</p>
+    <p>Например:</p>
+<pre>
+&lt;body&gt;
+  &lt;div id="info"&gt;Информация&lt;/div&gt;
+
+  &lt;script&gt;
+    var div = document.getElementById('info');
+    alert( div.innerHTML );
+  &lt;/script&gt;
+&lt;/body&gt;
+</pre>
+    <p>Важно, что в документе может быть только один элемент с данным <code>id</code>, в противном случае поведение метода <code>getElementById</code> будет непредсказуемым. Лучше придерживаться стандарта: один <code>id</code> &#8212; один элемент.</p>
+    <h3><a name="elem-getelementsbytagname-tag" id="elem-getelementsbytagname-tag"><code>elem.getElementsByTagName(tag)</code></a></h3>
+    <p>Этот метод ищет все элементы с заданным именем <code>tag</code> внутри элемента <code>elem</code> и возвращает их в виде списка. Регистр тега не имеет значения.</p>
+    <p>Можно искать и в элементе и в документе:<br />
+<pre>
+// получить все div-элементы
+var elements = document.getElementsByTagName('div');
+</pre>
+    <p>Найдем все элементы <code>input</code> внутри таблицы:</p>
+<pre>
+&lt;table id="myTable"&gt;
+  &lt;tr&gt;
+    &lt;td&gt;Ваш возраст:&lt;/td&gt;
+    &lt;td&gt;
+      &lt;label&gt;
+        &lt;input type="radio" name="age" value="young" checked/&gt; младше 18
+      &lt;/label&gt;
+      &lt;label&gt;
+        &lt;input type="radio" name="age" value="mature"/&gt; от 18 до 50
+      &lt;/label&gt;
+      &lt;label&gt;
+        &lt;input type="radio" name="age" value="senior"/&gt; старше 60
+      &lt;/label&gt;
+    &lt;/td&gt;
+  &lt;/tr&gt;
+&lt;/table&gt;
+
+&lt;script&gt; 
+  var tableElem = document.getElementById('myTable');
+  var elements = tableElem.getElementsByTagName('input');
+  for(var i=0; i&lt;elements.length; i++) {
+    var input = elements[i];  
+    alert(input.value + ': ' + input.checked);
+  }
+&lt;/script&gt;
+</pre>
+    Можно получить все элементы, передав звездочку <code>'*'</code> вместо тега:<br />
+<pre>
+// получить все элементы документа
+var allElems = document.getElementsByTagName('*');
+</pre>
+    <p>Если хочется получить только один элемент &#8212; можно указать индекс сразу же:<br />
+<pre>
+var element = document.getElementsByTagName('input')[0]
+</pre>
+    <h3><a name="document-getelementsbyname-name" id="document-getelementsbyname-name"><code>document.getElementsByName(name)</code></a></h3>
+    <p>Для элементов, которые поддерживают атрибут <code>name</code>, есть возможность получить их по этому атрибуту. Например, все элементы с именем <code>age</code>:<br />
+<pre>
+var elems = document.getElementsByName('age');
+</pre>
+    <h3><a name="elem-getelementsbyclassname-classname" id="elem-getelementsbyclassname-classname"><code>elem.getElementsByClassName(className)</code></a></h3>
+    <p>Поддерживается всеми современными браузерами, кроме IE&lt;9. Ищет все элементы с данным классом. Находит элемент в том числе если у элемента несколько классов, а искомый - один из них. Как и <code>getElementsByTagName</code>, этот метод может быть вызван из DOM-элемента или документа.</p>
+<pre>
+&lt;div class="a b c"&gt;Несколько классов&lt;/div&gt;
+
+&lt;script&gt;
+alert( document.getElementsByClassName('a')[0].innerHTML );
+&lt;/script&gt;
+</pre>
+    <p><a name="querySelectorAll"></a></p>
+    <h3><a name="elem-queryselectorall-css" id="elem-queryselectorall-css"><code>elem.querySelectorAll(css)</code></a></h3>
+    <p>Метод <code>querySelectorAll</code> позволяет выбирать элементы с помощью CSS3-селектора.</p>
+    <p>Он работает во всех современных браузерах, но в IE8+ &#8212; с некоторыми ограничениями.</p>
+    <p>Следующий запрос получает все элементы <code>LI</code>, которые являются последними потомками своих <code>UL</code>. Это будет работать и в IE8.</p>
+<pre>
+&lt;ul&gt;
+  &lt;li&gt;Этот&lt;/li&gt;
+  &lt;li&gt;тест&lt;/li&gt;
+&lt;/ul&gt;
+&lt;ul&gt;
+  &lt;li&gt;полностью&lt;/li&gt;
+  &lt;li&gt;пройден&lt;/li&gt;
+&lt;/ul&gt;
+&lt;script&gt;
+  var elements = document.querySelectorAll('UL &gt; LI:last-child');
+  for(var i=0; i&lt;elements.length; i++) {
+    alert(elements[i].innerHTML ); // "тест", "пройден"
+  }
+&lt;/script&gt;
+</pre>
+    <p><a name="querySelector"></a></p>
+    <h3><a name="elem-queryselector-css" id="elem-queryselector-css"><code>elem.querySelector(css)</code></a></h3>
+    <p>То же самое, что <code>elem.querySelectorAll(css)</code>, но возвращает только первый элемент.</p>
+    <p>Фактически, эквивалентен <code>elem.querySelectorAll(css)[0]</code>, но в случае когда элементов много &#8212; это будет медленно, зачем искать их все, если нужен только первый? Лучше использовать <code>querySelector</code>.</p>  
+    <p>Все DOM-запросы, которые начинаются с <code>getElements..</code>, возвращают <code>живые</code> списки узлов.</p>
+    <p>При изменении документа изменяется и результат запроса. Например:</p>
+<pre>
+&lt;div&gt;&lt;/div&gt;
+&lt;script&gt;
+  var elems = document.body.getElementsByTagName('div');
+
+  alert(elems.length); // 1 
+
+  document.body.innerHTML = ''; // удалить все из BODY
+
+  alert(elems.length); // 0
+&lt;/script&gt;
+</pre>
+    <p>Все навигационные ссылки доступны только для чтения и поддерживаются автоматически. Дело в том, что результат таких запросов &#8212; это не массив, а коллекция, имеющая тип NodeList или HTMLCollection. У коллекции есть индексы, длина, но нет <code>push</code>, <code>pop</code> и других свойств массива. При обращении к элементам такой коллекции, поиск выполняется каждый раз заново. Поэтому после удаления всего содержимого <code>body</code> значение <code>elems.length=0</code>. Метод <code>querySelectorAll</code>, напротив, ищет сразу и возвращает статический список, который автоматически не обновляется. </p>
+    <p>У браузера есть внутреннее кеширование для них, но кеш сбрасывается при изменении документа.</p>
+    </div>  
+  <h3>Объект window</h3>
+  <br>Объект верхнего уровня для групп объектов document, location и history.
+  Для определения окна используется метод open:
+<pre>
+<i>windowVar</i> = window.open(<i>"URL", "windowName" [,"windowFeatures"]</i>)
+</pre>
+  <p><i>windowVar</i> имя нового окна. Эта переменная используется при ссылках на свойства, методы и контейнеры окна.
+  <br><i>windowName</i> имя окна, используемое в атрибуте TARGET тагов &lt;FORM&gt; и &lt;A&gt;. 
+  </p>
+  <br>Использование свойств и методов window:
+  <ol>
+    <li>window.<i>propertyName</i></li>
+    <li>window.<i>methodName(parameters)</i></li>
+    <li>self.<i>propertyName</i></li>
+    <li>self.<i>methodName(parameters)</i></li>
+    <li>top.<i>propertyName</i></li>
+    <li>top.<i>methodName(parameters)</i></li>
+    <li>parent.<i>propertyName</i></li>
+    <li>parent.<i>methodName(parameters)</i></li>
+    <li><i>windowVar.propertyName</i></li>
+    <li><i>windowVar.methodName(parameters)</i></li>
+    <li><i>propertyName</i></li>
+    <li><i>methodName(parameters)</i></li>
+  </ol>
+  <br>Свойства self и window являются синонимами для текущего окна, и вы можете использовать их для ссылки на текущее окно. Например, вы можете закрыть текущее окно, используя window.close() или self.close(). Вы можете использовать эти свойства для однозначного определения свойства self.status из формы, называемой status.
+  <br>Свойства top и parent также являются синонимами и могут быть использованы вместо имени окна. top ссылается на самое верхнее окно Navigator-а, а parent ссылается на окно, содержащее frameset. Смотрите свойства top и parent. 
+  Поскольку допускается существование текущего окна, вам не нужно ссылаться на имя окна, когда вы объявляете его методы или назначаете свойства. Например, status="Jump to a new location" является действительным назначением свойства и close() является действительным вызовом метода. Однако, когда вы открываете или закрываете окно внутри события, вы должны определить window.open() или window.close() вместо того, чтобы использовать просто open() или close(). Благодаря to the scoping статических объектов в JavaScript, объявление close() без определения имени объекта равносильно document.close(). 
+  <h5>Свойства:</h5>
+  <ul>
+    <li>defaultStatus отражает сообщение по умолчанию, отображаемое в строке состояния окна</li>
+    <li>frames массив, отражающий все фреймы окна</li>
+    <li>length отражает количество фреймов в родительском окне</li>
+    <li>name отражает аргумент <i>windowName</i></li>
+    <li>parent является синонимом аргумента <i>windowName</i> и ссылается на окно, содержащее frameset</li>
+    <li>self является синонимом аргумента <i>windowName</i> и ссылается на текущее окно</li>
+    <li>status определяет текущее сообщение строки состояния окна</li>
+    <li>top является синонимом аргумента <i>windowName</i> и ссылается на самое верхнее окно Navigator-а</li>
+    <li>window является синонимом аргумента <i>windowName</i> и ссылается на текущее окно</li>
+  </ul>
+  <h5>Методы:</h5>
+  <ul>
+    <li>alert</li>
+    <li>close</li>
+    <li>confirm</li>
+    <li>open</li>
+    <li>prompt</li>
+    <li>setTimeout</li>
+    <li>clearTimeout</li>
+  </ul>
+  <br>
+  <a href="index.html">Вернуться на главную страницу</a>
+</body>
+</html>

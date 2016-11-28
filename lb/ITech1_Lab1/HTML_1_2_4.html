@@ -1,0 +1,173 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<title>1.2.4 Создание таблиц в HTML</title>
+	<meta charset="utf-8">
+</head>
+<body>
+	<p><FONT color=#993300>1.2.4 Создание таблиц в HTML</FONT></p>
+	<p>Каждая таблица должна начинаться тeгом &lt;table&gt; и завершаться тeгом &lt;/table&gt;. Внутри этой пары тeгов располагается описание содержимого таблицы. Любая таблица состоит из одной или нескольких строк, в каждой из которых задаются данные для отдельных ячеек. Каждая строка начинается тeгом &lt;tr&gt; (Table Row) и завершается тeгом &lt;/tr&gt;. Отдельная ячейка в строке обрамляется парой тeгов &lt;td&gt; и &lt;/td&gt; (Table Data) или &lt;th&gt; и &lt;/th&gt;(Table Header).</p>
+
+	<ul>Атрибуты таблицы (осуждаются спецификацией HTML5):
+	<li>cellspacing = "10", расстояние между ячейками</li>
+	<li>cellpadding = "10", расстояние между границей ячейки и ее содержимым</li>
+	<li>width = "100%"</li>
+	<li>height = "50%"</li>
+	<li>align = "center| right| left", задает выравнивание таблицы относительно окна браузера</li>
+	<li>frame = "box| hsides| vsides| rhs| lhs| above| below| border", как отображать границы вокруг таблицы</li>
+	<li>rules = "groups| none| cols| rows| all"</li>
+	<li>bgcolor="#ffcc00"</li>
+	</ul>
+	<ul>Параметры строки:
+	<li>align = "left| right| center| justify" – выравнивание внутри строки;</li>
+	<li>valign = "top| bottom| middle"</li>
+	<li>bgcolor = "….."</li>
+	<li>height = "10%" – процентное соотношение строк для таблицы.</li>
+	</ul>
+	<ul>Параметры ячейки:
+	<li>width = "10%"(в процентах либо в пикселах);</li>
+	<li>align = "left| right| center| justify"</li>
+	<li>bgcolor = "..."</li>
+	<li>height = "10%"</li>
+	<li>rowspan = "2" – объдиняет по вертикали;</li>
+	<li>colspan = "2" - группирует по горизонтали.</li>
+	</li>
+	</ul>
+	
+	<br>&lt;! -- Пример создания таблицы -- &gt;<br>
+	<table>
+	<tr>
+	<td>
+	&lt;table border=1 rules ="groups"&gt;<br>
+	&lt;tr&gt;<br>
+	&lt;th align="center"&gt;Столбец1 &lt;/th&gt;<br>
+	&lt;th align="center"&gt;Столбец2 &lt;/th&gt;<br>
+	&lt;th align="center"&gt;Столбец3 &lt;/th&gt;<br>
+	&lt;th align="center"&gt;Столбец4 &lt;/th&gt;<br>
+	&lt;/tr&gt;<br>
+	&lt;colgroup&gt;<br>
+	&lt;tr&gt;<br>
+	&lt;td colspan="2"&gt;Data1-2 &lt;/td&gt;<br>
+	<!--&lt;td&gt;Data2 &lt;/td&gt;<br>-->
+	&lt;td&gt;Data3 &lt;/td&gt;<br>
+	&lt;td&gt;Data4 &lt;/td&gt;<br>
+	&lt;/tr&gt;<br>
+	&lt;tr&gt;<br>
+	&lt;td&gt;Data5 &lt;/td&gt;<br>
+	&lt;td&gt;Data6 &lt;/td&gt;<br>
+	&lt;td&gt;Data7 &lt;/td&gt;<br>
+	&lt;td&gt;Data8 &lt;/td&gt;<br>
+	&lt;/tr&gt;<br>
+	&lt;colgroup&gt;<br>
+	&lt;tr&gt;<br>
+	&lt;td&gt;Data9 &lt;/td&gt;<br>
+	&lt;td&gt;Data10 &lt;/td&gt;<br>
+	&lt;td&gt;Data11 &lt;/td&gt;<br>
+	&lt;td&gt;Data12 &lt;/td&gt;<br>
+	&lt;/tr&gt;<br>
+	&lt;tr&gt;<br>
+	&lt;td&gt;Data13 &lt;/td&gt;<br>
+	&lt;td&gt;Data14 &lt;/td&gt;<br>
+	&lt;td&gt;Data15 &lt;/td&gt;<br>
+	&lt;td&gt;Data16 &lt;/td&gt;<br>
+	&lt;/tr&gt;<br>
+	&lt;/table&gt;<br>
+	</td>
+	<td>
+		<table border=1 rules ="groups">
+		<tr>
+		<th align="center">Столбец1 </th>
+		<th align="center">Столбец2 </th>
+		<th align="center">Столбец3 </th>
+		<th align="center">Столбец4 </th>
+		</tr>
+		<colgroup>
+		<tr>
+		<td colspan="2" align="center">Data1-2</td>
+		<!--<td>Data2 </td>-->
+		<td>Data3 </td>
+		<td>Data4 </td>
+		</tr>
+		<tr>
+		<td>Data5 </td>
+		<td>Data6 </td>
+		<td>Data7 </td>
+		<td>Data8 </td>
+		</tr>
+		<colgroup>
+		<tr>
+		<td>Data9 </td>
+		<td>Data10 </td>
+		<td>Data11 </td>
+		<td>Data12 </td>
+		</tr>
+		<tr>
+		<td>Data13 </td>
+		<td>Data14 </td>
+		<td>Data15 </td>
+		<td>Data16 </td>
+		</tr>
+		</table>
+	</td>
+	</tr>
+	</table>
+	<br>
+	Тэги структурирования таблицы &lt;thead&gt;,&lt;tbody&gt;,&lt;tfoot&gt; более строго задают структуру описания таблицы.<br>
+	<table>
+	<tr>
+	<td>
+		&lt;table border=5 width=100% rules="groups" frame="hsides"&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;colgroup align="center"&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;colgroup align="center"&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;colgroup align="center"&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;caption&gt;	&nbsp;&nbsp;&nbsp;&nbsp;Пример гибкого управления линиями &lt;br&gt; сетки таблицы<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;/caption&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;thead&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;Заголовок столбца 1 &lt;/th&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;Заголовок столбца 2 &lt;/th&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;th&gt;Заголовок столбца 3 &lt;/th&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tr&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;/thead&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;tbody&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;/tr&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;/tr&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;/tr&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;/tr&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;td&gt;Данные&lt;/td&gt;&lt;/tr&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tbody&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;tfoot&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;tr&gt;&lt;td&gt;Итог&lt;/td&gt;&lt;td&gt;Итог&lt;/td&gt;&lt;td&gt;Итог&lt;/td&gt;&lt;/tr&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;/tfoot&gt;<br>
+		&nbsp;&nbsp;&nbsp;&nbsp;&lt;/table&gt;
+	</td>
+	<td>
+		<table border=5 width=100% rules="groups" frame="hsides">
+		<caption>Пример управления отображением сетки таблицы</caption>
+		<colgroup align="center">
+		<colgroup align="center">
+		<colgroup align="center">
+		<thead>
+		<tr>
+		<th>Заголовок столбца 1 </th>
+		<th>Заголовок столбца 2 </th>
+		<th>Заголовок столбца 3 </th>
+		</tr>
+		</thead>
+		<tbody>
+		<tr><td>Данные</td><td>Данные</td><td>Данные</td></tr>
+		<tr><td>Данные</td><td>Данные</td><td>Данные</td></tr>
+		<tr><td>Данные</td><td>Данные</td><td>Данные</td></tr>
+		<tr><td>Данные</td><td>Данные</td><td>Данные</td></tr>
+		<tr><td>Данные</td><td>Данные</td><td>Данные</td></tr>
+		</tbody>
+		<tfoot>
+		<tr><td>Итог</td><td>Итог</td><td>Итог</td></tr>
+		</tfoot>
+		</table> 
+	</td>
+	</tr>
+	</table>	
+	<br><a href="index.html">Вернуться на главную страницу</a>
+</body>
+</html>

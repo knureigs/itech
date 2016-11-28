@@ -1,0 +1,157 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+  <title>4.2.1 Cookies</title>
+  <meta charset="utf-8">
+  <link href="css/styles.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+  <p class="subsection">4.2.1 Cookies</p>
+  <p><em>Cookies</em> - это механизм хранения броузером удаленного компьютера данных для идентификации возвращающихся посетителей и хранения параметров веб-страниц (например, переменных).</p>
+  <p>Например: настройки сайта (цвет фона страниц, язык, оформление таблиц и.т.д.), а также другой информации. Файлы Cookies представляют собой обыкновенные текстовые файлы, которые хранятся на диске у посетителей сайтов. Файлы Cookies содержат ту информацию, которая была в них записана сервером.</p>
+  <p>Для установки Cookies используется функция <strong>SetCookie()</strong>. Для этой функции можно указать шесть параметров, один из которых является обязательным:</p>
+  <ul>
+    <li><em>name</em> - задает имя (строкf), закрепленное за Cookie;<br></li>
+    <li><em>value</em> - определяет значение переменной (строка);<br></li>
+    <li><em>expire</em> - время "жизни" переменной (целое число). Если данный параметр не указать, то Cookie будут "жить" до конца сессии, то есть до закрытия браузера. Если время указано, то, когда оно наступит, Cookie самоуничтожится.</li>
+    <li><em>path</em> - путь к Cookie (строка);<br></li>
+    <li><em>domain</em> - домен (строка). В качестве значения устанавливается имя хоста, с которого Cookie был установлен;<br></li>
+    <li><em>secure</em> - передача Cookie через защищенное HTTPS-соединение.</li>
+  </ul>
+  <p>Обычно используются только три первые параметра. Пример установки Cookies: </p>
+  <p><code><span class="code">&lt;?</span><span class="code">php
+  <br>
+  </span>
+  <span class="code_comment">//&nbsp;Устанавливаем&nbsp;Cookie&nbsp;до&nbsp;конца&nbsp;сессии:</span>
+  <br>
+  <span class="code">SetCookie</span><span class="code">(</span><span class="code_string">"Test"</span><span class="code">,</span><span class="code_string">"Value"</span><span class="code">);</span><br>
+  <span class="code_comment">//&nbsp;Устанавливаем&nbsp;Cookie&nbsp;на&nbsp;один&nbsp;час&nbsp;после&nbsp;установки:</span><br>
+  <span class="code">SetCookie</span><span class="code">(</span><span class="code_string">"My_Cookie"</span><span class="code">,</span><span class="code_string">"Value"</span><span class="code">,</span><span class="code">time</span><span class="code">()+</span>3600<span class="code">);</span>
+  <br>
+  <span class="code">?&gt;</span></code></p>
+  <p>При использовании Cookies необходимо иметь в виду, что Cookies должны устанавливаться до первого вывода информации в браузер (например, оперaтором echo или выводом какой-либо функции). Поэтому желательно устанавливать Cookies в самом начале скрипта. Cookies устанавливаются с помощью определенного заголовка сервера, а если скрипт выводит что-либо, то это означает, что начинается тело документа. В результате Cookies не будут установлены и может быть выведено предупреждение. Для проверки успешности установки Cookies можно использовать такой метод:</p>
+  <p><code><span class="code">&lt;?</span><span class="code">php</span>
+  <br>
+  <span class="code_comment">//&nbsp;Устанавливаем&nbsp;Cookie&nbsp;до&nbsp;конца&nbsp;сессии:</span>
+  <br>
+  <span class="code_comment">//&nbsp;В&nbsp;случае&nbsp;успешной&nbsp;установки&nbsp;Cookie,&nbsp;функция&nbsp;SetCookie&nbsp;возвращает&nbsp;TRUE:</span>
+  <br>
+  <span class="code">if</span><span class="code">&nbsp;</span><span class="code">(</span><span class="code">SetCookie</span><span class="code">(</span><span class="code_string">"Test"</span><span class="code">,</span><span class="code_string">"Value"</span><span class="code">))</span><span class="code">&nbsp;echo&nbsp;</span><span class="code_string">"&lt;h3&gt;Cookies&nbsp;успешно&nbsp;установлены!&lt;/h3&gt;"</span><span class="code">;</span>
+  <br>
+  <span class="code">?&gt;</span></code></p>
+  
+  <p>Функция <strong>SetCookie()</strong> возвращает TRUE в случае успешной установки Cookie. В случае, если Cookie установить не удается, <em>SetCookie()</em> возвратит FALSE и возможно, предупреждение (зависит от настроек PHP). Пример неудачной установки Cookie:</p>
+  <p><code><span class="code">&lt;?</span><span class="code">php</span>
+  <br>
+  <span class="code_comment">//&nbsp;Cookies&nbsp;установить&nbsp;не&nbsp;удастся,&nbsp;поскольку&nbsp;перед&nbsp;отправкой</span>
+  <br>
+  <span class="code_comment">//&nbsp;заголовка&nbsp;Cookie&nbsp;мы&nbsp;выводим&nbsp;в&nbsp;браузер&nbsp;строку&nbsp;'Hello':</span>
+  <br>
+  <span class="code">echo&nbsp;</span><span class="code_string">"Hello"</span><span class="code">;</span>
+  <br>
+  <span class="code_comment">//&nbsp;Функция&nbsp;SetCookie&nbsp;возвратит&nbsp;FALSE:</span>
+  <br>
+  <span class="code">if</span><span class="code">&nbsp;</span><span class="code">(</span><span class="code">SetCookie</span><span class="code">(</span><span class="code_string">"Test"</span><span class="code">,</span><span class="code_string">"Value"</span><span class="code">))</span><span class="code">&nbsp;echo&nbsp;</span><span class="code_string">"&lt;h3&gt;Cookie&nbsp;успешно&nbsp;установлен!&lt;/h3&gt;"</span><span class="code">;</span>
+  <br>
+  <span class="code">else</span><span class="code">&nbsp;echo&nbsp;</span><span class="code_string">"&lt;h3&gt;Cookie&nbsp;установить&nbsp;не&nbsp;удалось!&lt;/h3&gt;"</span><span class="code">;</span>
+  <br>
+  <span class="code_comment">//&nbsp;Выводит&nbsp;'Cookie&nbsp;установить&nbsp;не&nbsp;удалось!'.</span>
+  <br>
+  <span class="code">?&gt;</span></code></p>
+  <p>Cookie установить не удалось, поскольку перед посылкой заголовка Cookie мы вывели в браузер строку "Hello".</p>
+  
+  <p style="color:green"><strong>Чтение значений Cookies</strong></p>
+  <p>Получить доступ к Cookies и их значениям достаточно просто. Они хранятся в суперглобальных массивах  и <em>$_COOKIE</em> и <em>$HTTP_COOKIE_VARS</em>.</p>
+  <p>Доступ к значениям осуществляется по имени установленных Cookies, например:</p>
+  <p><code>echo $_COOKIE['my_cookie'];
+  <br>// Выводит значения установленной Cookie 'My_Cookie'</code></p>
+  <p>Пример установки Cookie и последующего его чтения:</p>
+  <p><code><span class="code">&lt;?</span><span class="code">php</span>
+  <br>
+  <span class="code_comment">//&nbsp;Устанавливаем&nbsp;Cookie&nbsp;'test'&nbsp;со&nbsp;значением&nbsp;'Hello'&nbsp;на&nbsp;один&nbsp;час:</span>
+  <br>
+  <span class="code">setcookie</span><span class="code">(</span><span class="code_string">"test"</span><span class="code">,</span><span class="code_string">"Hello"</span><span class="code">,</span><span class="code">time</span><span class="code">()+</span>3600<span class="code">);</span>
+  <br>
+  <span class="code_comment">//&nbsp;При&nbsp;следующем&nbsp;запросе&nbsp;скрипта&nbsp;выводит&nbsp;'Hello':</span>
+  <br>
+  <span class="code">echo&nbsp;</span><span class="code">@$</span><span class="code">_COOKIE</span><span class="code">[</span><span class="code_string">'test'</span><span class="code">];</span>
+  <br>
+  <span class="code">?&gt;</span></code></p>
+  <p>В рассмотренном примере при первом обращении к скрипту устанавливается Cookie "test" зо значением "hello". При повторном обращении к скрипту будет выведено значение Cookie "test", то есть строка "Hello".</p>
+  <p>При чтении значений Cookies обращайте внимание на проверку существования Cookies, например, используя оператор <strong>isset()</strong>. Либо путем подавления вывода ошибок опереатором <strong>@</strong></p>
+  
+  <p style="color:green"><strong>Удаление Cookies </strong></p>
+  <p>Иногда возникает необходимость удаления Cookies. Для этого необходимо установить Cookie с идентичным именем и пустым параметром. Например:</p>
+  <p><code><span class="code">&lt;?</span><span class="code">php</span>
+  <br>
+  <span class="code_comment">//&nbsp;Удаляем&nbsp;Cookie&nbsp;'Test':</span>
+  <br>
+  <span class="code">SetCookie</span><span class="code">(</span><span class="code_string">"Test"</span><span class="code">,</span><span class="code_string">""</span><span class="code">);</span>
+  <br>
+  <span class="code">?&gt;</span></code></p>
+  <p style="color:green"><strong>Установка массива Cookies и <strong>его </strong>чтение</strong></p>
+  <p>Мы может установить массив Cookies, используя квадратные скобки в именах Cookies <em>[]</em>, а затем прочитать массив Cookies и значения этого массива:</p>
+  <p><code><span class="code">&lt;?</span><span class="code">php</span>
+  <br>
+  <span class="code_comment">//&nbsp;Устанавливаем&nbsp;массив&nbsp;Cookies:</span>
+  <br>
+  <span class="code">setcookie</span><span class="code">(</span><span class="code_string">"cookie[1]"</span><span class="code">,</span><span class="code">&nbsp;</span><span class="code_string">"Первый"</span><span class="code">);</span>
+  <br>
+  <span class="code">setcookie</span><span class="code">(</span><span class="code_string">"cookie[2]"</span><span class="code">,</span><span class="code">&nbsp;</span><span class="code_string">"Второй"</span><span class="code">);</span>
+  <br>
+  <span class="code">setcookie</span><span class="code">(</span><span class="code_string">"cookie[3]"</span><span class="code">,</span><span class="code">&nbsp;</span><span class="code_string">"Третий"</span><span class="code">);
+  <br>
+  </span>
+  <br>
+  <span class="code_comment">//&nbsp;После&nbsp;перезагрузки&nbsp;страницы&nbsp;мы&nbsp;отобразим</span>
+  <br>
+  <span class="code_comment">//&nbsp;Состав&nbsp;массива&nbsp;Cookies&nbsp;'cookie':</span>
+  <br>
+  <span class="code">if</span><span class="code">&nbsp;</span><span class="code">(</span><span class="code">isset</span><span class="code">($</span><span class="code">_COOKIE</span><span class="code">[</span><span class="code_string">'cookie'</span><span class="code">]))</span><span class="code">&nbsp;</span><span class="code">{</span>
+  <br>
+  <span class="code">&nbsp;&nbsp;&nbsp;&nbsp;foreach&nbsp;</span><span class="code">($</span><span class="code">_COOKIE</span><span class="code">[</span><span class="code_string">'cookie'</span><span class="code">]</span><span class="code">&nbsp;as&nbsp;</span><span class="code">$</span><span class="code">name&nbsp;</span><span class="code">=&gt;</span><span class="code">&nbsp;</span><span class="code">$</span><span class="code">value</span><span class="code">)</span><span class="code">&nbsp;</span><span class="code">{</span>
+  <br>
+  <span class="code">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;echo&nbsp;</span><span class="code_string">"$name&nbsp;:&nbsp;$value&nbsp;&lt;br&gt;"</span><span class="code">;</span>
+  <br>
+  <span class="code">&nbsp;&nbsp;&nbsp;&nbsp;</span><span class="code">}</span>
+  <br>
+  <span class="code">}</span>
+  <br>
+  <span class="code">?&gt;</span></code></p> 
+  
+  <p>Приведем пример использования <em>Cookies</em> на примерах.</p>
+  
+  <p>Предположим, нам нужно написать счетчик посещения сайта. Нам нужно знать, какое число посещений сайта осуществлялось каждым конкретным посетителем. Мы устанавливаем в Cookie переменную, которая будет храниться на диске удаленного пользователя. Эта переменная и будет хранить информацию о посещениях. Она будет считываться скриптом при обращении посетителя к серверу. Выгода такого метода идентификации очевидна. Во-первых, нам не нужно хранить множество ненужной информации о IP-адресах. Во-вторых, нас не интересуют динамические IP-адреса, поскольку данные о своих посещениях хранятся конкретно у каждого посетителя сайта.</p>
+  
+  <p>А вот пример, как построить счетчик числа загрузок страницы с помощью Cookies:</p>
+  <p><code><span class="code">&lt;?</span><span class="code">php</span>
+  <br>
+  <span class="code_comment">//&nbsp;Проверяем,&nbsp;был&nbsp;ли&nbsp;уже&nbsp;установлен&nbsp;Cookie&nbsp;'Mortal',</span>
+  <br>
+  <span class="code_comment">//&nbsp;Если&nbsp;да,&nbsp;то&nbsp;читаем&nbsp;его&nbsp;значение,</span>
+  <br>
+  <span class="code_comment">//&nbsp;И&nbsp;увеличиваем&nbsp;значение&nbsp;счетчика&nbsp;обращений&nbsp;к&nbsp;странице:</span>
+  <br>
+  <span class="code">if</span><span class="code">&nbsp;</span><span class="code">(</span><span class="code">isset</span><span class="code">($</span><span class="code">_COOKIE</span><span class="code">[</span><span class="code_string">'Mortal'</span><span class="code">]))</span><span class="code">&nbsp;</span><span class="code">$</span><span class="code">cnt</span><span class="code">=$</span><span class="code">_COOKIE</span><span class="code">[</span><span class="code_string">'Mortal'</span><span class="code">]+</span>1<span class="code">;</span>
+  <br>
+  <span class="code">else</span><span class="code">&nbsp;</span><span class="code">$</span><span class="code">cnt</span><span class="code">=</span>0<span class="code">;</span>
+  <br>
+  <span class="code_comment">//&nbsp;Устанавливаем&nbsp;Cookie&nbsp;'Mortal'&nbsp;зо&nbsp;значением&nbsp;счетчика,</span>
+  <br>
+  <span class="code_comment">//&nbsp;С&nbsp;временем&nbsp;"жизни"&nbsp;до&nbsp;18/07/29,</span>
+  <br>
+  <span class="code_comment">//&nbsp;То&nbsp;есть&nbsp;на&nbsp;очень&nbsp;долгое&nbsp;время:</span>
+  <br>
+  <span class="code">setcookie</span><span class="code">(</span><span class="code_string">"Mortal"</span><span class="code">,$</span><span class="code">cnt</span><span class="code">,</span>0x6FFFFFFF<span class="code">);</span>
+  <br>
+  <span class="code_comment">//&nbsp;Выводит&nbsp;число&nbsp;посещений&nbsp;(загрузок)&nbsp;этой&nbsp;страницы:</span>
+  <br>
+  <span class="code">echo&nbsp;</span><span class="code_string">"&lt;p&gt;Вы&nbsp;посещали&nbsp;эту&nbsp;страницу&nbsp;&lt;b&gt;"</span><span class="code">.@$</span><span class="code">_COOKIE</span><span class="code">[</span><span class="code_string">'Mortal'</span><span class="code">].</span><span class="code_string">"&lt;/b&gt;&nbsp;раз&lt;/p&gt;"</span><span class="code">;</span>
+  <br>
+  <span class="code">?&gt;</span></code></p>
+  
+  <p>Преимущества использования Cookies неоспоримы. Однако существуют и некоторые проблемы их использования. Первая из них заключается в том, что посетитель может блокировать прием Cookies браузером или попросту удалить все Cookies или их часть. Таким образом, мы можем иметь некоторые проблемы в идентификации таких посетителей.</p>
+  <br>
+  <a href="index.html">Вернуться на главную страницу</a>
+</body>
+</html>
