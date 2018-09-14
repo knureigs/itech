@@ -1,12 +1,29 @@
 .error {
 	color: red;
 }
+
 .subsection {
 	color: #993300;
 }
+
 .quest_hidden {
 	display: none;
 }
+
 .property_title {
 	color: #993300;
+}
+
+div {
+	margin-top: 20px;
+}
+
+#lab_theme {
+	text-align: center;
+	font-size: larger;
+	font-weight: bold;
+}
+
+.section_name {
+	font-weight: bold;
 }
