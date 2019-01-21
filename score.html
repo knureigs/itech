@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Успеваемость студентов</title>
+    <link href="css/styles.css" type="text/css" rel="stylesheet">
+    <style>
+        input[type="number"] {
+            width: 5em;
+            margin-right: 10px;
+        }
+    </style>
+    <script src="score.js" defer></script>
+	<script>
+		function calculateScore() {
+			let lb1 = document.score.lb1;
+			let lb2 = document.score.lb2;
+			let lb3 = document.score.lb3;
+			let lb4 = document.score.lb4;
+			let intime = document.score.intime;
+			let idz = document.score.idz;
+			let test = document.score.test;
+			let result = document.score.result;
+			let bonus = intime.checked ? 10 : 0;
+			let res = +lb1.value + +lb2.value + +lb3.value + +lb4.value + bonus + +idz.value + +test.value;			
+			result.value = res;
+		}
+	</script>
+</head>
+<body>
+    <div id="container">
+        <div class="chapters">
+            <h1 id="start">Успеваемость студентов</h1>
+            <p>
+                <select id="groups"></select>
+                Для расчета итогового количества баллов Вы можете заполнить форму ниже, согласно своей успеваемости:
+                <form name="score">
+                    <input type="number" name="lb1" id="lb1" min="9" max="14" value="9"><label for="lb1">Лабораторная работа №1</label><br>
+                    <input type="number" name="lb2" id="lb2" min="9" max="14" value="9"><label for="lb2">Лабораторная работа №2</label><br>
+                    <input type="number" name="lb3" id="lb3" min="9" max="14" value="9"><label for="lb3">Лабораторная работа №3</label><br>
+                    <input type="number" name="lb4" id="lb4" min="9" max="14" value="9"><label for="lb4">Лабораторная работа №4</label><br>
+                    <input type="checkbox" name="intime" id="intime" unchecked><label for="intime">Сданы вовремя?</label><br>
+                    <input type="number" name="idz" id="idz" min="9" max="14" value="9"><label for="idz">ИДЗ</label><br>		
+                    <input type="number" name="test" id="test" min="0" max="20" value="0"><label for="test">Тест</label><br>
+                    <label for="result">Результат:</label><br><input type="number" name="result" id="result" disabled><br>
+                </form>
+                <script>
+                    let lb1 = document.score.lb1;
+                    let lb2 = document.score.lb2;
+                    let lb3 = document.score.lb3;
+                    let lb4 = document.score.lb4;
+                    let intime = document.score.intime;
+                    let idz = document.score.idz;
+                    let test = document.score.test;
+                    lb1.onchange = calculateScore;
+                    lb2.onchange = calculateScore;
+                    lb3.onchange = calculateScore;
+                    lb4.onchange = calculateScore;
+                    intime.onchange = calculateScore;
+                    idz.onchange = calculateScore;
+                    test.onchange = calculateScore;
+                    calculateScore();
+                </script>
+            </p>           
+        </div>
+    </div>
+</body>
+</html>

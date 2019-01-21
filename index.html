@@ -12,6 +12,11 @@
 			margin-bottom: 0px;
 		}
 
+		#startLink {
+			display: block;
+			text-align: center;
+		}
+
 		h4 {
 			font-weight: normal;
 			margin-top: 0px;
@@ -28,29 +33,10 @@
 		.spoiler-lk1-2016 > .view-lectures:checked ~ ol, .spoiler-lk2-2016 > .view-lectures:checked ~ ol {
 			display: block;
 		}
-
-		input[type="number"] {
-			width: 5em;
-			margin-right: 10px;
-		}
 	</style>
-	<script>
-		function calculateScore() {
-			let lb1 = document.score.lb1;
-			let lb2 = document.score.lb2;
-			let lb3 = document.score.lb3;
-			let lb4 = document.score.lb4;
-			let intime = document.score.intime;
-			let idz = document.score.idz;
-			let test = document.score.test;
-			let result = document.score.result;
-			let bonus = intime.checked ? 10 : 0;
-			let res = +lb1.value + +lb2.value + +lb3.value + +lb4.value + bonus + +idz.value + +test.value;			
-			result.value = res;
-		}
-	</script>
 </head>
 <body>
+	<div id="container">
 	<h1 id="start">Internet-технологии</h1>
 	<h4>Учебные материалы для студентов групп КИУКИ-16-1, 2, 3, 4, 5 и КИУКИу-17-9, 10</h4>
 	<!-- На данном ресурсе доступны для ознакомления материалы курса Internet-технологии для групп КИ-13-2. -->
@@ -92,46 +78,12 @@
 			<li><a href="https://www.dropbox.com/s/eb2sldqsxsccyf4/%D0%9B%D0%B5%D0%BA%D1%86%D0%B8%D1%8F%E2%84%969%20PHP.pdf?raw=1">PHP</a></li>
 			<li><a href="https://www.dropbox.com/s/hsrpvkrpfzwxs7z/%D0%9B%D0%B5%D0%BA%D1%86%D0%B8%D1%8F%E2%84%9610%20PHP.pdf?raw=1">PHP</a></li>
 		</ol>
-		<br>
 	</div>
 	<br>
-	<a href="idz.html">Индивидуальное домашнее задание</a>
+	<a href="idz1.html">Темы для ИДЗ первого семестра</a>
 	<br>
 	<br>
-	Для расчета итогового количества баллов Вы можете <!-- воспользоваться <a href="addition/Расчет%20итоговой%20оценки%20по%20ИТех1.xls">xls-файлом</a> или --> заполнить форму ниже, согласно своей успеваемости:
-	<form name="score">
-		<input type="number" name="lb1" id="lb1" min="9" max="14" value="9"><label for="lb1">Лабораторная работа №1</label><br>
-		<input type="number" name="lb2" id="lb2" min="9" max="14" value="9"><label for="lb2">Лабораторная работа №2</label><br>
-		<input type="number" name="lb3" id="lb3" min="9" max="14" value="9"><label for="lb3">Лабораторная работа №3</label><br>
-		<input type="number" name="lb4" id="lb4" min="9" max="14" value="9"><label for="lb4">Лабораторная работа №4</label><br>
-		<input type="checkbox" name="intime" id="intime" unchecked><label for="intime">Сданы вовремя?</label><br>
-		<input type="number" name="idz" id="idz" min="9" max="14" value="9"><label for="idz">ИДЗ</label><br>		
-		<input type="number" name="test" id="test" min="0" max="20" value="0"><label for="test">Тест</label><br>
-		<label for="result">Результат:</label><br><input type="number" name="result" id="result" disabled><br>
-	</form>
-	<script>
-		let lb1 = document.score.lb1;
-		let lb2 = document.score.lb2;
-		let lb3 = document.score.lb3;
-		let lb4 = document.score.lb4;
-		let intime = document.score.intime;
-		let idz = document.score.idz;
-		let test = document.score.test;
-		lb1.onchange = calculateScore;
-		lb2.onchange = calculateScore;
-		lb3.onchange = calculateScore;
-		lb4.onchange = calculateScore;
-		intime.onchange = calculateScore;
-		idz.onchange = calculateScore;
-		test.onchange = calculateScore;
-		calculateScore();
-	</script>		
-	<br>
-	<a href="https://www.dropbox.com/s/shkc8tynifskho3/ITechAdditionTasks.pdf?raw=1">Дополнительные задания - для тех, кому не хватает баллов, полученных в рамках курса</a>
-	<!-- <a href="#start">Вернуться к началу</a> -->
-	
 	<hr>
-	
 	<h2>Семестр 2</h2>
 	<br>
 	Методические указания к лабораторным работам (на русском или украинском языке, по своему выбору):
@@ -155,11 +107,20 @@
 			<li><a href="lk2016/ITech2/Лекция№7-8%20Способы%20построения%20архитектуры%20web-приложений.pdf">AngularJS и Node.js</a></li>
 			<li><a href="lk2016/ITech2/Лекция№8%20WebSocket.pdf">WebSocket</a></li>
 		</ol>
-		<br>
-		<br>
 	</div>
-	<!-- <a href="addition/Расчет итоговой оценки по ИТех2.xls">Рассчет суммы баллов<a> -->
 	<br>
-	<a href="#start" target="_self">Вернуться к началу</a>
+	<a href="#">Темы для ИДЗ второго семестра</a>
+	<br>
+	<br>
+	<hr>
+	<br>
+	С оценками, полученными на протяжении текущего семестра, можно ознакомиться в <a href="#">таблице</a>, или воспользоваться <a href="score.html">сервисом</a> для расчета именно своего итогового балла.	
+	<br>
+	<br>
+	<a href="https://www.dropbox.com/s/shkc8tynifskho3/ITechAdditionTasks.pdf?raw=1">Дополнительные задания - для тех, кому не хватает баллов, полученных в рамках курса</a>
+	<br>
+	<br>
+	<a href="#start" target="_self" id="startLink">Вернуться к началу</a>
+	</div>
 </body>
 </html>
