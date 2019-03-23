@@ -1,0 +1,62 @@
+
+body {
+	background-color: #ffe6ac;
+}
+
+#container {
+	width: 80%;
+    padding: 10px;
+    margin: 0 auto;
+}
+/*
+@media screen and (max-width: 1600px) {
+    div.for-example {width: 1500px;}
+}
+@media screen and (max-width: 1280px) {
+    div.for-example {width: 1100px;}
+}
+@media screen and (max-width: 1024px) {
+    div.for-example {width: 980px;}
+}*/
+@media screen and (max-width: 620px) {
+    #container {width: 90%;}
+}
+
+h1 {
+    text-align: center;
+}
+h2, h3, h4 {
+    text-align: left; 
+}
+#lab_theme {
+    text-align: center;
+    font-size: larger;
+    font-weight: bold;
+}
+
+div, p {
+    text-align: justify; 
+    text-indent: 2rem;
+    margin-bottom: 0;
+    margin-top: 0;
+}
+ul, ol{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding-left: 2rem;
+    text-indent: 0rem;
+}
+li {
+    text-indent: 0rem;
+}
+
+div.chapter {
+    margin-top: 20px;
+    text-align: left; 
+}
+.chapter_name {
+    font-weight: bold;
+}	
+figure.pic_w_caption {
+	text-align: center;
+}
