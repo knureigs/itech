@@ -1,7 +1,9 @@
-var googgleSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+//var googgleSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
+var googgleSpreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1oJdrbWE5zMx7xWuNiTFELQBWgPux3sf7lxbaR5UjyTs/edit')
+
 var sheets = googgleSpreadsheet.getSheets();
 
-function Student(name, group, lb1,lb2,lb3,lb4,intime,test,idz,total) {
+function Student(name, group, lb1,lb2,lb3,lb4,intime,test,idz,addition,total) {
     this.name = name;
     this.group = group;
     this.lb1 = lb1;
@@ -11,6 +13,7 @@ function Student(name, group, lb1,lb2,lb3,lb4,intime,test,idz,total) {
     this.intime = intime;
     this.test = test;
     this.idz = idz;
+    this.addition = addition;
     this.total = total;
 }
 
@@ -31,7 +34,8 @@ function getData(){
         var pColumn = sheets[i].getRange('P5:P' + lastRowNumber).getDisplayValues();//intime
         var sColumn = sheets[i].getRange('S5:S' + lastRowNumber).getDisplayValues();//test
         var uColumn = sheets[i].getRange('U5:U' + lastRowNumber).getDisplayValues();//idz
-        var vColumn = sheets[i].getRange('V5:V' + lastRowNumber).getDisplayValues();//total
+        var vColumn = sheets[i].getRange('V5:V' + lastRowNumber).getDisplayValues();//addition
+        var wColumn = sheets[i].getRange('W5:W' + lastRowNumber).getDisplayValues();//total
       
         // 4 строки на шапку
         for(var studNumber = 0; studNumber < lastRowNumber - 4; studNumber++) {
@@ -43,9 +47,10 @@ function getData(){
             var intime = pColumn[studNumber][0]*1;
             var test = sColumn[studNumber][0]*1;
             var idz = uColumn[studNumber][0]*1;
-            var total = vColumn[studNumber][0]*1;
+            var addition = vColumn[studNumber][0]*1;
+            var total = wColumn[studNumber][0]*1;
           
-            group.students.push(new Student(studName, groupName, lb1, lb2, lb3, lb4, intime, test, idz, total));
+            group.students.push(new Student(studName, groupName, lb1, lb2, lb3, lb4, intime, test, idz, addition, total));
         
         }    
         Logger.log(group);

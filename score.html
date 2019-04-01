@@ -11,79 +11,12 @@
             width: 5em;
             margin-right: 10px;
         }
+
+        td:last-child {
+            text-align: center;
+        }
     </style>
     <script src="score.js" defer></script>
-	<script>
-        function setResultTable(stud) {
-            let lb1cell = document.getElementById('lb1');
-            let lb2cell = document.getElementById('lb2');
-            let lb3cell = document.getElementById('lb3');
-            let lb4cell = document.getElementById('lb4');
-            let intimeCell = document.getElementById('intime');
-            let testCell = document.getElementById('test');
-            let idzCell = document.getElementById('idz');
-            let resultCell = document.getElementById('result');
-            
-            if(arguments.length === 0) {
-                lb1cell.innerHTML = "";
-                lb2cell.innerHTML = "";
-                lb3cell.innerHTML = "";
-                lb4cell.innerHTML = "";
-                intimeCell.innerHTML = "";
-                testCell.innerHTML = "";
-                idzCell.innerHTML = "";
-                resultCell.innerHTML = "";
-                return;
-            }
-
-            lb1cell.innerHTML = stud.lb1;
-            lb2cell.innerHTML = stud.lb2;
-            lb3cell.innerHTML = stud.lb3;
-            lb4cell.innerHTML = stud.lb4;
-            intimeCell.innerHTML = stud.intime;
-            testCell.innerHTML = stud.test;
-            idzCell.innerHTML = stud.idz;
-            resultCell.innerHTML = stud.total;
-        }
-
-        function fillScore() {
-            setResultTable();
-
-            let selectedGroupName = document.getElementById("groups").value;
-            let students = getStudentsOfGroup(selectedGroupName);
-            let selectedStudentName = document.getElementById("students").value;
-
-            for(let stud of students) {
-                if(stud.name === selectedStudentName) {
-                    // console.dir(stud);
-                    setResultTable(stud);
-                    break;
-                }
-            }            
-        }
-        
-		function fillStudents() {
-            setResultTable();            
-            document.getElementById('students').innerHTML = "<option>Студент</option>"; 
-
-            let selectedGroupName = document.getElementById("groups").value;
-            let students = getStudentsOfGroup(selectedGroupName);
-
-            let output = "";
-            for (let i = 0; i < students.length; i++) {
-                output += "<option>" + students[i].name + "</option>";
-            }
-            document.getElementById('students').innerHTML += output;
-        }
-
-		function getStudentsOfGroup(selectedGroupName) {
-            for(let group of groups) {
-                if(group.groupName === selectedGroupName) {
-                    return group.students;
-                }
-            }
-        }
-	</script>
 </head>
 <body>
     <div id="container">
@@ -130,51 +63,15 @@
                         <td id="idz"></td>
                     </tr>
                     <tr>
+                        <td>Дополнительно</td>
+                        <td id="addition"></td>
+                    </tr>
+                    <tr>
                         <th>Итоговый балл</th>
                         <th id="result"></th>
                     </tr>
                 </table>
-                <br>
-                <br>
-                <!--
-                Для расчета итогового количества баллов Вы можете заполнить форму ниже, согласно своей успеваемости:
-                <form name="score">
-                    <input type="number" name="lb1" id="lb1" min="9" max="14" value="9"><label for="lb1">Лабораторная работа №1</label><br>
-                    <input type="number" name="lb2" id="lb2" min="9" max="14" value="9"><label for="lb2">Лабораторная работа №2</label><br>
-                    <input type="number" name="lb3" id="lb3" min="9" max="14" value="9"><label for="lb3">Лабораторная работа №3</label><br>
-                    <input type="number" name="lb4" id="lb4" min="9" max="14" value="9"><label for="lb4">Лабораторная работа №4</label><br>
-                    <input type="checkbox" name="intime" id="intime" unchecked><label for="intime">Сданы вовремя?</label><br>
-                    <input type="number" name="idz" id="idz" min="9" max="14" value="9"><label for="idz">ИДЗ</label><br>		
-                    <input type="number" name="test" id="test" min="0" max="20" value="0"><label for="test">Тест</label><br>
-                    <label for="result">Результат:</label><br><input type="number" name="result" id="result" disabled><br>
-                </form>
-                <script>
-                    let lb1 = document.score.lb1;
-                    let lb2 = document.score.lb2;
-                    let lb3 = document.score.lb3;
-                    let lb4 = document.score.lb4;
-                    let intime = document.score.intime;
-                    let idz = document.score.idz;
-                    let test = document.score.test;
-                    let result = document.score.result;
-
-                    function calculateScore() {
-                        let bonus = intime.checked ? 10 : 0;
-                        let res = +lb1.value + +lb2.value + +lb3.value + +lb4.value + bonus + +idz.value + +test.value;
-
-                        result.value = res;
-                    }
-
-                    lb1.onchange = calculateScore;
-                    lb2.onchange = calculateScore;
-                    lb3.onchange = calculateScore;
-                    lb4.onchange = calculateScore;
-                    intime.onchange = calculateScore;
-                    idz.onchange = calculateScore;
-                    test.onchange = calculateScore;
-                    calculateScore();
-                </script>-->
-            </p>         
+            </p>
         </div>
     </div>
 </body>
