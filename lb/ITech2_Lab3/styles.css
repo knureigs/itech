@@ -60,3 +60,8 @@ div.chapter {
 figure.pic_w_caption {
 	text-align: center;
 }
+
+span.code_snippet {
+	font-size: 13px;
+	font-family: Lucida Console;
+}
