@@ -64,8 +64,8 @@ function setResultTable(stud) {
     lb2cell.innerHTML = stud.lb2;
     lb3cell.innerHTML = stud.lb3;
     lb4cell.innerHTML = stud.lb4;
-    intimeCell.innerHTML = stud.intime;
-    testCell.innerHTML = stud.test;
+    intimeCell.innerHTML = stud.intime === 0 ? "" : stud.intime;
+    testCell.innerHTML = stud.test === 0 ? "" : stud.test;
     idzCell.innerHTML = stud.idz;
     additionCell.innerHTML = stud.addition;
     resultCell.innerHTML = stud.total;

@@ -1,4 +1,3 @@
-//var googgleSpreadsheet = SpreadsheetApp.getActiveSpreadsheet();
 var googgleSpreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1oJdrbWE5zMx7xWuNiTFELQBWgPux3sf7lxbaR5UjyTs/edit')
 
 var sheets = googgleSpreadsheet.getSheets();
@@ -27,28 +26,28 @@ function getData(){
         var lastRowNumber = sheets[i].getLastRow();      
       
         var bColumn = sheets[i].getRange('B5:B' + lastRowNumber).getDisplayValues();//name
-        var fColumn = sheets[i].getRange('F5:F' + lastRowNumber).getDisplayValues();//lb1
-        var iColumn = sheets[i].getRange('I5:I' + lastRowNumber).getDisplayValues();//lb2
-        var lColumn = sheets[i].getRange('L5:L' + lastRowNumber).getDisplayValues();//lb3
-        var oColumn = sheets[i].getRange('O5:O' + lastRowNumber).getDisplayValues();//lb4
-        var pColumn = sheets[i].getRange('P5:P' + lastRowNumber).getDisplayValues();//intime
-        var sColumn = sheets[i].getRange('S5:S' + lastRowNumber).getDisplayValues();//test
-        var uColumn = sheets[i].getRange('U5:U' + lastRowNumber).getDisplayValues();//idz
-        var vColumn = sheets[i].getRange('V5:V' + lastRowNumber).getDisplayValues();//addition
-        var wColumn = sheets[i].getRange('W5:W' + lastRowNumber).getDisplayValues();//total
+        var fColumn = sheets[i].getRange('F5:F' + lastRowNumber).getValues();//lb1
+        var iColumn = sheets[i].getRange('I5:I' + lastRowNumber).getValues();//lb2
+        var lColumn = sheets[i].getRange('L5:L' + lastRowNumber).getValues();//lb3
+        var oColumn = sheets[i].getRange('O5:O' + lastRowNumber).getValues();//lb4
+        var pColumn = sheets[i].getRange('P5:P' + lastRowNumber).getValues();//intime
+        var sColumn = sheets[i].getRange('S5:S' + lastRowNumber).getValues();//test
+        var uColumn = sheets[i].getRange('U5:U' + lastRowNumber).getValues();//idz
+        var vColumn = sheets[i].getRange('V5:V' + lastRowNumber).getValues();//addition
+        var wColumn = sheets[i].getRange('W5:W' + lastRowNumber).getValues();//total
       
         // 4 строки на шапку
         for(var studNumber = 0; studNumber < lastRowNumber - 4; studNumber++) {
             var studName = bColumn[studNumber][0];
-            var lb1 = fColumn[studNumber][0]*1;
-            var lb2 = iColumn[studNumber][0]*1;
-            var lb3 = lColumn[studNumber][0]*1;
-            var lb4 = oColumn[studNumber][0]*1;
-            var intime = pColumn[studNumber][0]*1;
-            var test = sColumn[studNumber][0]*1;
-            var idz = uColumn[studNumber][0]*1;
-            var addition = vColumn[studNumber][0]*1;
-            var total = wColumn[studNumber][0]*1;
+            var lb1 = fColumn[studNumber][0];
+            var lb2 = iColumn[studNumber][0];
+            var lb3 = lColumn[studNumber][0];
+            var lb4 = oColumn[studNumber][0];
+            var intime = pColumn[studNumber][0];
+            var test = sColumn[studNumber][0];
+            var idz = uColumn[studNumber][0];
+            var addition = vColumn[studNumber][0];
+            var total = wColumn[studNumber][0];
           
             group.students.push(new Student(studName, groupName, lb1, lb2, lb3, lb4, intime, test, idz, addition, total));
         
