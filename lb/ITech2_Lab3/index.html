@@ -3,7 +3,7 @@
 <head>
 	<title>Лабораторная работа №3</title>
 	<meta charset="utf-8">
-	<meta name="description " content="Версия 2019.04.05. Методические указания для выполнения лабораторной работы по курсу ИТех2 для потока КИ.">
+	<meta name="description " content="Версия 2019.04.25. Методические указания для выполнения лабораторной работы по курсу ИТех2 для потока КИ.">
 	<link rel="stylesheet" type="text/css" href="styles.css">
 </head>
 <body>
@@ -32,100 +32,92 @@
 		<div class="chapter" id="lab_manual">
 			<span class="chapter_name">3.2 Методические указания</span>
 			<p>При подготовке к выполнению лабораторной работы следует ознакомиться с особенностями использования фреймворка AngularJS, изучить возможности его основных сервисов и директив, способы создания пользовательских директив, а также повторить вопросы использования асинхронной модели обмена между клиентом и сервером с применением формата JSON.</p>
-			<p>AngularJS – JavaScript-фреймворк с открытым исходным кодом. Предназначен для разработки одностраничных приложений. Фреймворк работает с HTML, содержащим дополнительные пользовательские атрибуты, которые описываются директивами, и связывает ввод или вывод области страницы с моделью, представляющей собой обычные переменные JavaScript. Значения этих переменных задаются вручную или извлекаются из статических или динамических JSON-данных.</p>
-			<p>Рассмотрим веб-приложение, построенное на основе фреймворка AngularJS, состоящее из клиентской и серверной частей, которое позволяет узнать наличие книг заданного автора.					<br>Клиентская часть представляет из себя интерфейс пользователя, и позволяет указать в текстовом поле параметр, на основе которого серверная часть приложения возвращает тот или иной ответ в формате JSON:</p>		
+			<p>AngularJS – JavaScript-фреймворк с открытым исходным кодом. Предназначен для разработки одностраничных приложений. Фреймворк работает с HTML, содержащим дополнительные пользовательские атрибуты, которые описываются директивами, и связывает ввод или вывод области страницы с моделью. Модель описывается обычными переменными JavaScript, значения которых указываются в коде или извлекаются из статических или динамических JSON-данных.</p>
+			<p>Рассмотрим веб-приложение, построенное на основе фреймворка AngularJS, состоящее из клиентской и серверной частей, которое позволяет узнать наличие книг заданного автора.	Клиентская часть представляет из себя интерфейс пользователя, позволяет выбрать в выпадающем списке имя автора. Серверная часть приложения возвращает ответ в формате JSON:</p>		
 			<pre>
-	&lt;!doctype html&gt;
-	&lt;html ng-app="exampleApp"&gt;
-	&lt;head&gt;
-		&lt;meta charset="utf-8"&gt;
-	&lt;/head&gt;
-	&lt;body ng-controller="exampleController"&gt;
-		&lt;input type="text" ng-model="authorname"&gt;
-		&lt;input value="Get" type="button" ng-click="load(authorname)"&gt;
-		&lt;table border='1'&gt;
-			&lt;tr&gt;&lt;th&gt;Book&lt;/th&gt;&lt;th&gt;Quantity&lt;/th&gt;&lt;/tr&gt;
-			&lt;tr ng-repeat="item in list.items"&gt;
-				&lt;td&gt;{{item.book}}&lt;/td&gt;
-				&lt;td&gt;{{item.quantity}}&lt;/td&gt;
-			&lt;/tr&gt;
-		&lt;/table&gt;
-		&lt;p&gt;{{author}}&lt;/p&gt;
-		&lt;script type="text/javascript" src="angular.min.js"&gt;&lt;/script&gt;
-		&lt;script&gt;
-			var literature = {
-				items: []
-			};
-
-			var exampleApp = angular.module("exampleApp", []);
-			exampleApp.controller("exampleController", function ($scope, $http) {
-				scope.load = function(name){
-					$http({method:'GET', url:'get.php', params: {'author':name}}).
-					success(function(data) {
-						literature.items = data.books;
-						$scope.list = literature;
-						$scope.author = data.author;
-					})
-				};
-			}
-			);
-		&lt;/script&gt;
-	&lt;/body&gt;
-	&lt;/html&gt;
+&lt;!doctype html&gt;
+&lt;html ng-app="exampleApp"&gt;
+&lt;head&gt;
+  &lt;meta charset="utf-8"&gt;
+&lt;/head&gt;
+&lt;body ng-controller="exampleController"&gt;
+  &lt;select ng-options="option.name for option in data.authors track by option.name" ng-model="data.selectedAuthor"&gt;
+  &lt;input value="Get" type="button" ng-click="load(data.selectedAuthor.name)"&gt;
+  &lt;table border="1"&gt;
+    &lt;tr&gt;&lt;th&gt;Book&lt;/th&gt;&lt;th&gt;Quantity&lt;/th&gt;&lt;/tr&gt;
+    &lt;tr ng-repeat="item in data.items"&gt;
+      &lt;td&gt;{{ item.book }}&lt;/td&gt;
+      &lt;td&gt;{{ item.quantity }}&lt;/td&gt;
+    &lt;/tr&gt;
+  &lt;/table&gt;
+  &lt;p&gt;{{author}}&lt;/p&gt;
+  &lt;script type="text/javascript" src="angular.min.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+  var literature = {
+    authors: [],
+    items: []
+  };
+  
+  var exampleApp = angular.module("exampleApp", []);
+  exampleApp.controller("exampleController", function ($scope, $http) {
+    literature.authors.push({"name": "Пушкин"}, {"name": "Гоголь"});
+    literature.selectedAuthor = {"name": "Гоголь"};
+    $scope.data = literature;
+  
+    $scope.load = function(name) {
+      console.log(name);
+      $http({ method:'GET', 
+              url:'get.php', 
+              params: {'author': name}
+            }).
+      success(function(data) {
+        literature.items = data.books;
+      })
+    };
+  });
+  &lt;/script&gt;
+&lt;/body&gt;
+&lt;/html&gt;
 			</pre>
-			Приведенный выше код - обычная HTML-страница с добавленными директивами AngularJS, разберем по порядку:
+			Приведенный выше код – обычная HTML-страница с добавленными директивами AngularJS:
 			<br>
 			<span class="code_snippet">&lt;html ng-app="exampleApp"&gt;</span>
 			<br>Директива <b>ng-app</b> является главной директивой приложения, задает область ангуляр-приложения или создает область для модуля.
 			<br><span class="code_snippet">&lt;body ng-controller="exampleController"&gt;</span>
 			<br>Директива <b>ng-controller</b> осуществляет связывание элемента с контроллером.
-			<br><span class="code_snippet">&lt;input type="text" ng-model="authorname"&gt;</span>
-			<br>Директива <b>ng-model</b> позволяет связать значение элемента управления с моделью.
-			<br><span class="code_snippet">&lt;input value="Get" type="button" ng-click="load(authorname)"&gt;</span>
-			<br>Директива <b>ng-click</b> добавляет обработчик нажатия кнопки. В качестве обработчика в данном примере используется функция <span class="code_snippet">load</span>, которой передается в качестве параметра значение текстового поля со значением директивы <span class="code_snippet">ng-model="authorname"</span>.
+			<br><span class="code_snippet">&lt;select ng-options="option.name for option in data.authors track by option.name" ng-model="data.selectedAuthor"&gt;</span>
+			<br>Директива <b>ng-model</b> позволяет связать значение элемента с моделью. Директива <b>ng-options</b> позволяет создать элементы выпадающего списка на основе массива или объекта. Значение value для ng-options устанавливается при помощи <b>track by</b> – в примере используется поле name объектов из набора data.authors.
+			<br><span class="code_snippet">&lt;input value="Get" type="button" ng-click="load(data.selectedAuthor.name)"&gt;</span>
+			<br>Директива <b>ng-click</b> добавляет обработчик нажатия кнопки. В качестве обработчика в данном примере используется функция <span class="code_snippet">load</span>, которой передается в качестве параметра значение поля name переменной модели, соответствующей директиве <span class="code_snippet">ng-model="data.selectedAuthor"</span>.
 			<br>Для вывода набора данных используется директива <span class="code_snippet">ng-repeat</span>:			
 			<pre>
-	&lt;tr ng-repeat="item in list.items"&gt;
-		&lt;td&gt;{{item.book}}&lt;/td&gt;
-		&lt;td&gt;{{item.quantity}}&lt;/td&gt;
-	&lt;/tr&gt;
+  &lt;tr ng-repeat="item in data.items"&gt;
+    &lt;td&gt;{{ item.book }}&lt;/td&gt;
+    &lt;td&gt;{{ item.quantity }}&lt;/td&gt;
+  &lt;/tr&gt;
 			</pre>
-			К странице подключен фреймворк (строка <span class="code_snippet">&lt;script type="text/javascript" src="angular.min.js"&gt;&lt;/script&gt;</span>) и клиентский скрипт, в котором определен модуль и контроллер:
+			<p>К странице подключен фреймворк (строка <span class="code_snippet">&lt;script type="text/javascript" src="angular.min.js"&gt;&lt;/script&gt;</span>) и клиентский скрипт, в котором определен модуль и контроллер. В контроллере заполняется массив авторов, используемый для построения выпадающего списка (лучше, конечно, заполнять подобный массив на основе данных из БД) и определяется автор по умолчанию – который будет выбран в списке в начале работы. Затем происходит привязка модели и определяется обработчик для нажатия на кнопку – в результате чего будет отправлен запрос на сервер.</p>
+			<p>В серверной части приложения (файл <i>get.php, служащий обработчиком запроса, переданного через сервис $http</i>) необходимо указать корректный тип документа и реализовать механизм формирования JSON, который будет передан клиенту для обработки.</p>			
 			<pre>
-	var exampleApp = angular.module("exampleApp", []);
-	exampleApp.controller("exampleController", function ($scope, $http) {
-	  $scope.load = function(name){
-	    $http({method:'GET', url:'get.php', params: {'author':name}}).
-	      success(function(data) {
-	        literature.items = data.books;
-			$scope.list = literature;
-			$scope.author = data.author;
-		  })
-		};
-	  }
-	);
-			</pre>
-			В серверной части приложения (файл <i>get.php, служащий обработчиком запроса, переданного через сервис $http</i>) необходимо указать корректный тип документа и реализовать механизм формирования JSON файла, который будет передан клиенту для обработки:			
-			<pre>
-	&lt;?php 
-  	header('Content-Type: application/json'); 
-  	header("Cache-Control: no-cache, must-revalidate"); 
-				
-  	$author = $_GET['author'];  
-  	switch($author)
-  	{
-  	  case 'Пушкин':
-		  $data = array('author' =&gt; 'Пушкин А.С.',
-			'books' =&gt; array(array('book' =&gt; 'Руслан и Людмила', 'quantity' =&gt; 2500 ),
-				array('book' =&gt; 'Евгений Онегин', 'quantity' =&gt; 2700)));
-		break;
-  	  case 'Гоголь':
-		  $data = array('author' =&gt; 'Гоголь Н.В.',
-			'books' =&gt; array(array('book' =&gt; 'Ревизор', 'quantity' =&gt; 1500 ),
-				array('book' =&gt; 'Мертвые души', 'quantity' =&gt; 1700)));
-		break;
-  	}
-	echo json_encode($data);
+&lt;?php 
+  header('Content-Type: application/json'); 
+  header("Cache-Control: no-cache, must-revalidate"); 
+  		
+  $author = $_GET['author'];  
+  switch($author)
+  {
+    case 'Пушкин':
+      $data = array('author' =&gt; 'Пушкин А.С.',
+                    'books' =&gt; array(array('book' =&gt; 'Руслан и Людмила', 'quantity' =&gt; 2500),
+                                        array('book' =&gt; 'Евгений Онегин', 'quantity' =&gt; 2700)));
+    break;
+    case 'Гоголь':
+      $data = array('author' =&gt; 'Гоголь Н.В.',
+                    'books' =&gt; array(array('book' =&gt; 'Ревизор', 'quantity' =&gt; 1500 ),
+                                        array('book' =&gt; 'Мертвые души', 'quantity' =&gt; 1700)));
+    break;
+  }
+  echo json_encode($data);
 			</pre>
 		</div>
 		
@@ -135,7 +127,7 @@
 			<ul>
 				<li>текстовый редактор, имеющий подсветку синтаксиса: Notepad++ или Visual Studio Code;</li>
 				<li>браузер: Mozilla Firefox или Google Chrome;</li>
-				<li>фреймворк AngularJS 1.5.8;</li>
+				<li>фреймворк AngularJS от 1.5.8;</li>
 				<li>сборка веб-сервера: XAMPP или OpenServer.</li>
 			</ul>
 			<p>Рекомендуемые средства являются свободным программным обеспечением.</p>
@@ -144,19 +136,12 @@
 		
 		<div class="chapter" id="lab_execution">
 			<span class="chapter_name">3.4 Порядок выполнения работы</span>
-			<br>Для вариантов заданий, указанных в лабораторной работе №2-3, изменить формат ответа сервера на JSON
-			<br>(если вариант задания предполагал обработку простого текста или XML) и добавить применение фреймворка AngularJS: 
-			<ul>
-				<li>привязка полей для ввода и вывода информации на странице к модели.</li>
-				<li>валидация полей ввода.</li>
-				<li>отправка AJAX-запроса с помощью сервиса $http.</li>
-			</ul>
 			<ol>
 				<li>Используется исходный код с лабораторных работ №1-2, посвященных работе с данными с помощью интерфейса PDO (или MySQLi) и организации ассинхронного обмена с помощью технологии AJAX. Проверить его работу.</li>
 				<li>Сделать форматом ответа сервера на параметризированные запросы JSON (если это не было сделано раньше) и добавить применение фреймворка AngularJS:
 					<ul>
 						<li>привязка полей для ввода и вывода информации на странице к модели.</li>
-						<li>валидация полей ввода.</li>
+						<!-- <li>валидация полей ввода.</li> -->
 						<li>отправка AJAX-запроса с помощью сервиса $http.</li>
 					</ul>
 				</li>
@@ -189,7 +174,6 @@
 				<li>Что такое Smarty? Каковы его возможности?</li>
 				<li>В чем недостатки использования CMS?</li>
 				<li>Особенности применения фреймворков?</li>
-				<li>Что такое Node.js? Какие технологии входят в стек MEAN?</li>
 				<li>Чем отличаются SPA от традиционных веб-приложений?</li>
 				<li>Какие директивы AngularJS вам известны?</li>
 				<li>Как создать свою директиву?</li>
@@ -203,14 +187,11 @@
 		<div class="chapter" id="lab_literature">
 			<span class="chapter_name">СПИСОК ЛИТЕРАТУРЫ</span>
 			<ol>  
-				<li><a href="http://php.net/manual/ru/" target="_blank">Документация к языку PHP</a></li>
-				<li><a href="https://tproger.ru/translations/how-to-configure-and-use-pdo/" target="_blank">Настройка и использование PDO</a></li>
-				<li><a href="http://phpfaq.ru/pdo/" target="_blank">Вольное описание процесса работы с PDO</a></li>
-				<li><a href="https://www.w3schools.com/php/php_mysql_prepared_statements.asp" target="_blank">PHP Prepared Statements (в PDO и MySQLi)</a></li>
-				<li><a href="http://2sql.ru/" target="_blank">Информационный ресурс о SQL</a></li>
-				<li>Phil Sturgeon and Josh Lockhart "PHP: The Right Way"</li>
-				<li>Мэтт Зандстра "PHP. Объекты, шаблоны и методики программирования".</li>
-				<li>Энди Гутманс, Стиг Баккен, Дерик Ретанс "PHP 5. Профессиональное программирование".</li>
+				<li><a href="https://docs.angularjs.org/api" target="_blank">AngularJS API Docs</a></li>
+				<li><a href="https://metanit.com/web/angular/" target="_blank">Онлайн-руководство по AngularJS</a></li>
+				<li><a href="https://blog.csssr.ru/2015/11/24/ng-options" target="_blank">Описание использования выпадающих списков</a></li>
+				<li><a href="https://habr.com/ru/post/172975/" target="_blank">AngularJS для привыкших к jQuery</a></li>
+				<li><a href="https://habr.com/ru/post/167793/" target="_blank">Валидация форм в AngularJS</a></li>
 				<!-- <li>Джордж Шлосснейгл "Профессиональное программирование на PHP".</li>
 				<li>Кевин Янк "PHP и MySQL. От новичка к профессионалу".</li> -->
 			</ol>

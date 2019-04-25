@@ -65,3 +65,6 @@ span.code_snippet {
 	font-size: 13px;
 	font-family: Lucida Console;
 }
+pre {
+    text-indent: 0;
+}
