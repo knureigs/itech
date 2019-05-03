@@ -1,0 +1,187 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+	<title>Лабораторная работа №4</title>
+	<meta charset="utf-8">
+	<meta name="description " content="Версия 2019.05.03. Методические указания для выполнения лабораторной работы по курсу ИТех2 для потока КИ.">
+	<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+	<div id="container">
+		<div id="chapters">
+			<h1 id="start">Лабораторная работа №4 (2018-2019)</h1>
+			<div id="lab_theme">Полнодуплексный обмен данными между браузером и веб-сервером на основе протокола передачи данных WebSocket
+			</div>
+			<ul>
+				<li><a href="#lab_goal">Цель работы</a></li>
+				<li><a href="#lab_manual">Методические указания</a></li>
+				<li><a href="#lab_software">Описание лабораторной установки</a></li>
+				<li><a href="#lab_execution">Порядок выполнения работы</a></li>
+				<!-- <li><a href="#lab_variants">Варианты заданий</a></li> -->
+				<li><a href="#lab_report">Содержание отчета</a></li>
+				<li><a href="#lab_questions">Контрольные вопросы</a></li>
+				<li><a href="#lab_literature">Дополнительные источники</a></li>
+			</ul>
+		</div>
+			
+		<div class="chapter" id="lab_goal">
+			<span class="chapter_name">4.1 Цель работы</span>
+			<p>Исследование программных средств для обмена сообщениями между браузером и веб-сервером в режиме реального времени.</p>
+		</div>
+		
+		<div class="chapter" id="lab_manual">
+			<span class="chapter_name">4.2 Методические указания</span>
+			<p>При подготовке к выполнению лабораторной работы следует ознакомиться с механизмом обмена сообщениями по протоколу WebSocket, а также событиями и методами библиотеки Socket.IO для коллективного обмена сообщениями.</p>
+			<p>Протокол HTTP ограничен моделью запрос-ответ: клиент посылает HTTP-запрос и ожидает на него HTTP-ответ от сервера. Т.е. сервер не может сообщить что-либо клиенту (например, передать свежие сообщения на форуме) до тех пор, пока клиент «у него не спросит». WebSocket – протокол полнодуплексной связи поверх TCP-соединения, предназначенный для обмена сообщениями между браузером и веб-сервером в режиме реального времени. Благодаря возможности отправки сервером данных клиенту без предварительного запроса в привычной схеме запрос-ответ, между браузером и сервером может происходить равноправный двусторонний (двунаправленный) обмен сообщениями, пока соединение открыто. Протокол WebSocket имеет значительно меньшие накладные расходы за счет постоянно открытого канала по сравнению с повторяющимися HTTP-обращениями к серверу для отслеживания изменений. Организация такого взаимодействия между браузером и веб-сервером дает возможность создавать интернет-приложения с интенсивным двусторонним обменом данными, требовательные к скорости обмена, например, игры.</p>
+			<p>Прежде чем начать использовать протокол WebSocket, требуется создать веб-сервер, поддерживающий этот протокол – например, на основе серверного JavaScript-фреймворка Node.js. Для упрощения работы может использоваться библиотека Socket.IO, которая скрывает от разработчика низкоуровневую работу с передачей сообщений.</p>
+			<p>Ниже приведен пример создания приложения-чата. Предполагается, что уже установлена платформа Node.js. В папке с исходным кодом рекомендуется создать файл package.json, содержащий информацию о проекте, а главное, перечень зависимостей – пакетов, необходимых для работы приложения, которые возможно загрузить с помощью менеджера пакетов npm. Содержимое файла package.json:</p>
+			<pre>
+{
+  "name": "socket-chat-example",
+  "version": "0.0.1",
+  "description": "my first socket.io app",
+  "dependencies": {
+    "express": "^4.15.2",
+    "socket.io": "^1.7.4"
+  },
+  "scripts": {
+    "start": "node index.js"
+  }
+}
+			</pre>
+			<p>Для установки пакетов, определенных в package.json используется консольная команда <span class = "code_snippet">npm install</span>, выполненная в каталоге проекта. Код серверной части следует разместить в файле index.js:</p>
+			<pre>
+var app = require('express')();
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+app.get('/', function(req, res) {
+  res.sendFile(__dirname + '/index.html');
+});
+
+io.on('connection', function(socket){
+  socket.on('send message', function(msg) {
+	io.emit('receive message', msg);
+  });
+});
+
+http.listen(3000, function() {
+  console.log('listening on *:3000');
+});
+			</pre>
+			<p>Для запуска сервера служит команда <span class = "code_snippet">node index.js</span>, или <span class = "code_snippet">npm start</span>. Сервер будет запущен по адресу http://localhost:3000. При обращении к нему будет выполняться маршрутизация, но в данном примере определен только один маршрут, для корня приложения – с помощью метода app.get указан обработчик для обращения по пути '/'. В обработчике формируется ответ на запрос, в который записывается содержимое файла index.html, находящегося в той же папке, что и index.js. С помощью метода on библиотеки Socket.IO установлен обработчик события 'send message', который оповещает всех подключенных клиентов путем порождения события 'receive message', передавая данные сообщения в параметре msg.</p>
+			<p>Код клиента размещен в файле index.html:</p>				
+			<pre>
+&lt;!DOCTYPE html&gt;
+&lt;html&gt;
+&lt;head&gt;
+  &lt;title&gt;Socket.IO chat&lt;/title&gt;
+  &lt;meta charset="utf-8"&gt;
+  &lt;style&gt;
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font: 13px Helvetica, Arial; }
+    form { background: #000; padding: 3px; position: fixed; bottom: 0; width: 100%; }
+    form input { border: 0; padding: 10px; width: 90%; margin-right: .5%; }
+    form button { width: 9%; background: rgb(130, 224, 255); border: none; padding: 10px; }
+    #messages { list-style-type: none; margin: 0; padding: 0; }
+    #messages li { padding: 5px 10px; }
+    #messages li:nth-child(odd) { background: #eee; }
+    #messages { margin-bottom: 40px }
+  &lt;/style&gt;
+&lt;/head&gt;
+&lt;body&gt;
+&lt;ul id="messages"&gt;&lt;/ul&gt;
+&lt;form action=""&gt;
+  &lt;input id="m" autocomplete="off" /&gt;&lt;button&gt;Send&lt;/button&gt;
+&lt;/form&gt;
+  &lt;script src="/socket.io/socket.io.js"&gt;&lt;/script&gt;
+  &lt;script src="https://code.jquery.com/jquery-1.11.1.js"&gt;&lt;/script&gt;
+  &lt;script&gt;
+  $(function () {
+    var socket = io();
+    $('form').submit(function(e){
+      e.preventDefault(); // prevents page reloading
+      socket.emit('send message', $('#m').val());
+      $('#m').val('');
+      return false;
+    });
+    socket.on('receive message', function(msg){
+      $('#messages').append($('&lt;li&gt;').text(msg));
+    });
+  });
+  &lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;
+			</pre>
+			<p>При отправке данных из формы (текста сообщения) порождается событие 'send message', на которое реагирует серверная часть приложения. Также в клиенте определен его собственный обработчик события 'receive message', порождаемого сервером. Для проверки работы приложения следует открыть несколько его копий, в разных вкладках, имитируя использование несколькими участниками чата с одним сервером.</p>			
+		</div>
+		
+		<div class="chapter" id="lab_software">
+			<span class="chapter_name">4.3 Описание лабораторной установки</span>
+			<p>Для выполнения лабораторной работы рекомендуется использовать:</p>
+			<ul>
+				<li>текстовый редактор, имеющий подсветку синтаксиса: Notepad++ или Visual Studio Code;</li>
+				<li>браузер: Mozilla Firefox или Google Chrome;</li>
+				<li>серверная платформа Node.js v10.15.3 LTS;</li>
+				<li>пакет socket.io.</li>
+			</ul>
+			<p>Рекомендуемые средства являются свободным программным обеспечением.</p>
+			<!-- <p>Для выполнения лабораторной работы не требуется доступ к сети Интернет.</p> -->
+		</div>
+		
+		<div class="chapter" id="lab_execution">
+			<span class="chapter_name">4.4 Порядок выполнения работы</span>
+			<p>Создать и убедиться в работоспособности клиентской и серверной частей приложения «Чат», реализованного с использованием пакета socket.io.</p>
+			<!-- <p>Результат работы демонстрируется в электронном виде.</p> -->
+		</div>
+		
+		<div class="chapter" id="lab_report">
+			<span class="chapter_name">4.5 Содержание отчета</span>
+			<ul>
+				<li>титульный лист с указанием темы лабораторной, фамилии, инициалов и группы выполнивших студентов (до 3-х человек)</li> 
+				<li>цель работы</li> 
+				<li>вариант задания</li>
+				<li>исходные коды серверного и клиентского JS-скриптов</li>
+				<li>результаты выполнения в виде снимков экрана браузера</li>
+				<li>выводы по работе</li>
+			</ul>
+			<p>Допускается сдача отчета в электронном виде. Для защиты наличие распечатанного отчета не является необходимым.</p>
+		</div>
+		
+		<div class="chapter" id="lab_questions">
+			<span class="chapter_name">4.6 Контрольные вопросы</span>
+			<ol>
+				<li>Каковы недостатки обмена данными посредством протокола HTTP?</li>
+				<li>Способы оптимизации передачи данных по протоколу HTTP.</li>
+				<li>Что такое Node.js?</li>
+				<li>Для чего нужен npm?</li>
+				<li>Назначение файла package.json.</li>
+				<li>Для чего используется фреймворк express?</li>
+				<li>Преимущества использования пакета socket.io.</li>
+				<li>Сравните работу соединения посредством HTTP Long polling с протоколом WebSocket.</li>
+				<li>Опишите процесс создания соединения WebSocket на стороне клиента и сервера, а также его закрытия.</li>
+				<li>Перечислите клиентские и серверные события, выполняемые при создании соединения или его переподключении.</li>
+				<li>Каким образом осуществляется обмен данными между клиентом и сервером с применением методов пакета socket.io? Приведите примеры.</li>
+				<li>Каким образом существует возможность отправки ответа всем клиентам кроме отправителя?</li>
+				<li>Перечислите методы для отправки и получения данных формата JSON.</li>
+				<li>Поясните механизм создания комнат.</li>
+			</ol>
+			<p>Знание ответов на приведенные вопросы является необходимым, но не достаточным условием для получения высокой оценки за защиту лабораторной работы. Помните про темы, рассмотренные на лекциях!</p>
+		</div>
+		
+		<div class="chapter" id="lab_literature">
+			<span class="chapter_name">СПИСОК ЛИТЕРАТУРЫ</span>
+			<ol>
+				<li><a href="https://nodejs.org/" target="_blank">Node.js</a></li>
+				<li><a href="https://socket.io/docs" target="_blank">Документация по Socket.IO</a></li>
+				<li><a href="https://socket.io/get-started/chat/" target="_blank">Пошаговый пример создания чата на Socket.IO</a></li>
+				<li><a href="https://habr.com/ru/sandbox/90655/" target="_blank">Socket.IO, обмен данными в реальном времени</a></li>
+				<li><a href="https://habr.com/ru/post/307744/" target="_blank">Разработка простого чата на Socket.IO</a></li>
+				<li><a href="https://stackoverflow.com/questions/10112178/differences-between-socket-io-and-websockets/38558531#38558531" target="_blank">Использование WebSocket без Socket.IO</a></li><!-- имеет смысл добавить в методичку -->
+			</ol>
+		</div>		
+		<br><a href="#start">Вернуться к началу</a>
+		<!-- Удачной отработки! --> 
+	</div>	
+</body>
+</html>
