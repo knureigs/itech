@@ -113,6 +113,17 @@ http.listen(3000, function() {
   &lt;/body&gt;
 &lt;/html&gt;
 			</pre>
+			<p>Для разделения html и css недостаточно просто выделить содержимое контейнера style в отдельный файл, подключенный с помощью тега link (например, &lt;link rel="stylesheet" href="style.css"&gt;). Для предоставления статических файлов, таких как изображения, файлы CSS и JavaScript, в фреймворке Express используется функция промежуточной обработки express.static, в которую необходимо передать имя каталога, в котором находятся статические ресурсы. В приведенном примере файла index.js, для использования файлом index.html файла style.css, нужно внести следующие изменения:</p>
+			<pre>
+var express = require("express"); // отдельная переменная для удобства
+var app = express();
+
+var http = require('http').Server(app);
+var io = require('socket.io')(http);
+
+app.use(express.static('public')); // указание каталога для статических ресурсов, в котором будет расположен подключаемый файл css.
+app.get...
+			</pre>
 			<p>При отправке данных из формы (текста сообщения) порождается событие 'send message', на которое реагирует серверная часть приложения. Также в клиенте определен его собственный обработчик события 'receive message', порождаемого сервером. Для проверки работы приложения следует открыть несколько его копий, в разных вкладках, имитируя использование несколькими участниками чата с одним сервером.</p>			
 		</div>
 		
@@ -178,6 +189,7 @@ http.listen(3000, function() {
 				<li><a href="https://habr.com/ru/sandbox/90655/" target="_blank">Socket.IO, обмен данными в реальном времени</a></li>
 				<li><a href="https://habr.com/ru/post/307744/" target="_blank">Разработка простого чата на Socket.IO</a></li>
 				<li><a href="https://stackoverflow.com/questions/10112178/differences-between-socket-io-and-websockets/38558531#38558531" target="_blank">Использование WebSocket без Socket.IO</a></li><!-- имеет смысл добавить в методичку -->
+				<li><a href="https://metanit.com/web/nodejs/4.4.php" target="_blank">Статические файлы в Node.js/Express </a></li>
 			</ol>
 		</div>		
 		<br><a href="#start">Вернуться к началу</a>
