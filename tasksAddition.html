@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Успеваемость студентов</title>
+    <link href="css/styles.css" type="text/css" rel="stylesheet">
+    <style>
+        input[type="number"] {
+            width: 5em;
+            margin-right: 10px;
+        }
+
+        td:last-child {
+            text-align: center;
+        }
+        table, td, th {
+            border:1px solid black;
+        }
+    </style>
+    <script src="tasksAddition.js" defer></script>
+</head>
+<body>
+    <div id="container">
+        <div class="chapters">
+            <h1 id="start">Дополнительные задания</h1>
+            <p>Здесь можно ознакомиться с заданиями для получения дополнительных (т.е. не входящих в 100 баллов за различные виды работ, предусмотренные в течении семестра) баллов.
+            Дополнительными заданиями нельзя повысить оценку более чем до 96 баллов. Оценки выше могут быть получены только путем накопления баллов за задания, изначально предусмотренные курсом – лабораторные, ИДЗ, тест.
+            Возможно выполнения одного задания группой студентов, с выделением баллов на бригаду, с последующим произвольным их распределением среди авторов.</p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Задание
+                    </th>
+                    <th>
+                        Описание
+                    </th>
+                    <th>
+                        Оценка
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="additionTasks"></tbody>
+        </table>
+    </div>
+</body>
+</html>
