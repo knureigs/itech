@@ -36,7 +36,8 @@ function calculateScore() {
 }
 
 let xhr = new XMLHttpRequest();
-let app = "https://script.google.com/macros/s/AKfycbxpw5GljMeuz8u1RIOm3MnykDOmQJPiVhRyMonYALUVEEl838A/exec"; // ссылка на веб-приложение, опубликованное на основе гугловского скрипта к таблице успеваемости. В ответ на гет-запрос отдает данные из таблички, параметров не требует.
+let app = "https://script.google.com/a/nure.ua/macros/s/AKfycby1R7D-cWFL6lea8USHh6lqUWC429isPn2ZcG9G/exec";
+//let app = "https://script.google.com/macros/s/AKfycbxpw5GljMeuz8u1RIOm3MnykDOmQJPiVhRyMonYALUVEEl838A/exec"; // ссылка на веб-приложение, опубликованное на основе гугловского скрипта к таблице успеваемости. В ответ на гет-запрос отдает данные из таблички, параметров не требует.
 let scores; // сюда запишем результат, разобрав JSON-ответ от GAS.
 
 let selectGroup = document.getElementById("groups");
@@ -61,24 +62,26 @@ function createGroupListbox() {
         }
 
         if (xhr.readyState === 3) {
-            console.log("Loading...");
+            //console.log("Loading...");
             requestIndicator.innerHTML = "Обработка данных...";
         }
         
         if (xhr.readyState === 4 && xhr.status === 200) {
-            console.log("Loaded.");
+            //console.log("Loaded.");
             requestIndicator.innerHTML = "Данные загружены.";
             requestIndicator.style.display = "none";
             scoreSelect.style.visibility = "visible";
 
             try {
                 let r = JSON.parse(xhr.responseText);
+                //console.dir(r);
                 scores = r.groups;
                 for (var i = 0; i < scores.length; i++) {
                     output += "<option>" + scores[i].groupName + "</option>";
                 }
             } catch(e) {
-                console.log("Error.");
+                console.log("Error. " + e);
+                console.log(xhr.responseText);
                 requestIndicator.innerHTML = "Ошибка обработки данных.";
                 requestIndicator.style.display = "block";
                 scoreSelect.style.visibility = "hidden";
@@ -104,6 +107,7 @@ function fillStudents() {
             output += "<option>" + studName + "</option>";
         }
     }
+    document.getElementById("relevanceDate").innerHTML = "Данные актуальны на " + getRelevanceDateForGroup(selectGroup.value);
     selectStudent.innerHTML += output;
     selectStudent.onchange = fillScore;
 }
@@ -132,6 +136,17 @@ function getStudentsOfGroup(selectedGroupName) {
     for(let group of scores) {
         if(group.groupName === selectedGroupName) {
             return group.students;
+        }
+    }
+}
+
+/**
+ * Получение даты заполнения журнала для выбранной группы. 
+ */
+function getRelevanceDateForGroup(selectedGroupName) {
+    for(let group of scores) {
+        if(group.groupName === selectedGroupName) {
+            return group.relevanceDate;
         }
     }
 }
@@ -175,10 +190,10 @@ function setResultTable(stud) {
         resultCell.innerHTML = "";
         return;
     }
-    // lb1repository.checked = stud.lb1repository;
-    // lb2repository.checked = stud.lb2repository;
-    // lb3repository.checked = stud.lb3repository;
-    // lb4repository.checked = stud.lb4repository;
+    lb1repository.checked = stud.lb1repository;
+    lb2repository.checked = stud.lb2repository;
+    lb3repository.checked = stud.lb3repository;
+    lb4repository.checked = stud.lb4repository;
     // idzRepository.checked = stud.idzRepository;
     // additionRepository.checked = stud.additionRepository;
     
