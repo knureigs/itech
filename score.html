@@ -8,12 +8,26 @@
     <link href="css/styles.css" type="text/css" rel="stylesheet">
     <style>
         input[type="number"] {
-            width: 5em;
+            width: 9em;
             margin-right: 10px;
         }
 
-        td:last-child {
+        td:nth-child(2), td:nth-child(3) {
             text-align: center;
+        }
+
+        #scoreSelect {
+            visibility: hidden;
+        }
+
+        table, tr:first-child, tr:last-child {
+            border-top: 1px solid black;
+            border-bottom: 1px solid black;
+            border-collapse: collapse;
+        }
+        table, td, th {
+            border-left: 1px solid black;
+            border-right: 1px solid black;
         }
     </style>
     <script src="score.js" defer></script>
@@ -22,56 +36,79 @@
     <div id="container">
         <div class="chapters">
             <h1 id="start">Успеваемость студентов</h1>
-            <p>
-                <select id="groups" onchange="fillStudents()">
+            <p id="requestIndicator">Отправка запроса...</p>
+            <p id="scoreSelect">
+                <select id="groups">
                     <option>Группа</option>
                 </select>
-                <select id="students" onchange="fillScore()">
+                <select id="students">
                     <option>Студент</option>
-                </select>
-                <table border="1">
-                    <tr>
-                        <th>Вид работы</th>
-                        <th>Оценка</th>
-                    </tr>
-                    <tr>
-                        <td>Лабораторная работа №1</td>
-                        <td id="lb1"></td>
-                    </tr>
-                    <tr>
-                        <td>Лабораторная работа №2</td>
-                        <td id="lb2"></td>
-                    </tr>
-                    <tr>
-                        <td>Лабораторная работа №3</td>
-                        <td id="lb3"></td>
-                    </tr>
-                    <tr>
-                        <td>Лабораторная работа №4</td>
-                        <td id="lb4"></td>
-                    </tr>
-                    <tr>
-                        <td>За своевременность</td>
-                        <td id="intime"></td>
-                    </tr>
-                    <tr>
-                        <td>Тест</td>
-                        <td id="test"></td>
-                    </tr>
-                    <tr>
-                        <td>ИДЗ</td>
-                        <td id="idz"></td>
-                    </tr>
-                    <tr>
-                        <td>Дополнительно</td>
-                        <td id="addition"></td>
-                    </tr>
-                    <tr>
-                        <th>Итоговый балл</th>
-                        <th id="result"></th>
-                    </tr>
-                </table>
+                </select>                
             </p>
+            <table>
+                <tr>
+                    <th>Вид работы</th>
+                    <th>Репозиторий</th>
+                    <th>Текущие оценки</th>
+                    <th>Калькулятор</th>
+                </tr>
+                <tr>
+                    <td>Лабораторная работа №1</td>
+                    <td><input type="checkbox" name="lb1repository" id="lb1repository" unchecked disabled></td>
+                    <td id="realLb1"></td>
+                    <td><input type="number" name="calculatedLb1" id="calculatedLb1" min="0" max="14" value="9"></td>
+                </tr>
+                <tr>
+                    <td>Лабораторная работа №2</td>
+                    <td><input type="checkbox" name="lb2repository" id="lb2repository" unchecked disabled></td>
+                    <td id="realLb2"></td>
+                    <td><input type="number" name="calculatedLb2" id="calculatedLb2" min="0" max="14" value="9"></td>
+                </tr>
+                <tr>
+                    <td>Лабораторная работа №3</td>
+                    <td><input type="checkbox" name="lb3repository" id="lb3repository" unchecked disabled></td>
+                    <td id="realLb3"></td>
+                    <td><input type="number" name="calculatedLb3" id="calculatedLb3" min="0" max="14" value="9"></td>
+                </tr>
+                <tr>
+                    <td>Лабораторная работа №4</td>
+                    <td><input type="checkbox" name="lb4repository" id="lb4repository" unchecked disabled></td>
+                    <td id="realLb4"></td>
+                    <td><input type="number" name="calculatedLb4" id="calculatedLb4" min="0" max="14" value="9"></td>
+                </tr>
+                <tr>
+                    <td>За своевременность</td>
+                    <td>&nbsp;</td>
+                    <td id="realIntime"></td>
+                    <td><input type="checkbox" name="calculatedIntime" id="calculatedIntime" unchecked><label for="intime">л/р до дедлайна</label></td>
+                </tr>
+                <tr>
+                    <td>Тест</td>
+                    <td>&nbsp;</td>
+                    <td id="realTest"></td>
+                    <td><input type="number" name="calculatedTest" id="calculatedTest" step="0.1" value="0"></td>
+                </tr>
+                <tr>
+                    <td>ИДЗ</td>
+                    <td>&nbsp;</td>
+                    <!-- <td><input type="checkbox" name="idzRepository" id="idzRepository" unchecked disabled></td> -->
+                    <td id="realIDZ"></td>
+                    <td><input type="number" name="calculatedIDZ" id="calculatedIDZ" min="0" max="14" value="0"></td>
+                </tr>
+                <tr>
+                    <td>Дополнительно</td>
+                    <td>&nbsp;</td>
+                    <!-- <td><input type="checkbox" name="additionRepository" id="additionRepository" unchecked disabled></td> -->
+                    <td id="realAddition"></td>
+                    <td><input type="number" name="calculatedAddition" id="calculatedAddition" min="0" max="100" step="0.1" value="0"></td>
+                </tr>
+                <tr>
+                    <th>Итоговый балл</th>
+                    <td>&nbsp;</td>
+                    <td id="realResult"></td>
+                    <td><input type="number" name="calculatedResult" id="calculatedResult" disabled></td>
+                </tr>
+            </table>
         </div>
     </div>
 </body>
