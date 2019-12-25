@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>График приема</title>
+    <link href="css/styles.css" type="text/css" rel="stylesheet">
+    <style>
+        td:nth-child(3) {
+            text-align: right;
+        }
+        table, thead > tr:first-child {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+        table, td, th {
+            border-left: 1px solid black;
+            border-right: 1px solid black;
+        }
+    </style>
+    <script src="visiting.js" defer></script>
+</head>
+<body>
+    <div id="container">
+        <div class="chapters">
+            <h1 id="start">Информация о приеме задолженностей</h1>
+            <p id="requestIndicator">Отправка запроса...</p>
+            <p id="description"></p>
+        </div>
+        <table>
+            <thead>
+                <tr>
+                    <th>
+                        Дата
+                    </th>
+                    <th>
+                        День недели
+                    </th>
+                    <th>
+                        Начало приема
+                    </th>
+                    <th>
+                        Завершение приема
+                    </th>
+                    <th>
+                        Примечание
+                    </th>
+                </tr>
+            </thead>
+            <tbody id="timetable"></tbody>
+        </table>
+    </div>
+</body>
+</html>
