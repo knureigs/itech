@@ -10,7 +10,9 @@ createTasksTable();
  */
 function createTasksTable() {
     let output = "";
-    xhr.open('GET', app);
+    // xhr.open('GET', app);
+    xhr.overrideMimeType("application/json");
+    xhr.open('GET', "./response.json");
     
     xhr.onreadystatechange = function() {
         if (xhr.readyState !== 4) {
@@ -19,9 +21,10 @@ function createTasksTable() {
         
         if (xhr.status === 200) {
             try {
-                let r = JSON.parse(xhr.responseText);
-                //console.dir(r);
-                tasks = r.additionTasks;
+                let response = JSON.parse(xhr.responseText);
+                //console.dir(response);
+                //saveText(xhr.responseText, "response.json" );
+                tasks = response.additionTasks;
                 for (var i = 0; i < tasks.length; i++) {
                     output += "<tr><td>" + tasks[i].title + "</td><td>" + tasks[i].description + "</td><td>" + tasks[i].estimate + "</td></tr>";
                 }
@@ -32,4 +35,14 @@ function createTasksTable() {
         document.getElementById('additionTasks').innerHTML += output; 
     };
     xhr.send();
+}
+
+function saveText(text, filename){
+    var a = document.createElement('a');
+    a.setAttribute('href', 'data:text/plain;charset=utf-u,'+encodeURIComponent(text));
+    a.setAttribute('download', filename);
+    document.body.appendChild(a); a.setAttribute("style", "display: none;");
+    a.click();
+    // console.dir(a);
+    a.remove();
 }
