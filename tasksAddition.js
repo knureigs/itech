@@ -31,8 +31,8 @@ function createTasksTable() {
 
             try {
                 let response = JSON.parse(xhr.responseText);
-                //descriptionElememt.innerHTML = response.addition.description;
-                let tasks = response.additionTasks;
+                descriptionElememt.innerHTML = response.additionTasks.description;
+                let tasks = response.additionTasks.taskList;
                 for (var i = 0; i < tasks.length; i++) {
                     output += "<tr class=\"task-header\"><td>" + tasks[i].title + "</td><th>" + tasks[i].estimate + "</th></tr><tr><td colspan=\"2\" class=\"accordion task-description\"><input type=\"checkbox\" id=\"accordion-" + i + "\"><label for=\"accordion-" + i + "\">Описание</label><div class=\"content\">"  + tasks[i].description + "</div></td></tr>";
                 }
