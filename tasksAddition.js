@@ -26,8 +26,9 @@ function createTasksTable() {
                 //saveText(xhr.responseText, "response.json" );
                 tasks = response.additionTasks;
                 for (var i = 0; i < tasks.length; i++) {
-                    output += "<tr><td>" + tasks[i].title + "</td><td>" + tasks[i].description + "</td><td>" + tasks[i].estimate + "</td></tr>";
+                    output += "<tr class=\"task-header\"><td>" + tasks[i].title + "</td><th>" + tasks[i].estimate + "</th></tr><tr><td colspan=\"2\" class=\"accordion task-description\"><input type=\"checkbox\" id=\"accordion-" + i + "\"><label for=\"accordion-" + i + "\">Описание</label><div class=\"content\">"  + tasks[i].description + "</div></td></tr>";
                 }
+                
             } catch(e) {
 
             }

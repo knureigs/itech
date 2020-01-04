@@ -12,11 +12,36 @@
             margin-right: 10px;
         }
 
-        td:last-child {
-            text-align: center;
-        }
         table, td, th {
+            border-collapse: collapse;
             border:1px solid black;
+        }
+        .task-header > td {
+            border-bottom: 0px;
+            vertical-align: bottom;
+        }
+
+        .task-description {
+            border-top: 0px;
+        }
+
+        .accordion [type=checkbox] ~ label {
+            text-decoration: underline;
+            color: blue;
+        }
+        .accordion [type=checkbox] {
+            display:none;
+        }
+        .accordion .content {
+            display:none;
+            transition: all .5s ease-out;
+        }
+        .accordion [type=checkbox]:checked ~ label::after {
+            content: ":";
+        }
+        .accordion [type=checkbox]:checked ~ label ~ .content {
+            display:block;
+            margin-top: 0px;
         }
     </style>
     <script src="tasksAddition.js" defer></script>
@@ -33,13 +58,10 @@
         <table>
             <thead>
                 <tr>
-                    <th>
+                    <th width="70%">
                         Задание
                     </th>
-                    <th>
-                        Описание
-                    </th>
-                    <th>
+                    <th width="30%">
                         Оценка
                     </th>
                 </tr>
