@@ -1,49 +1,50 @@
 let xhr = new XMLHttpRequest();
 let app = "https://script.google.com/macros/s/AKfycbyPyFg12jExguodJy_Iz4D75nLnW-j-gjTn-Q0600uVko6_L4gx/exec"; // ссылка на веб-приложение, опубликованное на основе гугловского скрипта, параметров не требует.
-let groups; // сюда запишем результат, разобрав JSON-ответ от GAS.
 
 createTasksTable();
 
 /**
- * Получение данных об успеваемости студентов 
- * и формирование выпадающих списков для доступа к ним. 
+ * Получение данных о дополнительных заданиях. 
  */
 function createTasksTable() {
+    let requestIndicator = document.getElementById("requestIndicator");
+    let descriptionElememt = document.getElementById("description");
+    let additionTasksElememt = document.getElementById("additionTasks");
+
     let output = "";
-    // xhr.open('GET', app);
-    xhr.overrideMimeType("application/json");
-    xhr.open('GET', "./response.json");
+    xhr.open('GET', app);
     
     xhr.onreadystatechange = function() {
-        if (xhr.readyState !== 4) {
+        if (xhr.readyState === 0 || xhr.readyState === 1 || xhr.readyState === 2) {
             return;
         }
+
+        if (xhr.readyState === 3) {
+            //console.log("Loading...");
+            requestIndicator.innerHTML = "Обработка данных...";
+        }
         
-        if (xhr.status === 200) {
+        if (xhr.readyState === 4 && xhr.status === 200) {
+            //console.log("Loaded.");
+            requestIndicator.innerHTML = "Данные загружены.";
+            requestIndicator.style.display = "none";
+
             try {
                 let response = JSON.parse(xhr.responseText);
-                //console.dir(response);
-                //saveText(xhr.responseText, "response.json" );
-                tasks = response.additionTasks;
+                //descriptionElememt.innerHTML = response.addition.description;
+                let tasks = response.additionTasks;
                 for (var i = 0; i < tasks.length; i++) {
                     output += "<tr class=\"task-header\"><td>" + tasks[i].title + "</td><th>" + tasks[i].estimate + "</th></tr><tr><td colspan=\"2\" class=\"accordion task-description\"><input type=\"checkbox\" id=\"accordion-" + i + "\"><label for=\"accordion-" + i + "\">Описание</label><div class=\"content\">"  + tasks[i].description + "</div></td></tr>";
                 }
                 
             } catch(e) {
-
+                console.log("Error. " + e);
+                console.log(xhr.responseText);
+                requestIndicator.innerHTML = "Ошибка обработки данных.";
+                requestIndicator.style.display = "block";
             }
         }
-        document.getElementById('additionTasks').innerHTML += output; 
+        additionTasksElememt.innerHTML = output; 
     };
     xhr.send();
-}
-
-function saveText(text, filename){
-    var a = document.createElement('a');
-    a.setAttribute('href', 'data:text/plain;charset=utf-u,'+encodeURIComponent(text));
-    a.setAttribute('download', filename);
-    document.body.appendChild(a); a.setAttribute("style", "display: none;");
-    a.click();
-    // console.dir(a);
-    a.remove();
 }
