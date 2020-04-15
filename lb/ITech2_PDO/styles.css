@@ -67,3 +67,20 @@ div.chapter {
 figure.pic_w_caption {
 	text-align: center;
 }
+
+table {
+  text-align: center;
+  border-collapse: collapse;
+  margin-left: auto;
+  margin-right: auto;
+}
+tr, td, th {
+  border: 1px solid black;
+}
+
+.variants > .view-variants ~ table {
+  display: none;
+}
+.variants > .view-variants:checked ~ table {
+  display: block;
+}
