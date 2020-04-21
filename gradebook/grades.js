@@ -138,25 +138,26 @@ class Gradebook {
         this.url = url;
     }
 
-    async getCurrentGrades(callback) {  
-        let self = this;  
-        self.setRequestIndicator("Обработка данных...", "block", "hidden");
-
-        fetch(self.url).then(function(response) {
-            if (!response.ok) {
-                self.setRequestIndicator("Ошибка загрузки данных.", "block", "hidden");
+    getCurrentGrades() {
+        let self = this;
+        return fetch(self.url).then(response => {
+            if (response.ok) {
+                self.setRequestIndicator("Данные загружены.", "none", "visible"); 
+                return response.json().catch(() => {
+                    self.setRequestIndicator("Ошибка обработки данных.", "block", "hidden");
+                    return Promise.reject();
+                });
             }
-            self.setRequestIndicator("Данные загружены.", "none", "visible");
-            response.json().then(function(json) {
-                callback(json.groups);
-                return json.groups;
-            }).catch(e => {
-                console.log("Error. " + e);
-                self.setRequestIndicator("Ошибка обработки данных.", "block", "hidden");
-                return {};
-            })
-        });  
+            else {
+                self.setRequestIndicator("Ошибка загрузки данных.", "block", "hidden");
+                return Promise.reject();
+            }
+        }).catch(error => {
+            self.setRequestIndicator("Ошибка загрузки данных.", "block", "hidden");
+            return Promise.reject();
+        });
     }
+
     setRequestIndicator(message, requestIndicatorDisplay, scoreSelectVisibility) {
         let requestIndicator = document.getElementById("requestIndicator");
         let scoreSelect = document.getElementById("scoreSelect");
@@ -206,33 +207,14 @@ function fillGroupListbox(groups) {
     }; 
 }
 
-/**
- * Заполнение таблицы с результатами лабораторных,
- * тестов и других видов работ выбранного студента выбранной группы. 
- */
-
 // TODO: get from config googlespreadsheet
 let url = "https://script.google.com/a/nure.ua/macros/s/AKfycby1R7D-cWFL6lea8USHh6lqUWC429isPn2ZcG9G/exec";
-let gradebook = new Gradebook(url);
+// let url = "temp.json";
 
+let gradebook = new Gradebook(url);
 let currentGrades = new GradeTable();
 let gradeCalculator = new GradeCalculator();
 
-//let groups = gradebook.getCurrentGrades();
-//console.dir(groups)
-
-//const promise1 = new Promise(gradebook.getCurrentGrades);
-//console.log(promise1);
-//   promise1.then(function(value) {
-//     console.log(value);
-//     // expected output: "foo"
-//   });
-
-//gradebook.getCurrentGrades();
-// gradebook.getCurrentGrades().then(groups => console.dir(groups));
+gradebook.getCurrentGrades().then(json => fillGroupListbox(json.groups));
 
 
-
-//.then(groups => fillGroupListbox(groups));
-
-gradebook.getCurrentGrades(fillGroupListbox);
