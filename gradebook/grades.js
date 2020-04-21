@@ -35,10 +35,9 @@ function calculateScore() {
     calculatedResult.value = res; 
 }
 
-let xhr = new XMLHttpRequest();
-let app = "https://script.google.com/a/nure.ua/macros/s/AKfycby1R7D-cWFL6lea8USHh6lqUWC429isPn2ZcG9G/exec";
+let url = "https://script.google.com/a/nure.ua/macros/s/AKfycby1R7D-cWFL6lea8USHh6lqUWC429isPn2ZcG9G/exec";
 //let app = "https://script.google.com/macros/s/AKfycbxpw5GljMeuz8u1RIOm3MnykDOmQJPiVhRyMonYALUVEEl838A/exec"; // ссылка на веб-приложение, опубликованное на основе гугловского скрипта к таблице успеваемости. В ответ на гет-запрос отдает данные из таблички, параметров не требует.
-let scores; // сюда запишем результат, разобрав JSON-ответ от GAS.
+let groups; // сюда запишем результат, разобрав JSON-ответ от GAS.
 
 let selectGroup = document.getElementById("groups");
 let selectStudent = document.getElementById("students");
@@ -49,48 +48,37 @@ createGroupListbox();
  * Получение реальных данных об успеваемости студентов 
  * и формирование выпадающих списков для доступа к ним. 
  */
-function createGroupListbox() {
+async function createGroupListbox() {
     let requestIndicator = document.getElementById("requestIndicator");
     let scoreSelect = document.getElementById("scoreSelect");
 
     let output = "";
-    xhr.open('GET', app);
+    requestIndicator.innerHTML = "Обработка данных...";
+
+    let response = await fetch(url);
     
-    xhr.onreadystatechange = function() {
-        if (xhr.readyState === 0 || xhr.readyState === 1 || xhr.readyState === 2) {
-            return;
+    if (!response.ok) {
+        requestIndicator.innerHTML = "Ошибка загрузки данных.";
+        requestIndicator.style.display = "block";
+        scoreSelect.style.visibility = "hidden";
+    }
+    requestIndicator.innerHTML = "Данные загружены.";
+    requestIndicator.style.display = "none";
+    scoreSelect.style.visibility = "visible";
+    try {
+        let gradebook = await response.json();
+        groups = gradebook.groups;
+        for (var i = 0; i < groups.length; i++) {
+            output += "<option>" + groups[i].groupName + "</option>";
         }
-
-        if (xhr.readyState === 3) {
-            //console.log("Loading...");
-            requestIndicator.innerHTML = "Обработка данных...";
-        }
-        
-        if (xhr.readyState === 4 && xhr.status === 200) {
-            //console.log("Loaded.");
-            requestIndicator.innerHTML = "Данные загружены.";
-            requestIndicator.style.display = "none";
-            scoreSelect.style.visibility = "visible";
-
-            try {
-                let r = JSON.parse(xhr.responseText);
-                //console.dir(r);
-                scores = r.groups;
-                for (var i = 0; i < scores.length; i++) {
-                    output += "<option>" + scores[i].groupName + "</option>";
-                }
-            } catch(e) {
-                console.log("Error. " + e);
-                console.log(xhr.responseText);
-                requestIndicator.innerHTML = "Ошибка обработки данных.";
-                requestIndicator.style.display = "block";
-                scoreSelect.style.visibility = "hidden";
-            }
-        }
-        selectGroup.innerHTML += output;
-        selectGroup.onchange = fillStudents;
-    };
-    xhr.send();
+    } catch(e) {
+        console.log("Error. " + e);
+        requestIndicator.innerHTML = "Ошибка обработки данных.";
+        requestIndicator.style.display = "block";
+        scoreSelect.style.visibility = "hidden";
+    }
+    selectGroup.innerHTML += output;
+    selectGroup.onchange = fillStudents;    
 }
 
 /**
@@ -133,7 +121,7 @@ function fillScore() {
  * Получение всех студентов выбранной группы. 
  */
 function getStudentsOfGroup(selectedGroupName) {
-    for(let group of scores) {
+    for(let group of groups) {
         if(group.groupName === selectedGroupName) {
             return group.students;
         }
@@ -144,7 +132,7 @@ function getStudentsOfGroup(selectedGroupName) {
  * Получение даты заполнения журнала для выбранной группы. 
  */
 function getRelevanceDateForGroup(selectedGroupName) {
-    for(let group of scores) {
+    for(let group of groups) {
         if(group.groupName === selectedGroupName) {
             return group.relevanceDate;
         }
