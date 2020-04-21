@@ -1,207 +1,238 @@
-// получение элементов таблички для расчета желаемой оценки
-let calculatedLb1 = document.getElementById('calculatedLb1');
-let calculatedLb2 = document.getElementById('calculatedLb2');
-let calculatedLb3 = document.getElementById('calculatedLb3');
-let calculatedLb4 = document.getElementById('calculatedLb4');
-let calculatedIntime = document.getElementById('calculatedIntime');
-let calculatedTest = document.getElementById('calculatedTest');
-let calculatedIDZ = document.getElementById('calculatedIDZ');
-let calculatedAddition = document.getElementById('calculatedAddition');
-let calculatedResult = document.getElementById('calculatedResult');
-calculatedLb1.onchange = calculateScore;
-calculatedLb2.onchange = calculateScore;
-calculatedLb3.onchange = calculateScore;
-calculatedLb4.onchange = calculateScore;
-calculatedIntime.onchange = calculateScore;
-calculatedTest.onchange = calculateScore;
-calculatedIDZ.onchange = calculateScore;
-calculatedAddition.onchange = calculateScore;
-calculateScore();
-
 /**
- * Перерасчет значения итоговой оценки при изменении ее компонентов.
- */
-function calculateScore() {
-    let lb1 = +calculatedLb1.value;
-    let lb2 = +calculatedLb2.value;
-    let lb3 = +calculatedLb3.value;
-    let lb4 = +calculatedLb4.value;
-    let intime = calculatedIntime.checked ? 10 : 0; 
-    let test = +calculatedTest.value;
-    let idz = +calculatedIDZ.value;
-    let addition = +calculatedAddition.value;
-    let res = lb1 + lb2 + lb3 + lb4 + intime + test + idz + addition;
+* Класс для управления калькулятором оценки студента.
+*/
+class GradeCalculator {
+    constructor() {
+        // получение элементов таблички для расчета желаемой оценки
+        this.calculatedLb1 = document.getElementById('calculatedLb1');
+        this.calculatedLb2 = document.getElementById('calculatedLb2');
+        this.calculatedLb3 = document.getElementById('calculatedLb3');
+        this.calculatedLb4 = document.getElementById('calculatedLb4');
+        this.calculatedIntime = document.getElementById('calculatedIntime');
+        this.calculatedTest = document.getElementById('calculatedTest');
+        this.calculatedIDZ = document.getElementById('calculatedIDZ');
+        this.calculatedAddition = document.getElementById('calculatedAddition');
+        
+        this.calculatedLb1.onchange = this.calculateScore;
+        this.calculatedLb2.onchange = this.calculateScore;
+        this.calculatedLb3.onchange = this.calculateScore;
+        this.calculatedLb4.onchange = this.calculateScore;
+        this.calculatedIntime.onchange = this.calculateScore;
+        this.calculatedTest.onchange = this.calculateScore;
+        this.calculatedIDZ.onchange = this.calculateScore;
+        this.calculatedAddition.onchange = this.calculateScore;
+        
+        this.calculateScore();
+    }
 
-    calculatedResult.value = res; 
-}
+    /**
+     * Установить значения компонентов оценки для указанного студента.
+     */
+    setGrades(stud) {
+        calculatedLb1.value = stud.lb1;
+        calculatedLb2.value = stud.lb2;
+        calculatedLb3.value = stud.lb3;
+        calculatedLb4.value = stud.lb4;
+        calculatedIntime.checked = stud.intime === 0 ? false : true;
+        calculatedTest.value = stud.test;
+        calculatedIDZ.value = stud.idz;
+        calculatedAddition.value = stud.addition;
 
-let url = "https://script.google.com/a/nure.ua/macros/s/AKfycby1R7D-cWFL6lea8USHh6lqUWC429isPn2ZcG9G/exec";
-//let app = "https://script.google.com/macros/s/AKfycbxpw5GljMeuz8u1RIOm3MnykDOmQJPiVhRyMonYALUVEEl838A/exec"; // ссылка на веб-приложение, опубликованное на основе гугловского скрипта к таблице успеваемости. В ответ на гет-запрос отдает данные из таблички, параметров не требует.
-let groups; // сюда запишем результат, разобрав JSON-ответ от GAS.
+        this.calculateScore();
+    }
 
-let selectGroup = document.getElementById("groups");
-let selectStudent = document.getElementById("students");
-
-createGroupListbox();
-
-/**
- * Получение реальных данных об успеваемости студентов 
- * и формирование выпадающих списков для доступа к ним. 
- */
-async function createGroupListbox() {
-    let requestIndicator = document.getElementById("requestIndicator");
-    let scoreSelect = document.getElementById("scoreSelect");
-
-    let output = "";
-    requestIndicator.innerHTML = "Обработка данных...";
-
-    let response = await fetch(url);
+    /**
+     * Расчет значения итоговой оценки для текущих значений ее компонентов.
+     */
+    calculateScore() {
+        let lb1 = +calculatedLb1.value;
+        let lb2 = +calculatedLb2.value;
+        let lb3 = +calculatedLb3.value;
+        let lb4 = +calculatedLb4.value;
+        let intime = calculatedIntime.checked ? 10 : 0; 
+        let test = +calculatedTest.value;
+        let idz = +calculatedIDZ.value;
+        let addition = +calculatedAddition.value;
+        let res = lb1 + lb2 + lb3 + lb4 + intime + test + idz + addition;
     
-    if (!response.ok) {
-        requestIndicator.innerHTML = "Ошибка загрузки данных.";
-        requestIndicator.style.display = "block";
-        scoreSelect.style.visibility = "hidden";
+        let calculatedResult = document.getElementById('calculatedResult');
+        calculatedResult.value = res; 
     }
-    requestIndicator.innerHTML = "Данные загружены.";
-    requestIndicator.style.display = "none";
-    scoreSelect.style.visibility = "visible";
-    try {
-        let gradebook = await response.json();
-        groups = gradebook.groups;
-        for (var i = 0; i < groups.length; i++) {
-            output += "<option>" + groups[i].groupName + "</option>";
-        }
-    } catch(e) {
-        console.log("Error. " + e);
-        requestIndicator.innerHTML = "Ошибка обработки данных.";
-        requestIndicator.style.display = "block";
-        scoreSelect.style.visibility = "hidden";
-    }
-    selectGroup.innerHTML += output;
-    selectGroup.onchange = fillStudents;    
 }
 
+/**
+* Класс для управления выводом данных про успеваемость студента.
+*/
+class GradeTable {
+    constructor(){
+        this.lb1cell = document.getElementById('realLb1');
+        this.lb1repository = document.getElementById('lb1repository');
+        this.lb2cell = document.getElementById('realLb2');
+        this.lb2repository = document.getElementById('lb2repository');
+        this.lb3cell = document.getElementById('realLb3');
+        this.lb3repository = document.getElementById('lb3repository');
+        this.lb4cell = document.getElementById('realLb4');
+        this.lb4repository = document.getElementById('lb4repository');
+        this.intimeCell = document.getElementById('realIntime');
+        this.testCell = document.getElementById('realTest');
+        this.idzCell = document.getElementById('realIDZ');
+        // this.idzRepository = document.getElementById('idzRepository');
+        this.additionCell = document.getElementById('realAddition');
+        // this.additionRepository = document.getElementById('additionRepository');
+        this.resultCell = document.getElementById('realResult');
+    }
+
+    /**
+     * Заполнение таблицы с результатами лабораторных,
+     * тестов и других видов работ для указанного студента. 
+     */
+    setTable(stud) {
+
+        this.lb1repository.checked = stud.lb1repository;
+        this.lb2repository.checked = stud.lb2repository;
+        this.lb3repository.checked = stud.lb3repository;
+        this.lb4repository.checked = stud.lb4repository;
+        // this.idzRepository.checked = stud.idzRepository;
+        // this.additionRepository.checked = stud.additionRepository;
+
+        this.lb1cell.innerHTML = stud.lb1;
+        this.lb2cell.innerHTML = stud.lb2;
+        this.lb3cell.innerHTML = stud.lb3;
+        this.lb4cell.innerHTML = stud.lb4;
+        this.intimeCell.innerHTML = stud.intime;
+        this.testCell.innerHTML = stud.test;
+        this.idzCell.innerHTML = stud.idz;
+        this.additionCell.innerHTML = stud.addition;
+        this.resultCell.innerHTML = stud.total;
+    }
+
+    /**
+     * Очистка таблицы текущих данных успеваемости. 
+     */
+    clearTable() {
+        this.lb1cell.innerHTML = "";
+        this.lb1repository.checked = false;
+        this.lb2cell.innerHTML = "";
+        this.lb2repository.checked = false;
+        this.lb3cell.innerHTML = "";
+        this.lb3repository.checked = false;
+        this.lb4cell.innerHTML = "";
+        this.lb4repository.checked = false;
+        this.intimeCell.innerHTML = "";
+        this.testCell.innerHTML = "";
+        this.idzCell.innerHTML = "";
+        // this.idzRepository.checked = false;
+        this.additionCell.innerHTML = "";
+        // this.additionRepository.checked = false;
+        this.resultCell.innerHTML = "";
+    }
+}
+
+/**
+* Класс для получения данных про успеваемость из электронного журнала.
+*/
+class Gradebook {
+    //groups; // сюда запишем результат, разобрав JSON-ответ от GAS.
+    
+    constructor(url) {
+        this.url = url;
+    }
+
+    async getCurrentGrades(callback) {  
+        let self = this;  
+        self.setRequestIndicator("Обработка данных...", "block", "hidden");
+
+        fetch(self.url).then(function(response) {
+            if (!response.ok) {
+                self.setRequestIndicator("Ошибка загрузки данных.", "block", "hidden");
+            }
+            self.setRequestIndicator("Данные загружены.", "none", "visible");
+            response.json().then(function(json) {
+                callback(json.groups);
+                return json.groups;
+            }).catch(e => {
+                console.log("Error. " + e);
+                self.setRequestIndicator("Ошибка обработки данных.", "block", "hidden");
+                return {};
+            })
+        });  
+    }
+    setRequestIndicator(message, requestIndicatorDisplay, scoreSelectVisibility) {
+        let requestIndicator = document.getElementById("requestIndicator");
+        let scoreSelect = document.getElementById("scoreSelect");
+
+        requestIndicator.innerHTML = message;
+        requestIndicator.style.display = requestIndicatorDisplay;
+        scoreSelect.style.visibility = scoreSelectVisibility;
+    }
+}
+  
 /**
  * Заполнение выпадающего списка студентов группы. 
- */
-function fillStudents() {
-    setResultTable();            
-    selectStudent.innerHTML = "<option>Студент</option>"; 
-    let students = getStudentsOfGroup(selectGroup.value);
+ */  
+function fillGroupListbox(groups) {
     let output = "";
-    for (let i = 0; i < students.length; i++) {
-        let studName = students[i].name;
-        if(studName !== "") {
-            output += "<option>" + studName + "</option>";
-        }
+    for (let i = 0; i < groups.length; i++) {
+        output += "<option>" + groups[i].groupName + "</option>";
     }
-    document.getElementById("relevanceDate").innerHTML = "Данные актуальны на " + getRelevanceDateForGroup(selectGroup.value);
-    selectStudent.innerHTML += output;
-    selectStudent.onchange = fillScore;
+    let selectGroup = document.getElementById("groups");
+    selectGroup.innerHTML += output;
+
+    selectGroup.onchange = () => {
+        currentGrades.clearTable();
+    
+        let relevanceDate = document.getElementById("relevanceDate");
+        relevanceDate.innerHTML = "Данные актуальны на " + groups.find(group => group.groupName === selectGroup.value).relevanceDate;
+    
+        let students = groups.find(group => group.groupName === selectGroup.value).students;
+        let output = "";
+        for (let i = 0; i < students.length; i++) {
+            let studName = students[i].name;
+            if(studName !== "") {
+                output += "<option>" + studName + "</option>";
+            }
+        }    
+        let selectStudent = document.getElementById("students");
+        selectStudent.innerHTML = "<option>Студент</option>";
+        selectStudent.innerHTML += output;
+
+        selectStudent.onchange = () => {
+            currentGrades.clearTable(); 
+            
+            let stud = students.find(student => student.name === selectStudent.value);
+            currentGrades.setTable(stud);
+            gradeCalculator.setGrades(stud);
+        }
+    }; 
 }
 
 /**
  * Заполнение таблицы с результатами лабораторных,
  * тестов и других видов работ выбранного студента выбранной группы. 
  */
-function fillScore() {
-    setResultTable();
-    let selectedGroupName = selectGroup.value;
-    let students = getStudentsOfGroup(selectedGroupName);
-    let selectedStudentName = selectStudent.value;
-    for(let stud of students) {
-        if(stud.name === selectedStudentName) {
-            setResultTable(stud);
-            break;
-        }
-    }            
-}
 
-/**
- * Получение всех студентов выбранной группы. 
- */
-function getStudentsOfGroup(selectedGroupName) {
-    for(let group of groups) {
-        if(group.groupName === selectedGroupName) {
-            return group.students;
-        }
-    }
-}
+// TODO: get from config googlespreadsheet
+let url = "https://script.google.com/a/nure.ua/macros/s/AKfycby1R7D-cWFL6lea8USHh6lqUWC429isPn2ZcG9G/exec";
+let gradebook = new Gradebook(url);
 
-/**
- * Получение даты заполнения журнала для выбранной группы. 
- */
-function getRelevanceDateForGroup(selectedGroupName) {
-    for(let group of groups) {
-        if(group.groupName === selectedGroupName) {
-            return group.relevanceDate;
-        }
-    }
-}
+let currentGrades = new GradeTable();
+let gradeCalculator = new GradeCalculator();
 
-/**
- * Заполнение таблицы с результатами лабораторных,
- * тестов и других видов работ для указанного студента. 
- */
-function setResultTable(stud) {
-    let lb1cell = document.getElementById('realLb1');
-    let lb1repository = document.getElementById('lb1repository');
-    let lb2cell = document.getElementById('realLb2');
-    let lb2repository = document.getElementById('lb2repository');
-    let lb3cell = document.getElementById('realLb3');
-    let lb3repository = document.getElementById('lb3repository');
-    let lb4cell = document.getElementById('realLb4');
-    let lb4repository = document.getElementById('lb4repository');
-    let intimeCell = document.getElementById('realIntime');
-    let testCell = document.getElementById('realTest');
-    let idzCell = document.getElementById('realIDZ');
-    // let idzRepository = document.getElementById('idzRepository');
-    let additionCell = document.getElementById('realAddition');
-    // let additionRepository = document.getElementById('additionRepository');
-    let resultCell = document.getElementById('realResult');
-    
-    if(arguments.length === 0) {
-        lb1cell.innerHTML = "";
-        lb1repository.checked = false;
-        lb2cell.innerHTML = "";
-        lb2repository.checked = false;
-        lb3cell.innerHTML = "";
-        lb3repository.checked = false;
-        lb4cell.innerHTML = "";
-        lb4repository.checked = false;
-        intimeCell.innerHTML = "";
-        testCell.innerHTML = "";
-        idzCell.innerHTML = "";
-        // idzRepository.checked = false;
-        additionCell.innerHTML = "";
-        // additionRepository.checked = false;
-        resultCell.innerHTML = "";
-        return;
-    }
-    lb1repository.checked = stud.lb1repository;
-    lb2repository.checked = stud.lb2repository;
-    lb3repository.checked = stud.lb3repository;
-    lb4repository.checked = stud.lb4repository;
-    // idzRepository.checked = stud.idzRepository;
-    // additionRepository.checked = stud.additionRepository;
-    
-    lb1cell.innerHTML = stud.lb1;
-    lb2cell.innerHTML = stud.lb2;
-    lb3cell.innerHTML = stud.lb3;
-    lb4cell.innerHTML = stud.lb4;
-    intimeCell.innerHTML = stud.intime;
-    testCell.innerHTML = stud.test;
-    idzCell.innerHTML = stud.idz;
-    additionCell.innerHTML = stud.addition;
-    resultCell.innerHTML = stud.total;
+//let groups = gradebook.getCurrentGrades();
+//console.dir(groups)
 
-    calculatedLb1.value = stud.lb1;
-    calculatedLb2.value = stud.lb2;
-    calculatedLb3.value = stud.lb3;
-    calculatedLb4.value = stud.lb4;
-    calculatedIntime.checked = stud.intime === 0 ? false : true;
-    calculatedTest.value = stud.test;
-    calculatedIDZ.value = stud.idz;
-    calculatedAddition.value = stud.addition;
-    calculateScore();
-}
+//const promise1 = new Promise(gradebook.getCurrentGrades);
+//console.log(promise1);
+//   promise1.then(function(value) {
+//     console.log(value);
+//     // expected output: "foo"
+//   });
+
+//gradebook.getCurrentGrades();
+// gradebook.getCurrentGrades().then(groups => console.dir(groups));
+
+
+
+//.then(groups => fillGroupListbox(groups));
+
+gradebook.getCurrentGrades(fillGroupListbox);
