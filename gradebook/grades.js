@@ -29,10 +29,10 @@ class GradeCalculator {
      * Установить значения компонентов оценки для указанного студента.
      */
     setGrades(stud) {
-        calculatedLb1.value = stud.lb1;
-        calculatedLb2.value = stud.lb2;
-        calculatedLb3.value = stud.lb3;
-        calculatedLb4.value = stud.lb4;
+        calculatedLb1.value = stud.lb1grade;
+        calculatedLb2.value = stud.lb2grade;
+        calculatedLb3.value = stud.lb3grade;
+        calculatedLb4.value = stud.lb4grade;
         calculatedIntime.checked = stud.intime === 0 ? false : true;
         calculatedTest.value = stud.test;
         calculatedIDZ.value = stud.idz;
@@ -76,9 +76,9 @@ class GradeTable {
         this.intimeCell = document.getElementById('realIntime');
         this.testCell = document.getElementById('realTest');
         this.idzCell = document.getElementById('realIDZ');
-        // this.idzRepository = document.getElementById('idzRepository');
+        this.idzRepository = document.getElementById('idzRepository');
         this.additionCell = document.getElementById('realAddition');
-        // this.additionRepository = document.getElementById('additionRepository');
+        this.additionRepository = document.getElementById('additionRepository');
         this.resultCell = document.getElementById('realResult');
     }
 
@@ -92,13 +92,13 @@ class GradeTable {
         this.lb2repository.checked = stud.lb2repository;
         this.lb3repository.checked = stud.lb3repository;
         this.lb4repository.checked = stud.lb4repository;
-        // this.idzRepository.checked = stud.idzRepository;
-        // this.additionRepository.checked = stud.additionRepository;
+        this.idzRepository.checked = stud.idzRepository;
+        this.additionRepository.checked = stud.additionRepository;
 
-        this.lb1cell.innerHTML = stud.lb1;
-        this.lb2cell.innerHTML = stud.lb2;
-        this.lb3cell.innerHTML = stud.lb3;
-        this.lb4cell.innerHTML = stud.lb4;
+        this.lb1cell.innerHTML = stud.lb1grade;
+        this.lb2cell.innerHTML = stud.lb2grade;
+        this.lb3cell.innerHTML = stud.lb3grade;
+        this.lb4cell.innerHTML = stud.lb4grade;
         this.intimeCell.innerHTML = stud.intime;
         this.testCell.innerHTML = stud.test;
         this.idzCell.innerHTML = stud.idz;
@@ -121,9 +121,9 @@ class GradeTable {
         this.intimeCell.innerHTML = "";
         this.testCell.innerHTML = "";
         this.idzCell.innerHTML = "";
-        // this.idzRepository.checked = false;
+        this.idzRepository.checked = false;
         this.additionCell.innerHTML = "";
-        // this.additionRepository.checked = false;
+        this.additionRepository.checked = false;
         this.resultCell.innerHTML = "";
     }
 }
@@ -182,15 +182,21 @@ function fillGroupListbox(groups) {
     selectGroup.onchange = () => {
         currentGrades.clearTable();
     
-        let relevanceDate = document.getElementById("relevanceDate");
-        relevanceDate.innerHTML = "Данные актуальны на " + groups.find(group => group.groupName === selectGroup.value).relevanceDate;
+        const selectedGroup = groups.find(group => group.groupName === selectGroup.value);
     
-        let students = groups.find(group => group.groupName === selectGroup.value).students;
+        let deadline = document.getElementById("deadline");
+        deadline.innerHTML = "Дедлайн для своевременной сдачи лабораторных " + selectedGroup.deadline;
+
+        // дата, на которую данные актальны, вероятно, берется не из той ячейки, нужна соседняя.?
+        // let relevanceDate = document.getElementById("relevanceDate");
+        // relevanceDate.innerHTML = "Данные актуальны на " + selectedGroup.relevanceDate;
+    
+        let students = selectedGroup.students;
         let output = "";
         for (let i = 0; i < students.length; i++) {
-            let studName = students[i].name;
-            if(studName !== "") {
-                output += "<option>" + studName + "</option>";
+            let fio = students[i].fio;
+            if(fio !== "") {
+                output += "<option>" + fio + "</option>";
             }
         }    
         let selectStudent = document.getElementById("students");
@@ -200,7 +206,10 @@ function fillGroupListbox(groups) {
         selectStudent.onchange = () => {
             currentGrades.clearTable(); 
             
-            let stud = students.find(student => student.name === selectStudent.value);
+            let stud = students.find(student => student.fio === selectStudent.value);
+            
+            console.dir(stud);
+
             currentGrades.setTable(stud);
             gradeCalculator.setGrades(stud);
         }
@@ -208,8 +217,8 @@ function fillGroupListbox(groups) {
 }
 
 // TODO: get from config googlespreadsheet
-let url = "https://script.google.com/a/nure.ua/macros/s/AKfycby1R7D-cWFL6lea8USHh6lqUWC429isPn2ZcG9G/exec";
-// let url = "temp.json";
+let url = "https://script.google.com/a/nure.ua/macros/s/AKfycbzjuR_m7XL03wGZExG8bM-G8Qqk-4v7I2viXxepCQ/exec";
+// let url = "temp.json"; // временный файл для отладки обработки получаемых от сервера данных
 
 let gradebook = new Gradebook(url);
 let currentGrades = new GradeTable();
@@ -217,4 +226,18 @@ let gradeCalculator = new GradeCalculator();
 
 gradebook.getCurrentGrades().then(json => fillGroupListbox(json.groups));
 
+// для сохранения тестовых данных в файл, во избежание постоянной работы с сервером в процессе отладки
+// gradebook.getCurrentGrades().then(json => {console.log(JSON.stringify(json)); fillGroupListbox(json.groups);});
+
+// для анонимизации тестовых данных
+// gradebook.getCurrentGrades().then(json => {anonimize(json); fillGroupListbox(json.groups);});
+// function anonimize(json) {
+//     let groups = json.groups;
+//     for (let group of groups) {
+//         for (let studNumber in group.students) {
+//             group.students[studNumber].fio = "Иванов Студент" + studNumber;
+//         }
+//     }
+//     console.log(JSON.stringify(json));
+// }
 
