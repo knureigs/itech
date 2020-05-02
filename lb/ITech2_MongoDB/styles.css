@@ -84,3 +84,8 @@ tr, td, th {
 .variants > .view-variants:checked ~ table {
   display: block;
 }
+
+span.code_snippet {
+	font-size: 13px;
+	font-family: Lucida Console;
+}
