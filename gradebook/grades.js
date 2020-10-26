@@ -65,14 +65,18 @@ class GradeCalculator {
 */
 class GradeTable {
     constructor(){
-        this.lb1cell = document.getElementById('realLb1');
-        this.lb1repository = document.getElementById('lb1repository');
-        this.lb2cell = document.getElementById('realLb2');
+        this.lb1var = document.getElementById('lb1var');
+        this.lb1repository = document.getElementById('lb1repository')
+        this.lb1cell = document.getElementById('realLb1');;
+        this.lb2var = document.getElementById('lb2var');
         this.lb2repository = document.getElementById('lb2repository');
-        this.lb3cell = document.getElementById('realLb3');
+        this.lb2cell = document.getElementById('realLb2');
+        this.lb3var = document.getElementById('lb3var');
         this.lb3repository = document.getElementById('lb3repository');
-        this.lb4cell = document.getElementById('realLb4');
+        this.lb3cell = document.getElementById('realLb3');
+        this.lb4var = document.getElementById('lb4var');
         this.lb4repository = document.getElementById('lb4repository');
+        this.lb4cell = document.getElementById('realLb4');
         this.intimeCell = document.getElementById('realIntime');
         this.testCell = document.getElementById('realTest');
         this.idzCell = document.getElementById('realIDZ');
@@ -87,6 +91,10 @@ class GradeTable {
      * тестов и других видов работ для указанного студента. 
      */
     setTable(stud) {
+        this.lb1var.innerHTML = stud.lb1var;
+        this.lb2var.innerHTML = stud.lb2var;
+        this.lb3var.innerHTML = stud.lb3var;
+        this.lb4var.innerHTML = stud.lb4var;
 
         this.lb1repository.checked = stud.lb1repository;
         this.lb2repository.checked = stud.lb2repository;
@@ -110,14 +118,18 @@ class GradeTable {
      * Очистка таблицы текущих данных успеваемости. 
      */
     clearTable() {
-        this.lb1cell.innerHTML = "";
+        this.lb1var.innerHTML = "";
         this.lb1repository.checked = false;
-        this.lb2cell.innerHTML = "";
+        this.lb1cell.innerHTML = "";
+        this.lb2var.innerHTML = "";
         this.lb2repository.checked = false;
-        this.lb3cell.innerHTML = "";
+        this.lb2cell.innerHTML = "";
+        this.lb3var.innerHTML = "";
         this.lb3repository.checked = false;
-        this.lb4cell.innerHTML = "";
+        this.lb3cell.innerHTML = "";
+        this.lb4var.innerHTML = "";
         this.lb4repository.checked = false;
+        this.lb4cell.innerHTML = "";
         this.intimeCell.innerHTML = "";
         this.testCell.innerHTML = "";
         this.idzCell.innerHTML = "";
@@ -187,9 +199,8 @@ function fillGroupListbox(groups) {
         let deadline = document.getElementById("deadline");
         deadline.innerHTML = "Дедлайн для своевременной сдачи лабораторных " + selectedGroup.deadline;
 
-        // дата, на которую данные актальны, вероятно, берется не из той ячейки, нужна соседняя.?
-        // let relevanceDate = document.getElementById("relevanceDate");
-        // relevanceDate.innerHTML = "Данные актуальны на " + selectedGroup.relevanceDate;
+        let relevanceDate = document.getElementById("relevanceDate");
+        relevanceDate.innerHTML = "Данные актуальны на " + selectedGroup.relevanceDate;
     
         let students = selectedGroup.students;
         let output = "";
@@ -217,7 +228,7 @@ function fillGroupListbox(groups) {
 }
 
 // TODO: get from config googlespreadsheet
-let url = "https://script.google.com/a/nure.ua/macros/s/AKfycbzjuR_m7XL03wGZExG8bM-G8Qqk-4v7I2viXxepCQ/exec";
+let url = "https://script.google.com/a/nure.ua/macros/s/AKfycby9aUgAugoqJWFO8cJRmpk8-RM5gXX7vocAflbO3A/exec";
 // let url = "temp.json"; // временный файл для отладки обработки получаемых от сервера данных
 
 let gradebook = new Gradebook(url);

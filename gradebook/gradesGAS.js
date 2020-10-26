@@ -1,4 +1,4 @@
-var googgleSpreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1j1e9GsRbXXlH0aNyUPttuCTRegXbuim2dJOqUSTEN44/edit'); // Gradebook_ITech2_2019-20
+var googgleSpreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1y226Vw62Mj3lzipA-VYFrFjpU5U_J_QMizsV7TlXAYU/edit'); // Gradebook_ITech1_2020-21
 
 var sheets = googgleSpreadsheet.getSheets();
 
@@ -44,7 +44,7 @@ function getData(){
         var group = {};
         var groupName = sheets[i].getName();
         group.groupName = groupName;                                                // groupName
-        group.relevanceDate = sheets[i].getRange("B3").getDisplayValue();
+        group.relevanceDate = sheets[i].getRange("A3").getDisplayValue();
         group.deadline = sheets[i].getRange("AD4").getDisplayValue();
         group.students = [];
         
