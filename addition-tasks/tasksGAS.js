@@ -1,15 +1,13 @@
-var googgleSpreadsheet = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1PuDhSF_EhDXi6Vs-if8Cc8XPHip8t8LZ5IQx37a-Zgo/edit'); // обрабатываемая гуглотаблица. 
-
-function AdditionTask(title, description, estimate, limited) {
+function AdditionalTask(title, description, estimate, limited) {
     this.title = title;
     this.description = description;
     this.estimate = estimate;
     this.limited = limited;
 }
 
-function getData(){
+function getAdditionalTasks(){
     var result = {};
-    var sheet = googgleSpreadsheet.getActiveSheet();
+    var sheet = googleSpreadsheet.getSheetByName("AdditionalTasks"); // лист в таблице, в котором содержатся данные о дополнительных заданиях.
 
     var dataDescription = sheet.getRange("A5").getDisplayValue();
     result.description = dataDescription;
@@ -33,20 +31,10 @@ function getData(){
         var estimate = fColumn[taskNumber][0];
         
         if(display=="TRUE" && active=="TRUE" && title!="") {
-            var task = new AdditionTask(title,description,estimate,limited);
+            var task = new AdditionalTask(title, description, estimate, limited);
             //Logger.log(task);
             result.taskList.push(task);
         }    
     }
     return result; 
-}
-
-function doGet() {
-    var data = getData();
-    if(!data) {
-        data = '';
-    }
-    var result = ContentService.createTextOutput(JSON.stringify({'additionTasks': data})).setMimeType(ContentService.MimeType.JSON);
-
-    return result;
 }
