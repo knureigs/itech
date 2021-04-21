@@ -3,7 +3,7 @@
 */
 class GradeCalculator {
     constructor() {
-        // получение элементов таблички для расчета желаемой оценки
+        // получение элементов таблички, используемых для расчета желаемой оценки
         this.calculatedLb1 = document.getElementById('calculatedLb1');
         this.calculatedLb2 = document.getElementById('calculatedLb2');
         this.calculatedLb3 = document.getElementById('calculatedLb3');
@@ -27,16 +27,17 @@ class GradeCalculator {
 
     /**
      * Установить значения компонентов оценки для указанного студента.
+     * @param {Student} stud Объект, описывающий успеваемость отдельного студента.
      */
     setGrades(stud) {
-        calculatedLb1.value = stud.lb1grade;
-        calculatedLb2.value = stud.lb2grade;
-        calculatedLb3.value = stud.lb3grade;
-        calculatedLb4.value = stud.lb4grade;
-        calculatedIntime.checked = stud.intime === 0 ? false : true;
-        calculatedTest.value = stud.test;
-        calculatedIDZ.value = stud.idz;
-        calculatedAddition.value = stud.addition;
+        calculatedLb1.value = stud.laboratoryWorks.lb1.finalGrade;
+        calculatedLb2.value = stud.laboratoryWorks.lb2.finalGrade;
+        calculatedLb3.value = stud.laboratoryWorks.lb3.finalGrade;
+        calculatedLb4.value = stud.laboratoryWorks.lb4.finalGrade;
+        calculatedIntime.checked = stud.laboratoryWorks.intime === 0 ? false : true;
+        calculatedTest.value = stud.finalTest.finalGrade;
+        calculatedIDZ.value = stud.idz.finalGrade;
+        calculatedAddition.value = stud.additionTasks.finalGrade;
 
         this.calculateScore();
     }
@@ -65,83 +66,214 @@ class GradeCalculator {
 */
 class GradeTable {
     constructor(){
-        this.lb1var = document.getElementById('lb1var');
-        this.lb1repository = document.getElementById('lb1repository')
-        this.lb1cell = document.getElementById('realLb1');;
-        this.lb2var = document.getElementById('lb2var');
-        this.lb2repository = document.getElementById('lb2repository');
-        this.lb2cell = document.getElementById('realLb2');
-        this.lb3var = document.getElementById('lb3var');
-        this.lb3repository = document.getElementById('lb3repository');
-        this.lb3cell = document.getElementById('realLb3');
-        this.lb4var = document.getElementById('lb4var');
-        this.lb4repository = document.getElementById('lb4repository');
-        this.lb4cell = document.getElementById('realLb4');
+        this.lb1variantCell = document.getElementById('lb1variant');
+        this.lb1implementationDateCell = document.getElementById('lb1implementationDate');
+        this.lb1repositoryCell = document.getElementById('lb1repository');
+        this.lb1disputeCell = document.getElementById('lb1dispute');
+        this.lb1finalGradeCell = document.getElementById('lb1finalGrade');
+
+        this.lb2variantCell = document.getElementById('lb2variant');
+        this.lb2implementationDateCell = document.getElementById('lb2implementationDate');
+        this.lb2repositoryCell = document.getElementById('lb2repository');
+        this.lb2disputeCell = document.getElementById('lb2dispute');
+        this.lb2finalGradeCell = document.getElementById('lb2finalGrade');
+
+        this.lb3variantCell = document.getElementById('lb3variant');
+        this.lb3implementationDateCell = document.getElementById('lb3implementationDate');
+        this.lb3repositoryCell = document.getElementById('lb3repository');
+        this.lb3disputeCell = document.getElementById('lb3dispute');
+        this.lb3finalGradeCell = document.getElementById('lb3finalGrade');
+
+        this.lb4variantCell = document.getElementById('lb4variant');
+        this.lb4implementationDateCell = document.getElementById('lb4implementationDate');
+        this.lb4repositoryCell = document.getElementById('lb4repository');
+        this.lb4disputeCell = document.getElementById('lb4dispute');
+        this.lb4finalGradeCell = document.getElementById('lb4finalGrade');
+
         this.intimeCell = document.getElementById('realIntime');
-        this.testCell = document.getElementById('realTest');
-        this.idzCell = document.getElementById('realIDZ');
-        this.idzRepository = document.getElementById('idzRepository');
-        this.additionCell = document.getElementById('realAddition');
-        this.additionRepository = document.getElementById('additionRepository');
+
+        this.testFirstCell = document.getElementById('realTestFirst');
+        this.testSecondCell = document.getElementById('realTestSecond');
+        this.testFinalCell = document.getElementById('realTestFinal');
+
+        this.idzRepositoryCell = document.getElementById('idzRepository');
+        this.idzDisputeGradeCell = document.getElementById('idzDisputeGrade');
+        this.idzFinalGradeCell = document.getElementById('realIDZ');
+
+        this.additionRepositoryCell = document.getElementById('additionRepository');
+        this.additionDisputGradeCell = document.getElementById('additionDisputGrade');
+        this.additionFinalGradeCell = document.getElementById('realAddition');
+
         this.resultCell = document.getElementById('realResult');
+
+        this.permitElement = document.getElementById('permit');
     }
 
     /**
      * Заполнение таблицы с результатами лабораторных,
      * тестов и других видов работ для указанного студента. 
+     * @param {Student} stud Объект, описывающий успеваемость отдельного студента.
      */
     setTable(stud) {
-        this.lb1var.innerHTML = stud.lb1var;
-        this.lb2var.innerHTML = stud.lb2var;
-        this.lb3var.innerHTML = stud.lb3var;
-        this.lb4var.innerHTML = stud.lb4var;
+        let laboratoryWorks = stud.laboratoryWorks;
 
-        this.lb1repository.checked = stud.lb1repository;
-        this.lb2repository.checked = stud.lb2repository;
-        this.lb3repository.checked = stud.lb3repository;
-        this.lb4repository.checked = stud.lb4repository;
-        this.idzRepository.checked = stud.idzRepository;
-        this.additionRepository.checked = stud.additionRepository;
+        this.lb1variantCell.innerHTML = laboratoryWorks.lb1.variant;
+        this.lb1implementationDateCell.innerHTML = laboratoryWorks.lb1.implementationDate;
+        this.lb1repositoryCell.innerHTML = this.getRepositoryStatus(laboratoryWorks.lb1.repositoryStatus);
+        this.lb1disputeCell.innerHTML = this.getDisputData(laboratoryWorks.lb1.disputeDate, laboratoryWorks.lb1.disputeGrade);
+        this.lb1finalGradeCell.innerHTML = laboratoryWorks.lb1.finalGrade;
 
-        this.lb1cell.innerHTML = stud.lb1grade;
-        this.lb2cell.innerHTML = stud.lb2grade;
-        this.lb3cell.innerHTML = stud.lb3grade;
-        this.lb4cell.innerHTML = stud.lb4grade;
-        this.intimeCell.innerHTML = stud.intime;
-        this.testCell.innerHTML = stud.test;
-        this.idzCell.innerHTML = stud.idz;
-        this.additionCell.innerHTML = stud.addition;
+        this.lb2variantCell.innerHTML = laboratoryWorks.lb2.variant;
+        this.lb2implementationDateCell.innerHTML = laboratoryWorks.lb2.implementationDate;
+        this.lb2repositoryCell.innerHTML = this.getRepositoryStatus(laboratoryWorks.lb2.repositoryStatus);
+        this.lb2disputeCell.innerHTML = this.getDisputData(laboratoryWorks.lb2.disputeDate, laboratoryWorks.lb2.disputeGrade);
+        this.lb2finalGradeCell.innerHTML = laboratoryWorks.lb2.finalGrade;
+
+        this.lb3variantCell.innerHTML = laboratoryWorks.lb3.variant;
+        this.lb3implementationDateCell.innerHTML = laboratoryWorks.lb3.implementationDate;
+        this.lb3repositoryCell.innerHTML = this.getRepositoryStatus(laboratoryWorks.lb3.repositoryStatus);
+        this.lb3disputeCell.innerHTML = this.getDisputData(laboratoryWorks.lb3.disputeDate, laboratoryWorks.lb3.disputeGrade);
+        this.lb3finalGradeCell.innerHTML = laboratoryWorks.lb3.finalGrade;
+
+        this.lb4variantCell.innerHTML = laboratoryWorks.lb4.variant;
+        this.lb4implementationDateCell.innerHTML = laboratoryWorks.lb4.implementationDate;
+        this.lb4repositoryCell.innerHTML = this.getRepositoryStatus(laboratoryWorks.lb4.repositoryStatus);
+        this.lb4disputeCell.innerHTML = this.getDisputData(laboratoryWorks.lb4.disputeDate, laboratoryWorks.lb4.disputeGrade);
+        this.lb4finalGradeCell.innerHTML = laboratoryWorks.lb4.finalGrade;
+
+        this.intimeCell.innerHTML = laboratoryWorks.intime;
+
+        this.testFirstCell.innerHTML = stud.finalTest.attemptFirst;
+        this.testSecondCell.innerHTML = stud.finalTest.attemptSecond;
+        this.testFinalCell.innerHTML = stud.finalTest.finalGrade;
+
+        this.idzRepositoryCell.innerHTML = this.getRepositoryStatus(stud.idz.repositoryStatus);
+        this.idzDisputeGradeCell.innerHTML = stud.idz.disputeGrade;
+        this.idzFinalGradeCell.innerHTML = stud.idz.finalGrade;
+
+        this.additionRepositoryCell.checked = stud.additionTasks.repository;
+        this.additionDisputGradeCell.innerHTML = stud.additionTasks.disputeGrade;
+        this.additionFinalGradeCell.innerHTML = stud.additionTasks.finalGrade;
+
         this.resultCell.innerHTML = stud.total;
+
+        this.permitElement.innerHTML = "Допуск к зачету: <b>" + (stud.permit === "н/д" ? "нет данных" : stud.permit) + "</b>";
+        // this.permitCell.innerHTML = this.getPermitStatus(stud.permit); // можно и без интерпретации, там не так много значений.
     }
 
     /**
      * Очистка таблицы текущих данных успеваемости. 
      */
     clearTable() {
-        this.lb1var.innerHTML = "";
-        this.lb1repository.checked = false;
-        this.lb1cell.innerHTML = "";
-        this.lb2var.innerHTML = "";
-        this.lb2repository.checked = false;
-        this.lb2cell.innerHTML = "";
-        this.lb3var.innerHTML = "";
-        this.lb3repository.checked = false;
-        this.lb3cell.innerHTML = "";
-        this.lb4var.innerHTML = "";
-        this.lb4repository.checked = false;
-        this.lb4cell.innerHTML = "";
+        this.lb1variantCell.innerHTML = "";
+        this.lb1implementationDateCell.innerHTML = "";
+        this.lb1repositoryCell.innerHTML = "";
+        this.lb1disputeCell.innerHTML = "";
+        this.lb1finalGradeCell.innerHTML = "";
+
+        this.lb2variantCell.innerHTML = "";
+        this.lb2implementationDateCell.innerHTML = "";
+        this.lb2repositoryCell.innerHTML = "";
+        this.lb2disputeCell.innerHTML = "";
+        this.lb2finalGradeCell.innerHTML = "";
+
+        this.lb3variantCell.innerHTML = "";
+        this.lb3implementationDateCell.innerHTML = "";
+        this.lb3repositoryCell.innerHTML = "";
+        this.lb3disputeCell.innerHTML = "";
+        this.lb3finalGradeCell.innerHTML = "";
+
+        this.lb4variantCell.innerHTML = "";
+        this.lb4implementationDateCell.innerHTML = "";
+        this.lb4repositoryCell.innerHTML = "";
+        this.lb4disputeCell.innerHTML = "";
+        this.lb4finalGradeCell.innerHTML = "";
+
         this.intimeCell.innerHTML = "";
-        this.testCell.innerHTML = "";
-        this.idzCell.innerHTML = "";
-        this.idzRepository.checked = false;
-        this.additionCell.innerHTML = "";
-        this.additionRepository.checked = false;
+
+        this.testFirstCell.innerHTML = "";
+        this.testSecondCell.innerHTML = "";
+        this.testFinalCell.innerHTML = "";
+        
+        this.idzRepositoryCell.innerHTML = "";
+        this.idzDisputeGradeCell.innerHTML = "";
+        this.idzFinalGradeCell.innerHTML = "";
+
+        this.additionRepositoryCell.checked = false;
+        this.additionDisputGradeCell.innerHTML = "";
+        this.additionFinalGradeCell.innerHTML = "";
+
         this.resultCell.innerHTML = "";
+
+        this.permitElement.innerHTML = "";
+    }
+
+    /**
+     * Подготовка строковго представления данных о защите.
+     * @param {string} disputeDate Дата защиты.
+     * @param {string} disputeGrade оценка за защиту.
+     * @returns Строковое представление данных о защите.
+     */
+    getDisputData(disputeDate, disputeGrade) {
+        if(disputeDate==="" || disputeGrade==="") {
+            return "";
+        }
+        else {
+            return disputeDate + ", " + disputeGrade;
+        }
+    }
+
+    /**
+     * Интерпретация статуса репозитория в понятное пользователю сообщение.
+     * @param {string} repositoryStatus Метка статуса репозитория в электронном журнале.
+     * @returns Сообщение о статусе принятия репозитория пользователю.
+     */
+    getRepositoryStatus(repositoryStatus) {
+        switch(repositoryStatus) {
+            case "empty":
+                return "отсутствует";
+            case "wait":
+                return "отсутствует";
+            case "check":
+                return "на проверке";
+            case "ok":
+                return "принят";
+            case "warning":
+                return "принят";
+            case "error":
+                return "ошибка!";
+            case "good":
+                return "принят";
+            case "saved":
+                return "принят";
+            case "not need":
+                return "не требуется";
+            default:
+                return "ошибка!";
+        }
+    }
+
+    /**
+     * Интерпретация данных о допуске к сдаче зачета.
+     * @param {string} permit Один из вариантов касаемо наличия допуска к сессии.
+     * @returns Сообщение о допуске к зачету.
+     */
+    getPermitStatus(permit) {
+        switch(permit) {
+            case "н/д":
+                return "нет данных";
+            case "есть":
+                return "есть";
+            case "нет":
+                return "нет";
+            default:
+                return "нет данных";
+        }
     }
 }
 
 /**
-* Класс для получения данных про успеваемость из электронного журнала.
+* Класс для получения данных про успеваемость группы из электронного журнала.
 */
 class Gradebook {
     //groups; // сюда запишем результат, разобрав JSON-ответ от GAS.
@@ -152,6 +284,7 @@ class Gradebook {
 
     getCurrentGrades() {
         let self = this;
+        self.setRequestIndicator("Отправка запроса...", "block", "hidden");
         return fetch(self.url).then(response => {
             if (response.ok) {
                 self.setRequestIndicator("Данные загружены.", "none", "visible"); 
@@ -170,72 +303,86 @@ class Gradebook {
         });
     }
 
-    setRequestIndicator(message, requestIndicatorDisplay, scoreSelectVisibility) {
-        let requestIndicator = document.getElementById("requestIndicator");
-        let scoreSelect = document.getElementById("scoreSelect");
+    setRequestIndicator(requestIndicatorMessage, requestIndicatorDisplay, groupDataVisibility) {
+        // console.log(requestIndicatorMessage);
 
-        requestIndicator.innerHTML = message;
-        requestIndicator.style.display = requestIndicatorDisplay;
-        scoreSelect.style.visibility = scoreSelectVisibility;
+        let requestIndicatorElement = document.getElementById("requestIndicator");
+        requestIndicatorElement.innerHTML = requestIndicatorMessage;
+        requestIndicatorElement.style.display = requestIndicatorDisplay;
+
+        let groupDataElement = document.getElementById("groupData");
+        groupDataElement.style.visibility = groupDataVisibility;
     }
 }
   
 /**
  * Заполнение выпадающего списка студентов группы. 
+ * @param {Array} groups Массив названий групп, доступных для выбора в текущем семестре.
  */  
 function fillGroupListbox(groups) {
+    // console.dir(groups);
+    let selectGroupElement = document.getElementById("groups");
     let output = "";
     for (let i = 0; i < groups.length; i++) {
-        output += "<option>" + groups[i].groupName + "</option>";
+        output += "<option>" + groups[i] + "</option>";
     }
-    let selectGroup = document.getElementById("groups");
-    selectGroup.innerHTML += output;
+    selectGroupElement.innerHTML += output;
 
-    selectGroup.onchange = () => {
+    selectGroupElement.onchange = () => {
         currentGrades.clearTable();
-    
-        const selectedGroup = groups.find(group => group.groupName === selectGroup.value);
-    
-        let deadline = document.getElementById("deadline");
-        deadline.innerHTML = "Дедлайн для своевременной сдачи лабораторных " + selectedGroup.deadline;
 
-        let relevanceDate = document.getElementById("relevanceDate");
-        relevanceDate.innerHTML = "Данные актуальны на " + selectedGroup.relevanceDate;
+        const selectedGroupName = selectGroupElement.value;
+
+        // let gradebook = new Gradebook("temp.json");  // временный файл для отладки обработки получаемых от сервера данных
+        // TODO: get from config googlespreadsheet
+        let url = "https://script.google.com/macros/s/AKfycby0MiMpaEfIHvB-jOXvVTScTFr3sJvuWzaKjvW15Tqc5rVvxi4pteAEXj3aPu6ZY7px6Q/exec";        
+        let gradebook = new Gradebook(url + "?groupName=" + selectedGroupName);
     
-        let students = selectedGroup.students;
-        let output = "";
-        for (let i = 0; i < students.length; i++) {
-            let fio = students[i].fio;
-            if(fio !== "") {
-                output += "<option>" + fio + "</option>";
-            }
-        }    
-        let selectStudent = document.getElementById("students");
-        selectStudent.innerHTML = "<option>Студент</option>";
-        selectStudent.innerHTML += output;
-
-        selectStudent.onchange = () => {
-            currentGrades.clearTable(); 
-            
-            let stud = students.find(student => student.fio === selectStudent.value);
-            
-            console.dir(stud);
-
-            currentGrades.setTable(stud);
-            gradeCalculator.setGrades(stud);
-        }
+        gradebook.getCurrentGrades().then(json => fillStudentsListbox(json.group));
     }; 
 }
 
-// TODO: get from config googlespreadsheet
-let url = "https://script.google.com/a/nure.ua/macros/s/AKfycby9aUgAugoqJWFO8cJRmpk8-RM5gXX7vocAflbO3A/exec";
-// let url = "temp.json"; // временный файл для отладки обработки получаемых от сервера данных
+/**
+ * Заполнение выпадающего списка студентов группы и элементов с общей информацией касаемо успеваемости группы.
+ * @param {group} group Объект, содержащий данные об успеваемости студентческой группы.
+ */
+function fillStudentsListbox(group) {
+    let deadlineElement = document.getElementById("deadline");
+    deadlineElement.innerHTML = "Дедлайн для <b>своевременной</b> сдачи лабораторных у этой группы <b>" + group.deadline + "<b>";
 
-let gradebook = new Gradebook(url);
+    // DEPRECATED: данные об актуальности отдаваемых пользователю данных об успеваемости не нужны.
+    // let relevanceDate = document.getElementById("relevanceDate");
+    // relevanceDate.innerHTML = "Данные актуальны на " + group.relevanceDate;
+
+    let students = group.students;
+    let selectStudentElement = document.getElementById("students");
+    let output = "";
+    for (let i = 0; i < students.length; i++) {
+        let fio = students[i].fio;
+        if(fio !== "") {
+            output += "<option>" + fio + "</option>";
+        }
+    }    
+    selectStudentElement.innerHTML = "<option>Студент</option>";
+    selectStudentElement.innerHTML += output;
+
+    selectStudentElement.onchange = () => {
+        currentGrades.clearTable(); 
+        
+        let stud = students.find(student => student.fio === selectStudentElement.value);
+        
+        // console.dir(stud);
+
+        currentGrades.setTable(stud);
+        gradeCalculator.setGrades(stud);
+    }
+}
+
 let currentGrades = new GradeTable();
 let gradeCalculator = new GradeCalculator();
 
-gradebook.getCurrentGrades().then(json => fillGroupListbox(json.groups));
+// перечень групп менять при обновлении электронного журнала в началае каждого семетра.
+fillGroupListbox(["КІУКІ-18-1", "КІУКІ-18-2", "КІУКІ-18-3", "КІУКІ-18-4", "КІУКІ-18-5", "КІУКІ-18-6", "КІУКІ-18-7", "КІУКІ-18-8", "КІУКІу-19-1", "КІУКІу-19-2"]);
 
 // для сохранения тестовых данных в файл, во избежание постоянной работы с сервером в процессе отладки
 // gradebook.getCurrentGrades().then(json => {console.log(JSON.stringify(json)); fillGroupListbox(json.groups);});
