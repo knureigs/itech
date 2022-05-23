@@ -8,7 +8,7 @@ class GradeCalculator {
         this.calculatedLb2 = document.getElementById('calculatedLb2');
         this.calculatedLb3 = document.getElementById('calculatedLb3');
         this.calculatedLb4 = document.getElementById('calculatedLb4');
-        this.calculatedIntime = document.getElementById('calculatedIntime');
+        // this.calculatedIntime = document.getElementById('calculatedIntime');
         this.calculatedTest = document.getElementById('calculatedTest');
         this.calculatedIDZ = document.getElementById('calculatedIDZ');
         this.calculatedAddition = document.getElementById('calculatedAddition');
@@ -17,7 +17,7 @@ class GradeCalculator {
         this.calculatedLb2.onchange = this.calculateScore;
         this.calculatedLb3.onchange = this.calculateScore;
         this.calculatedLb4.onchange = this.calculateScore;
-        this.calculatedIntime.onchange = this.calculateScore;
+        // this.calculatedIntime.onchange = this.calculateScore;
         this.calculatedTest.onchange = this.calculateScore;
         this.calculatedIDZ.onchange = this.calculateScore;
         this.calculatedAddition.onchange = this.calculateScore;
@@ -34,7 +34,7 @@ class GradeCalculator {
         calculatedLb2.value = stud.laboratoryWorks.lb2.finalGrade;
         calculatedLb3.value = stud.laboratoryWorks.lb3.finalGrade;
         calculatedLb4.value = stud.laboratoryWorks.lb4.finalGrade;
-        calculatedIntime.checked = stud.laboratoryWorks.intime === 0 ? false : true;
+        // calculatedIntime.checked = stud.laboratoryWorks.intime === 0 ? false : true;
         calculatedTest.value = stud.finalTest.finalGrade;
         calculatedIDZ.value = stud.idz.finalGrade;
         calculatedAddition.value = stud.additionTasks.finalGrade;
@@ -50,7 +50,8 @@ class GradeCalculator {
         let lb2 = +calculatedLb2.value;
         let lb3 = +calculatedLb3.value;
         let lb4 = +calculatedLb4.value;
-        let intime = calculatedIntime.checked ? 10 : 0; 
+        // let intime = calculatedIntime.checked ? 10 : 0; 
+        let intime = 0; 
         let test = +calculatedTest.value;
         let idz = +calculatedIDZ.value;
         let addition = +calculatedAddition.value;
@@ -90,7 +91,7 @@ class GradeTable {
         this.lb4disputeCell = document.getElementById('lb4dispute');
         this.lb4finalGradeCell = document.getElementById('lb4finalGrade');
 
-        this.intimeCell = document.getElementById('realIntime');
+        // this.intimeCell = document.getElementById('realIntime');
 
         this.testFirstCell = document.getElementById('realTestFirst');
         this.testSecondCell = document.getElementById('realTestSecond');
@@ -141,7 +142,7 @@ class GradeTable {
         this.lb4disputeCell.innerHTML = this.getDisputData(laboratoryWorks.lb4.disputeDate, laboratoryWorks.lb4.disputeGrade);
         this.lb4finalGradeCell.innerHTML = laboratoryWorks.lb4.finalGrade;
 
-        this.intimeCell.innerHTML = laboratoryWorks.intime;
+        // this.intimeCell.innerHTML = laboratoryWorks.intime;
 
         this.testFirstCell.innerHTML = stud.finalTest.attemptFirst;
         this.testSecondCell.innerHTML = stud.finalTest.attemptSecond;
@@ -189,7 +190,7 @@ class GradeTable {
         this.lb4disputeCell.innerHTML = "";
         this.lb4finalGradeCell.innerHTML = "";
 
-        this.intimeCell.innerHTML = "";
+        // this.intimeCell.innerHTML = "";
 
         this.testFirstCell.innerHTML = "";
         this.testSecondCell.innerHTML = "";
@@ -209,7 +210,7 @@ class GradeTable {
     }
 
     /**
-     * Подготовка строковго представления данных о защите.
+     * Подготовка строкового представления данных о защите.
      * @param {string} disputeDate Дата защиты.
      * @param {string} disputeGrade оценка за защиту.
      * @returns Строковое представление данных о защите.
@@ -334,8 +335,8 @@ function fillGroupListbox(groups) {
         const selectedGroupName = selectGroupElement.value;
 
         // let gradebook = new Gradebook("temp.json");  // временный файл для отладки обработки получаемых от сервера данных
-        // TODO: get from config googlespreadsheet
-        let url = "https://script.google.com/macros/s/AKfycby0MiMpaEfIHvB-jOXvVTScTFr3sJvuWzaKjvW15Tqc5rVvxi4pteAEXj3aPu6ZY7px6Q/exec";        
+        // TODO: get from config googlespreadsheet      
+        let url = "https://script.google.com/macros/s/AKfycbwwULVOmAcRp-ykq-BKWPe7qoWLJUm6rtb1p_vpQa0cefTfFoQQSXMc9E-GRMFtN_Z6/exec";        
         let gradebook = new Gradebook(url + "?groupName=" + selectedGroupName);
     
         gradebook.getCurrentGrades().then(json => fillStudentsListbox(json.group));
@@ -347,8 +348,8 @@ function fillGroupListbox(groups) {
  * @param {group} group Объект, содержащий данные об успеваемости студентческой группы.
  */
 function fillStudentsListbox(group) {
-    let deadlineElement = document.getElementById("deadline");
-    deadlineElement.innerHTML = "Дедлайн для <b>своевременной</b> сдачи лабораторных у этой группы <b>" + group.deadline + "<b>";
+    // let deadlineElement = document.getElementById("deadline");
+    // deadlineElement.innerHTML = "Дедлайн для <b>своевременной</b> сдачи лабораторных у этой группы <b>" + group.deadline + "<b>";
 
     // DEPRECATED: данные об актуальности отдаваемых пользователю данных об успеваемости не нужны.
     // let relevanceDate = document.getElementById("relevanceDate");
@@ -382,7 +383,7 @@ let currentGrades = new GradeTable();
 let gradeCalculator = new GradeCalculator();
 
 // перечень групп менять при обновлении электронного журнала в началае каждого семетра.
-fillGroupListbox(["КІУКІ-18-1", "КІУКІ-18-2", "КІУКІ-18-3", "КІУКІ-18-4", "КІУКІ-18-5", "КІУКІ-18-6", "КІУКІ-18-7", "КІУКІ-18-8", "КІУКІу-19-1", "КІУКІу-19-2"]);
+fillGroupListbox(["КІУКІ-19-1", "КІУКІ-19-2", "КІУКІ-19-3", "КІУКІ-19-4", "КІУКІ-19-5", "КІУКІ-19-6", "КІУКІу-20-1", "КІУКІу-20-2"]);
 
 // для сохранения тестовых данных в файл, во избежание постоянной работы с сервером в процессе отладки
 // gradebook.getCurrentGrades().then(json => {console.log(JSON.stringify(json)); fillGroupListbox(json.groups);});

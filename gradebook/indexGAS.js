@@ -1,4 +1,4 @@
-var spreadsheets = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1k1yuJP3K6UoHqpnkHsVCYe3ahfB4Fo-SBUxtX8nOmOk/edit'); // Gradebook_ITech2_2020-21
+var spreadsheets = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1TWn7IN2_S0N6Wf4abXHJ3iXD5j-7yRggBYu5i9HM3IQ/edit'); // Gradebook_ITech2_2021-22
 
 function doGet(e) {
   if(e === undefined || e.parameter === undefined || e.parameter.groupName === undefined) {

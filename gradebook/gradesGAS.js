@@ -67,7 +67,7 @@ function getSheetData(groupName){
   sheetData.deadline = sheet.getRange("AI4").getDisplayValue();
   
   sheetData.lastRowNumber = sheet.getLastRow();
-  lastRowNumber = sheetData.lastRowNumber; // для упрщения обращения к числу строк в журнале.
+  lastRowNumber = sheetData.lastRowNumber; // для упрощения обращения к числу строк в журнале.
   
   sheetData.columns = []; // колонки, содержащие нужные для студентов данные об успеваемости.
 
@@ -174,6 +174,7 @@ function FinalTest (attemptFirst, attemptSecond, finalGrade) {
  */
 function IDZ (repositoryStatus, disputeGrade, finalGrade) {
   this.repositoryStatus = repositoryStatus;
+  // this.disputeDate = disputeDate; // дата защиты.
   this.disputeGrade = disputeGrade;
   this.finalGrade = finalGrade;
 }

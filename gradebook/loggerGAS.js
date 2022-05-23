@@ -1,24 +1,36 @@
-var spreadsheets = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1k1yuJP3K6UoHqpnkHsVCYe3ahfB4Fo-SBUxtX8nOmOk/edit'); // Gradebook_ITech2_2020-21
+var spreadsheets = SpreadsheetApp.openByUrl('https://docs.google.com/spreadsheets/d/1TWn7IN2_S0N6Wf4abXHJ3iXD5j-7yRggBYu5i9HM3IQ/edit'); // Gradebook_ITech2_2021-22
 var logSheet = spreadsheets.getSheetByName("Log");
+
+var labThemesFirstSemester = ["HTML", "CSS", "JavaScript", "PHP"];
+var labThemesSecondSemester = ["PDO", "MongoDB", "AJAX", "NodeJS"];
+var labThemes = labThemesFirstSemester;
 
 function onEdit(e) {
   var editedSheetName = e.source.getActiveSheet().getName();
   // Browser.msgBox(editedSheetName);
-  if(editedSheetName != "Log") {
-    var emptyRowNumber = logSheet.getLastRow() + 1;
-    var editedSheet = spreadsheets.getSheetByName(editedSheetName);
+
+  if(isObservedSheet(editedSheetName)) {
+    // TODO: check observed row/col area.
     var rowNumber = e.range.getRow();
     var colNumber = e.range.getColumn();
 
+    var emptyRowNumber = logSheet.getLastRow() + 1;
+    var editedSheet = spreadsheets.getSheetByName(editedSheetName);
+
+    var semesterNumber = getSemesterNumber(editedSheet);
+    labThemes = semesterNumber === 1 ? labThemesFirstSemester : labThemesSecondSemester;
+
+    /* get log data */
     var currentDate = getCurrentDateString();
     var currentTime = getCurrentTimeString();
-    var address = e.range.getA1Notation();    
+    var address = e.range.getA1Notation();
     var fio = rowNumber > 4 ? editedSheet.getRange("B" + rowNumber).getDisplayValue() : "";
     var cellHeader = getCellHeader(columnIndexToLetter(colNumber));
     var valueOld = e.oldValue == undefined ? "" : e.oldValue;
     // var valueNew = e.value;
     var valueNew = editedSheet.getRange(columnIndexToLetter(colNumber) + rowNumber).getDisplayValue();
 
+    /* get spreadsheet cells */
     var cellDate = logSheet.getRange("A" + emptyRowNumber);
     var cellTime = logSheet.getRange("B" + emptyRowNumber);
     var cellName = logSheet.getRange("C" + emptyRowNumber);
@@ -28,6 +40,7 @@ function onEdit(e) {
     var cellValueOld = logSheet.getRange("G" + emptyRowNumber);
     var cellValueNew = logSheet.getRange("H" + emptyRowNumber);
     
+    /* set spreadsheet cell values  */
     cellDate.setValue(currentDate);
     cellTime.setValue(currentTime);
     cellName.setValue(editedSheetName);
@@ -40,12 +53,26 @@ function onEdit(e) {
   }
 }
 
-function isObservedCell(sheetName, col, row) {
+function isObservedSheet(sheetName) {
   switch(sheetName){
     case "Log":
-    return false;
+      return false;
     case "Статистика":
-    return false;
+      return false;
+  }
+  return true;
+}
+
+function getSemesterNumber(editedSheet) {
+  var cellA1 = editedSheet.getRange("A1");
+  var semesterName = cellA1.getDisplayValue();
+  switch(semesterName[semesterName.length - 2]){
+    case 2:
+      return 2;
+    case 1:
+      return 1;
+    default:
+      return 0;
   }
 }
 
@@ -70,64 +97,64 @@ function getCellHeader(columnLetter) {
     return "Роспись за т/б";
     
     case "G":
-    return "Л/р, PDO, Вариант";
+    return "Л/р №1, " + labThemes[0] + ", Вариант";
     case "H":
-    return "Л/р, PDO, Отработка";
+    return "Л/р №1, " + labThemes[0] + ", Отработка";
     case "I":
-    return "Л/р, PDO, Репозиторий, Адрес";
+    return "Л/р №1, " + labThemes[0] + ", Репозиторий, Адрес";
     case "J":
-    return "Л/р, PDO, Репозиторий, Статус";
+    return "Л/р №1, " + labThemes[0] + ", Репозиторий, Статус";
     case "K":
-    return "Л/р, PDO, Защита, Дата";
+    return "Л/р №1, " + labThemes[0] + ", Защита, Дата";
     case "L":
-    return "Л/р, PDO, Защита, Оценка";
+    return "Л/р №1, " + labThemes[0] + ", Защита, Оценка";
     case "M":
-    return "Л/р, PDO, Защита, Учтено";  
+    return "Л/р №1, " + labThemes[0] + ", Защита, Учтено";  
     
     case "N":
-    return "Л/р, MongoDB, Вариант";
+    return "Л/р №2, " + labThemes[1] + ", Вариант";
     case "O":
-    return "Л/р, MongoDB, Отработка";
+    return "Л/р №2, " + labThemes[1] + ", Отработка";
     case "P":
-    return "Л/р, MongoDB, Репозиторий, Адрес";
+    return "Л/р №2, " + labThemes[1] + ", Репозиторий, Адрес";
     case "Q":
-    return "Л/р, MongoDB, Репозиторий, Статус";
+    return "Л/р №2, " + labThemes[1] + ", Репозиторий, Статус";
     case "R":
-    return "Л/р, MongoDB, Защита, Дата";
+    return "Л/р №2, " + labThemes[1] + ", Защита, Дата";
     case "S":
-    return "Л/р, MongoDB, Защита, Оценка";
+    return "Л/р №2, " + labThemes[1] + ", Защита, Оценка";
     case "T":
-    return "Л/р, MongoDB, Защита, Учтено";  
+    return "Л/р №2, " + labThemes[1] + ", Защита, Учтено";  
     
     case "U":
-    return "Л/р, AJAX, Вариант";
+    return "Л/р №3, " + labThemes[2] + ", Вариант";
     case "V":
-    return "Л/р, AJAX, Отработка";
+    return "Л/р №3, " + labThemes[2] + ", Отработка";
     case "W":
-    return "Л/р, AJAX, Репозиторий, Адрес";
+    return "Л/р №3, " + labThemes[2] + ", Репозиторий, Адрес";
     case "X":
-    return "Л/р, AJAX, Репозиторий, Статус";
+    return "Л/р №3, " + labThemes[2] + ", Репозиторий, Статус";
     case "Y":
-    return "Л/р, AJAX, Защита, Дата";
+    return "Л/р №3, " + labThemes[2] + ", Защита, Дата";
     case "Z":
-    return "Л/р, AJAX, Защита, Оценка";
+    return "Л/р №3, " + labThemes[2] + ", Защита, Оценка";
     case "AA":
-    return "Л/р, AJAX, Защита, Учтено";  
+    return "Л/р №3, " + labThemes[2] + ", Защита, Учтено";  
     
     case "AB":
-    return "Л/р, NodeJS, Вариант";
+    return "Л/р №4, " + labThemes[3] + ", Вариант";
     case "AC":
-    return "Л/р, NodeJS, Отработка";
+    return "Л/р №4, " + labThemes[3] + ", Отработка";
     case "AD":
-    return "Л/р, NodeJS, Репозиторий, Адрес";
+    return "Л/р №4, " + labThemes[3] + ", Репозиторий, Адрес";
     case "AE":
-    return "Л/р, NodeJS, Репозиторий, Статус";
+    return "Л/р №4, " + labThemes[3] + ", Репозиторий, Статус";
     case "AF":
-    return "Л/р, NodeJS, Защита, Дата";
+    return "Л/р №4, " + labThemes[3] + ", Защита, Дата";
     case "AG":
-    return "Л/р, NodeJS, Защита, Оценка";
+    return "Л/р №4, " + labThemes[3] + ", Защита, Оценка";
     case "AH":
-    return "Л/р, NodeJS, Защита, Учтено";  
+    return "Л/р №4, " + labThemes[3] + ", Защита, Учтено";  
     
     case "AI":
     return "Баллы за сдачу вовремя";
@@ -222,20 +249,22 @@ function getCellHeader(columnLetter) {
     return "Присутствие, лекции, №9";
     case "BY":
     return "Присутствие, лекции, №10";
-
     case "BZ":
-    return "Присутствие, Л/р, PDO";
+    return "Присутствие, лекции, №11";
+
     case "CA":
-    return "Присутствие, Л/р, MongoDB";    
+    return "Присутствие, Л/р №1, " + labThemes[0];
     case "CB":
-    return "Присутствие, Л/р, AJAX";
+    return "Присутствие, Л/р №2, " + labThemes[1];    
     case "CC":
-    return "Присутствие, Л/р, NodeJS";
+    return "Присутствие, Л/р №3, " + labThemes[2];
     case "CD":
+    return "Присутствие, Л/р №4, " + labThemes[3];
+    case "CE":
     return "Присутствие, Зачет";
-
   }
-
+  
+  return "<не определено>";
 }
 
 function getCurrentDateString() {
