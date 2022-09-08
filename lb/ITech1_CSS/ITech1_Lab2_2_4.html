@@ -1,0 +1,95 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+	<title>2.2.4 Позиционирование элементов</title>
+	<meta charset="utf-8">
+	<link href="css/styles.css" type="text/css" rel="stylesheet">
+</head>
+<body>
+	<p class="subsection">2.2.4 Позиционирование элементов</p>
+	<p>При помощи CSS-позиционирования вы можете разместить элемент точно в нужном месте страницы. Позиционирование даёт большие возможности для создания точного дизайна.</p>
+	<ul>
+		<li><a href="#s1">Принципы  CSS-позиционирования</a></li>
+		<li><a href="#s2">Абсолютное  позиционирование</a></li>
+		<li><a href="#s3">Относительное  позиционирование</a></li>
+	</ul>
+	<h2 id="s1">Принципы CSS-позиционирования</h2>
+	<p>Представим окно браузера как систему координат:</p>
+	<p><img alt="Browserwindow with coordinates" src="images/figure017.gif"></p>
+	<p>Принципы CSS-позиционирования&nbsp; - в том, что вы можете расположить блок в системе координат где угодно.</p>
+	<p>Скажем, мы хотим позиционировать заголовок:</p>
+	<p><img alt="Headline in a box" src="images/figure018.gif"></p>
+	<p>Если мы хотим расположить его на 100px от верхней границы документа и на 200px слева, мы должны ввести следующий код CSS:</p>
+	<div class="codebox"><pre><code>
+	h1 {
+		position:absolute;
+		<strong>top: 100px;
+		left: 200px;</strong>
+	}</code></pre></div>
+	<p>Вот результат:</p>
+	<p><img alt="Headline positioned in browserwindow" src="images/figure019.gif"></p>
+	<h2 id="s2">Абсолютное позиционирование</h2>
+	<p>Элемент, позиционированный абсолютно, не получает никакого пространства в документе. Это означает, что после позиционирования он не оставляет после себя пустое пространство.</p>
+	<p style="text-align: left">Для абсолютного позиционирования элемента свойство <code>position</code> должно иметь значение <strong>absolute</strong>. Вы можете использовать значения <strong>left</strong>, <strong>right</strong>, <strong>top</strong> и <strong>bottom</strong> для размещения бокса.</p>
+	<p>В качестве примера абсолютного позиционирования мы разместим 4 бокса в углах документа:</p>
+	<div class="codebox"><pre><code>#box1 {
+	<strong>position:absolute;</strong>
+	   top: 50px;
+	   left: 50px;
+	}
+	#box2 {
+	<strong>position:absolute;</strong>
+	   top: 50px;
+	   right: 50px;
+	}
+	#box3 {
+	<strong>position:absolute;</strong>
+	   bottom: 50px;
+	   right: 50px;
+	}
+	
+	#box4 {
+	<strong>position:absolute;</strong>
+	   bottom: 50px;
+	   left: 50px;
+	}</code></pre></div>
+	<a title="Show above code" href="ITech1_Lab2_2_4_1.htm" target="_blank">Показать пример</a> 
+	<h2 id="s3">Относительное позиционирование</h2>
+	<p>Чтобы позиционировать элемент относительно, установите в свойстве <code>position</code> значение <strong>relative</strong>. Разница между относительным абсолютным позиционированием состоит в том, как вычисляется позиционирование.</p>
+	<p>Позиция элемента, размещаемого относительно, <strong>вычисляется относительно его оригинальной позиции в документе</strong>. Это означает, что вы смещаете элемент вправо, влево, вверх или вниз. Таким образом, элемент всё ещё занимает в документе пространство после позиционирования.</p>
+	<p>Как пример относительного позиционирования попробуем разместить три рисунка относительно их оригинального расположения на странице. Обратите внимание, что рисунки оставили после смещения пустое пространство на своих оригинальных позициях в документе:</p>
+	<div class="codebox"><pre><code>
+#dog1 {
+position:relative;
+left: 350px;
+bottom: 150px;
+}
+#dog2 {
+position:relative;
+left: 150px;
+bottom: 500px;
+}
+
+#dog3 {
+position:relative;
+left: 50px;
+bottom: 500px;
+}
+</code>
+</pre></div>
+	<a title="Show above code" href="ITech1_Lab2_2_4_2.htm" target="_blank">Показать пример</a>
+	
+	
+	
+	
+	
+<!-- 	<p>position:&nbsp;&nbsp; absolute-блок становится полностью самостоятельным;
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;relative-блок становится полностью относительным;
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;static-данные распологаются обычным образом;
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;fixed-данные распологаются обычным образом;
+	<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;inherid-блок становится наследуемым. -->
+
+	
+	<br><a href="index.html">Вернуться на главную страницу</a>
+</body>
+</html>

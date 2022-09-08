@@ -1,0 +1,135 @@
+﻿<!DOCTYPE HTML>
+<html>
+<head>
+  <title>3.2.4 Примеры</title>
+  <meta charset="utf-8">
+  <link href="css/styles.css" type="text/css" rel="stylesheet">
+  <script>
+    function addText()
+    {
+      var elemDiv = document.getElementById("foraddedtxt");
+      var elemTxt = document.getElementById("addedtxt");
+      var oldTextNode = elemDiv.firstChild;
+      var oldText = oldTextNode.nodeValue;
+      var newText = oldText + elemTxt.value;
+      var newTextNode = document.createTextNode(newText);
+      elemDiv.replaceChild(newTextNode, oldTextNode);
+    }
+    function mOver() {
+      var img = new Image();
+      img.src = "images/images01.jpg";
+      document.images["myImg"].src = img.src;
+    }
+    function mOut() {
+      document.images[0].src = "images/images02.jpg";
+    }
+    function calc(form)
+    {
+      var n1 = form.n1.value;
+      var n2 = form.n2.value;
+      n1 = parseFloat(n1);
+      n2 = parseFloat(n2);
+      z = form.z.value;
+      res = eval(n1 + z + n2);
+      form.res.value = res;
+    }
+    function showworktime(obj) 
+    {
+      var dateNow = new Date();
+      var dateWorkBegin = new Date(document.getElementById("firstDate").value);
+      
+      var uptimeSec=(dateNow-dateWorkBegin)/1000;
+      var uptimeMin=uptimeSec/60;
+      var uptimeH=uptimeMin/60;
+      var uptimeD=uptimeH/24;
+      var uptimeY=uptimeD/364;
+        
+      alert(uptimeSec + " s");
+      alert(uptimeMin + " minutes");
+      alert(uptimeH + " hours");
+      alert(uptimeD + " days");
+      alert(uptimeY + " years");
+      alert(dateNow.getFullYear()-dateWorkBegin.getFullYear()-1 + " years");
+      
+      // Находим нужную таблицу
+      var tbody = document.getElementById('stazh').getElementsByTagName('tbody')[0];    
+      // Создаем строку таблицы и добавляем ее
+      var row = tbody.insertRow(0);
+      var td1=row.insertCell(0);  
+      var td2=row.insertCell(1);    
+      // Наполняем ячейки
+      td1.innerHTML = uptimeSec;
+      td2.innerHTML = " s";
+    }
+</script>
+</head>
+<body>
+  <p class="subsection">3.2.4 Примеры манипуляции элементами страницы (см. исходный код данной страницы)</p>
+    
+  <div id="text_color">Пример изменения текста каждые полсекунды.</div>
+  <script>
+    var element = document.getElementById("text_color");
+    var colors = ["yellow", "orange", "red"];
+    var nextColor = 0;
+    setInterval("element.style.color = colors[nextColor++ % colors.length];",500);
+  </script>
+  <br>
+  <br>
+  <div>Пример добавления содержимого в элемент.</div>
+  <form>
+    <input type="text" id="addedtxt" value="какой-то текст..."> 
+    <br>
+    <input type="button" onclick="addText();" value="Добавить текст">
+    <div id="foraddedtxt">В конце данной строки будет добавлен введенный текст-></div>
+  </form>
+  <br>
+  <div>Пример смены рисунков при наведении.</div>
+  <a href="#" onmouseover="mOver()" onmouseout="mOut()"><img src="images/images01.jpg" border="0" id="myImg" alt="myImg"></a>
+  <br>
+  <br>
+  <div>Простейший калькулятор.</div>
+  <form name="formcalc" >
+    <input type="text" name="n1" id="n1" value="2"><br>
+    <input type="text" name="z" id="z" value="+"><br>
+    <input type="text" name="n2" id="n2" value="3"> <br>
+    <input type="button" onclick="calc(formcalc);" value="result"> <br>
+    <input type="text" name="res" id="res"> <br>
+  </form>
+  <br>
+  <br>
+  <div>Вывод текущей даты:</div>
+  <div id="demo"></div>
+  <script>
+    var d = new Date();
+    document.getElementById("demo").innerHTML = d.getFullYear();
+  </script> 
+  <br>
+  <br>
+  <div>Вычисление стажа работы, если в анкете приводятся данные: фамилия и дата приема на работу.</div>
+  <form name="form3_9">
+    <table border="1">
+      <tr><td>Фамилия:</td><td><input type="text" value="qwerty" name="FIO"></td></tr>
+      <tr><td>Дата приема на работу:</td><td><input type="text" id="firstDate" name="firstDate" value="12/12/1999"></td></tr>
+    </table>
+    <input type="button" value="WorkTime" onclick="showworktime(form3_9)">
+    <table border="1" id="stazh">
+      <thead>
+        <tr>
+          <th>Величина стажа</th>
+          <th>Единица измерения</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+  </form>
+  <br>
+  <br><a href="javascript:window.alert('Attention!!! press the button to continue.')">Метод Alert.</a>
+  <br><a href="javascript:window.status=window.confirm('Answer yes or no.');void(0);">Метод Confirm.</a>
+  <br><a href="javascript:window.status=window.prompt('Type string here:','');void(0);">Метод Prompt.</a>
+  <br>
+  
+  
+  <a href="index.html">Вернуться на главную страницу</a>
+</body>
+</html>

@@ -1,0 +1,24 @@
+.error {
+	color: red;
+}
+.subsection {
+	color: #993300;
+}
+.quest_hidden {
+	display: none;
+}
+.property_title {
+	color: #993300;
+}
+em {
+	color:#009933;
+}
+.code {
+	color:#0000BB;
+}
+.code_comment {
+	color:#FF8000;
+}
+.code_string {
+	color:#FF0000;
+}
