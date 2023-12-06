@@ -11,12 +11,12 @@ xhr.onreadystatechange = function() {
     }
     if (xhr.readyState === 3) {
         //console.log("Loading...");
-        requestIndicator.innerHTML = "Обработка данных... Ожидайте.";
+        requestIndicator.innerHTML = "Data processing... Please wait.";
     }
     
     if (xhr.readyState === 4 && xhr.status === 200) {
         //console.log("Loaded.");
-        requestIndicator.innerHTML = "Данные загружены.";
+        requestIndicator.innerHTML = "Data loaded.";
         requestIndicator.style.display = "none";
         try {
             localStorage.setItem("additionalTasks", xhr.responseText);// сохранение данных, полученных из запроса
@@ -25,29 +25,29 @@ xhr.onreadystatechange = function() {
         } catch(e) {
             console.log("Error. " + e);
             console.log(xhr.responseText);
-            requestIndicator.innerHTML = "Ошибка обработки данных.";
+            requestIndicator.innerHTML = "Error processing data.";
             requestIndicator.style.display = "block";
         }
     }    
 };
 
 xhr.onerror = function () {
-    requestIndicator.innerHTML = "<h3 style = \"color: red\"> Ошибка сервера или соединения.</h3><p style = \"color: red\">Будут загружены ранее сохраненные локальные данные... Ожидайте.</p>";
+    requestIndicator.innerHTML = "<h3 style = \"color: red\">Server or connection failure.</h3><p style = \"color: red\">Будуть завантажені раніше збережені локальні дані... Очікуйте.</p>";
     requestIndicator.style.display = "block";
     try {
         let response = JSON.parse(localStorage.getItem("additionalTasks")); //получаем ранее сохраненные данные
         if (response) {
             fillTasksData(response.additional);
-            requestIndicator.innerHTML = "<h3 style = \"color: red\"> Ошибка сервера или соединения.</h3><p style = \"color: red\">Поэтому здесь выведены ранее сохраненные данные, обязательно уточните актуальные условия заинтересовавшего вас задания у преподавателя!</p>";
+            requestIndicator.innerHTML = "<h3 style = \"color: red\">Server or connection failure.</h3><p style = \"color: red\">Тут наведені раніше збережені дані, обов'язково уточніть їх актуальність, якщо завдання вас зацікавило, у викладача!</p>";
             requestIndicator.style.display = "block";
         } else {
-            requestIndicator.innerHTML = "<h3 style = \"color: red\"> Ошибка сервера или соединения.</h3><p style = \"color: red\">Ранее сохраненные данные не обнаружены :( Попробуйте, пожалуйста, обновить страницу позже.</p>";
+            requestIndicator.innerHTML = "<h3 style = \"color: red\">Server or connection failure.</h3><p style = \"color: red\">Раніше збережені дані не виявлені :( Спробуйте, будь ласка, оновити сторінку пізніше.</p>";
             requestIndicator.style.display = "block";
         }
     } catch (e) {
         console.log("Error. " + e);
         console.log(xhr.responseText);
-        requestIndicator.innerHTML = "Ошибка обработки данных.";
+        requestIndicator.innerHTML = "Error processing data.";
         requestIndicator.style.display = "block";
     }
 };
@@ -69,7 +69,7 @@ function fillTasksData(tasksData) {
         output += "<td>" + tasks[i].title + "</td>";
         output += "<th>" + tasks[i].estimate + "</th>";
         output += "</tr>";
-        output += "<tr><td colspan=\"2\" class=\"accordion task-description\"><input type=\"checkbox\" id=\"accordion-" + i + "\"><label for=\"accordion-" + i + "\">Описание</label><div class=\"content\">"  + tasks[i].description + "</div></td></tr>";
+        output += "<tr><td colspan=\"2\" class=\"accordion task-description\"><input type=\"checkbox\" id=\"accordion-" + i + "\"><label for=\"accordion-" + i + "\">Description</label><div class=\"content\">"  + tasks[i].description + "</div></td></tr>";
     }
     additionalTasksElement.innerHTML = output; 
 }
