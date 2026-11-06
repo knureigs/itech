@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="uk-UA">
+
+<head>
+	<title>ITech1, Web</title>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta name="description"
+		content="Версія 2026.11.05. Методичні вказівки для виконання лабораторної роботи по публікації власного ресурсу протягом курсу 'Веб-розробка' для потоку КІУКІ.">
+	<base target="_blank">
+	<link href="css/styles.css" type="text/css" rel="stylesheet">
+	<style>
+		body {
+			background: #ffe6ac;
+		}
+
+		h1 {
+			text-align: center;
+		}
+
+		div {
+			margin-top: 20px;
+		}
+
+		#lab_theme {
+			text-align: center;
+			font-size: larger;
+			font-weight: bold;
+		}
+
+		.section_name {
+			font-weight: bold;
+		}
+
+		ul,
+		ol {
+			margin-top: 0px;
+		}
+
+		table,
+		td,
+		th {
+			border: 1px solid black;
+			border-spacing: 0px;
+		}
+	</style>
+</head>
+
+<body style="background: #ffe6ac">
+	<h1 style="text-align: center" id="start">Лабораторна робота №5</h1>
+
+	<div id="lab_theme">
+		Публікація власного web-ресурсу
+	</div>
+
+	<div id="lab_goal">
+		<span class="section_name">5.1 Мета роботи</span>
+		<br>Закріплення практичних навичок розробки веб-ресурсів з використанням HTML та CSS, набуття досвіду
+		проектування структури та інтерфейсу сайту, підготовки технічного завдання, організації вихідного коду у системі
+		контролю версій та публікації готового ресурсу у мережі Інтернет.
+	</div>
+
+	<div id="lab_software">
+		<span class="section_name">5.2 Необхідні засоби</span>
+		<br>Для виконання лабораторної роботи рекомендується використовувати таке відкрите програмне забезпечення:
+		<ul>
+			<li>редактор коду <b>MS Visual Studio Code</b> або будь-який інший, який знайомий користувачу і забезпечує
+				підсвічування синтаксису (Notepad++, Sublime Text, Atom, Brackets и т.п.);</li>
+			<li>браузер Mozilla Firefox або Google Chrome;</li>
+			<li>СКВ <b>Git</b> (для роботи з сервісом <b>GitHub</b> потрібен доступ до мережі Інтернет).</li>
+		</ul>
+	</div>
+
+	<div id="lab_execution">
+		<span class="section_name">5.3 Порядок виконання роботи</span>
+		<ol>
+			<li>Обрати тематику ресурсу. <b>На свій розсуд, примусового розподілу не передбачено</b>. Ресурс може бути
+				присвячений рідному місту, улюбленому фільму, серіалу, анімації, книзі, напрямку у музиці, письменнику
+				тощо. Єдина вимога - обрана вами тематика та плануємий контент не повинні порушувати чинного
+				законодавства та загальних культурних норм. <i>Пам'ятайте, що ваші роботи і звіти зберігаються в
+					університеті тривалий час і доступні керівництву</i>.</li>
+			<li>Опис технічного завдання у файлі README.md. ТЗ має довільний формат, і зазвичай передбачає висвітлення
+				наступних питань:
+				<ul>
+					<li>загальні відомості про ресурс (назва (якщо вона передбачається) та короткий опис призначення ресурсу);</li>
+					<li>цільова аудиторія (для кого призначений сайт);</li>
+					<li>функціональні вимоги (які можливості має надавати ресурс);</li>
+					<li>структура сайту (перелік сторінок (якщо ресурс багатосторінковий) та їх призначення);</li>
+					<li>вимоги до дизайну (кольорова гама, шрифти, загальні побажання щодо оформлення);</li>
+					<li>технічні вимоги (використані технології, вимоги щодо адаптивності, підтримувані браузери);</li>
+					<li>використані зовнішні матеріали (зображення, тексти, графіка) та їх джерела.</li>
+				</ul>
+			</li>
+			<!-- <li>Сайтмап вимагати не варто.</li> -->
+			<li>При реалізації пам'ятати про забезпечення адаптивності. Перевірити роботу у різних браузерах при різному
+				розмірі вікна.</li>
+			<!-- <li>Web Accessibility</li> -->
+			<li>При розміщенні вихідного коду у репозиторії на Github обрати ліцензію. <i>Я раджу MIT, але розгляньте і
+					інші варіанти</i>.</li>
+			<li>Скористатися сервісом Github Pages (як вже робили на першій лабораторній, присвяченій HTML).</li>
+			<li>Перевірити створений ресурс на валідність за допомогою <a
+					href="https://validator.w3.org/">онлайн-сервісу</a>, в якому використовувати URL-адресу
+				опублікованого на Github Pages документа. Виправити помилки, які не пов'язані з використанням CSS.</li>
+			<li>Перевірити створений ресурс за допомогою <a	href="https://pagespeed.web.dev/">PageSpeed Insights</a>, в якому використовувати URL-адресу опублікованого на Github Pages документа. У звіті навести фрагмент висновків, принаймні, щодо показників First Contentful Paint та Largest Contentful Paint.</li>
+			<li>Перевірити доступність створеного ресурсу за допомогою сервісу <a href="https://wave.webaim.org/">WAVE</a>, в якому використовувати URL-адресу опублікованого на Github Pages документа.</li>
+			<li><b>Бути готовим до запитань стосовно вашого коду.</b></li>
+		</ol>
+		<br>Відпрацювання може бути отримано шляхом демонстрації студентом <b>повністю виконаної</b> роботи викладачу, з
+		відповідями на запитання викладача щодо ходу роботи та використаних засобів. Можливий запит щодо отримання
+		викладачем посилання на GitHub репозиторій проекту з кодом лабораторної роботи.
+	</div>
+
+	<div id="lab_report">
+		<span class="section_name">5.4 Зміст звіту</span>
+		<br>Формальний звіт з лабораторної роботи повинен містити: мету роботи, розроблене ТЗ, вихідний код web-сторінки та стильових
+		файлів, зображення ресурсу, посилання на репозиторій, скріншоти валідатора, формальні висновки по роботі.
+	</div>
+
+	<div id="lab_questions">
+		<span class="section_name">5.5 Контрольні запитання</span>
+		<ol>
+			<li>Етапи розробки веб-ресурсу.</li>
+			<li>З чого складається технічне завдання?</li>
+			<li>Що таке сайтмап?</li>
+			<li>Недоліки табличного верстання.</li>
+			<li>Призначення елементів header, nav, main, article, section, aside, footer.</li>
+			<li>Для чого застосовується CSS-директива @media?</li>
+			<li>Одиниці виміру в CSS (px, %, em, rem, vw, vh).</li>
+			<li>Які показники якості сайту дозволяє перевірити сервіс PageSpeed Insights?</li>
+			<li>Поняття веб-доступності. Що таке ARIA?</li>
+			<li>Призначення файлів LICENSE та README.md у репозиторії проекту.</li>
+			<li>У чому різниця між ліцензіями MIT, Apache 2.0 та GPL?</li>
+			<li>Сopyleft та permissive ліцензії.</li>
+			<li>Призначення та можливості W3C Validator.</li>
+		</ol>
+	</div>
+
+	<div id="lab_literature">
+		<span class="section_name">Корисні посилання</span>
+		<ol>
+			<li>Посібники з розмітки Markdown: <a href="https://gist.github.com/Jekins/2bf2d0638163f1294637">1</a>, <a
+					href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet">2</a>, <a
+					href="https://www.markdownguide.org/basic-syntax/">3</a>. <a
+					href="https://github.com/knureigs/GitHubDocs_Simulation/blob/main/lb/Simulation_Lab1/example.md">Приклад
+					використання формату Markdown</a></li>
+			<li><a href="https://developer.mozilla.org/en-US/docs/Learn_web_development/Core/CSS_layout/Responsive_Design">Documenting web technologies, including CSS, HTML, and JavaScript. Responsive web design</a></li>
+			<li><a href="https://www.nngroup.com/articles/ia-study-guide/">Information Architecture: Study Guide</a></li>
+			<li><a href="https://usability.yale.edu/ux/plan/establish-structure-findability/site-mapping-and-information-architecture">Site Mapping and Information Architecture</a></li>
+			<li><a href="https://web.dev/learn/design/">Learn Responsive Design</a></li>
+			<li><a href="https://www.w3.org/WAI/tutorials/">Web Accessibility Tutorials</a></li>
+			<li><a href="https://developers.google.com/search/docs/fundamentals/seo-starter-guide">SEO Starter Guide</a></li>
+		</ol>
+	</div>
+
+	<br><a href="#start" target="_self">Повернутися до початку сторінки</a>
+	<!-- Не вносить неузгоджені зміни до локальних екземплярів методички (якщо вони раптом виявилися доступними в мережі лабораторій кафедри), порушникам - окремі завдання. Якраз є кілька ідей, для яких не вистачає підопитних...  -->
+	<!-- Можливі помилки і опечатки. Якщо такі будуть Вами помічені, повідомте мене про це відразу, і я їх обов'язково виправлю колись потім. -->
+	<!-- Вдалого відпрацювання! Вам складніше, ніж минулому потоку, але простіше, ніж планував зробити завдання спочатку. -->
+</body>
+
+</html>
